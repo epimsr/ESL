@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Vocabulary Quiz</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root { --primary: #1a73e8; --secondary: #5f6368; --success: #188038; --error: #d93025; --bg: #f8f9fa; }
+        body { font-family: -apple-system, "PingFang TC", "Heiti TC", sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #202124; -webkit-tap-highlight-color: transparent; }
+        .container { max-width: 650px; margin: 0 auto; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; min-height: 90vh; display: flex; flex-direction: column; }
+        .header { text-align: center; border-bottom: 2px solid var(--bg); margin-bottom: 15px; padding-bottom: 10px; position: relative; }
+        .user-selector { margin-top: 12px; display: flex; justify-content: center; gap: 15px; }
+        .user-btn { padding: 8px 20px; border-radius: 25px; border: 1.5px solid #dadce0; background: white; cursor: pointer; font-size: 15px; font-weight: bold; }
+        .user-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 2px 8px rgba(26,115,232,0.3); }
+        .save-tools { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+        .btn-s { padding: 4px 10px; font-size: 12px; border-radius: 5px; border: 1px solid #dadce0; background: white; cursor: pointer; }
+        .mode-card { width: 100%; padding: 20px; margin: 12px 0; border-radius: 12px; border: none; background: var(--primary); color: white; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .q-box { background: #f1f3f4; padding: 18px; border-radius: 10px; margin-bottom: 15px; }
+        .def-text { color: var(--primary); font-weight: bold; margin-bottom: 12px; font-size: 17px; line-height: 1.4; }
+        .sent-text { font-style: italic; border-left: 5px solid #dadce0; padding: 12px; line-height: 1.6; color: #3c4043; background: #fff; border-radius: 6px; font-size: 16px; }
+        .opt-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .btn-opt { flex: 1; text-align: left; padding: 15px; border: 1px solid #dadce0; border-radius: 10px; background: white; font-size: 16px; cursor: pointer; }
+        .btn-opt:disabled { background: #f8f9fa; color: #9aa0a6; }
+        .btn-audio { padding: 12px; background: #e8f0fe; border: none; border-radius: 10px; cursor: pointer; font-size: 20px; color: var(--primary); display: flex; align-items: center; justify-content: center; }
+        .input-field { width: 100%; padding: 16px; font-size: 20px; border: 2.5px solid #dadce0; border-radius: 10px; box-sizing: border-box; margin-bottom: 12px; outline-color: var(--primary); text-align: center; }
+        .feedback { margin-top: 15px; padding: 18px; border-radius: 12px; display: none; line-height: 1.6; border: 1px solid #ddd; }
+        .f-correct { background: #e6f4ea; color: var(--success); border-color: #cce8d6; }
+        .f-wrong { background: #fce8e6; color: var(--error); border-color: #f8d0cb; }
+        .nav { display: flex; justify-content: space-between; margin-top: auto; padding-top: 20px; }
+        .btn-nav { padding: 12px 28px; border-radius: 10px; border: none; background: var(--secondary); color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .progress { text-align: center; font-size: 14px; color: var(--secondary); margin-bottom: 12px; font-weight: 500; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app-content">
+    <div class="save-tools">
+        <button class="btn-s" onclick="exportImg()">📷 Photo</button>
+        <button class="btn-s" onclick="exportPDF()">📄 PDF</button>
+    </div>
+
+    <div class="header">
+        <h2 id="title-main">English Vocabulary Quiz</h2>
+        <div style="font-size: 14px; color: #5f6368; font-weight: bold;">Patterns of Change Part 2</div>
+        <div class="user-selector">
+            <button class="user-btn" id="btn-stella" onclick="setUser('Stella')">Stella</button>
+            <button class="user-btn" id="btn-diane" onclick="setUser('Diane')">Diane</button>
+        </div>
+    </div>
+
+    <div id="home">
+        <button class="mode-card" onclick="start('A')">Part A: Definition Choice <span>(20 Qs)</span></button>
+        <button class="mode-card" onclick="start('C')">Part B: Spelling Challenge <span>(20 Qs)</span></button>
+    </div>
+
+    <div id="quiz" class="hidden">
+        <div class="progress"><span id="user-display" style="text-decoration: underline;">Stella</span>'s Progress: <span id="cur-num">1</span> / 20</div>
+        <div class="q-box">
+            <div id="q-def" class="def-text"></div>
+            <div id="q-sent" class="sent-text"></div>
+        </div>
+        <div id="options"></div>
+        <div id="typing" class="hidden">
+            <input type="text" id="ans-in" class="input-field" placeholder="Type answer here..." autocomplete="off" autocapitalize="none">
+            <button class="btn-audio" style="width:100%; margin-bottom:12px; font-size:15px; background:#fef7e0; color:#5f6368; border: 1px solid #fbc02d;" onclick="handleSpeak(currentQ.word)">🔊 Natural Voice Hint</button>
+        </div>
+        <div id="feedback" class="feedback"></div>
+        <div class="nav">
+            <button class="btn-nav" id="prev" onclick="changeQ(-1)">Previous</button>
+            <button class="btn-nav" id="next" onclick="changeQ(1)" style="background: var(--primary);">Next</button>
+        </div>
+    </div>
+
+    <div id="result" class="hidden">
+        <h3 id="report-title">Quiz Report</h3>
+        <div id="report-body"></div>
+        <button class="mode-card" style="margin-top:20px; background:var(--secondary);" onclick="location.reload()">Restart Quiz</button>
+    </div>
+</div>
+
+<script>
+const words = [
+    { word: "texture", pos: "(n.)", kk: "[ˈtɛkstʃɚ]", def: "How the surface of an object feels when you touch it.", sent: "I love the smooth ________ of silk.", ch: "觸感/質地", trans: "我喜歡絲綢平滑的觸感。" },
+    { word: "sedimentary", pos: "(adj.)", kk: "[ˌsɛdəˈmɛntərɪ]", def: "Of, relating to, or containing sediment.", sent: "Sandstone is a type of ________ rock.", ch: "沉積的", trans: "砂岩是一種沉積岩。" },
+    { word: "accumulate", pos: "(v.)", kk: "[əˈkjumjəˌlet]", def: "To gather or pile up especially little by little over time.", sent: "Dust began to ________ on the old books.", ch: "堆積/累積", trans: "灰塵開始在舊書上堆積。" },
+    { word: "entirely", pos: "(adv.)", kk: "[ɪnˈtaɪrlɪ]", def: "Completely, totally, or 100%.", sent: "I am ________ satisfied with the result.", ch: "完全地", trans: "我對結果完全滿意。" },
+    { word: "compose", pos: "(v.)", kk: "[kəmˈpoz]", def: "To form by putting together; consist of.", sent: "This salad is ________ of tomatoes and lettuce.", ch: "組成", trans: "這份沙拉是由番茄和生菜組成的。" },
+    { word: "gradually", pos: "(adv.)", kk: "[ˈgrædʒuəlɪ]", def: "Slowly, over a long period of time.", sent: "The weather is ________ getting warmer.", ch: "逐漸地", trans: "天氣正逐漸變暖。" },
+    { word: "eventually", pos: "(adv.)", kk: "[ɪˈvɛntʃuəlɪ]", def: "Something will happen at a later time or in the end.", sent: "Keep trying, and you will ________ succeed.", ch: "最終", trans: "持續嘗試，你最終會成功。" },
+    { word: "metamorphic", pos: "(adj.)", kk: "[ˌmɛtəˈmɔrfɪk]", def: "A striking alteration in appearance or circumstances.", sent: "________ rocks form under great heat and pressure.", ch: "變質的", trans: "變質岩是在高溫高壓下形成的。" },
+    { word: "stratum", pos: "(n.)", kk: "[ˈstretəm]", def: "A single, horizontal layer of material, such as rock or soil.", sent: "The cliff shows many different ________ of rock.", ch: "層/地層", trans: "懸崖顯示出許多不同的岩層。" },
+    { word: "include", pos: "(v.)", kk: "[ɪnˈklud]", def: "To take in or have as part of a whole or group.", sent: "Does the price ________ breakfast?", ch: "包括", trans: "價格包含早餐嗎？" },
+    { word: "variety", pos: "(n.)", kk: "[vəˈraɪətɪ]", def: "Having a mix of different things, types, or forms.", sent: "The store sells a wide ________ of fruits.", ch: "各種各樣", trans: "這家店販賣各種各樣的水果。" },
+    { word: "transform", pos: "(v.)", kk: "[trænsˈfɔrm]", def: "To change something into another thing.", sent: "They plan to ________ the old warehouse into a gallery.", ch: "轉換/變成", trans: "他們計畫將舊倉庫改造成現代藝廊。" },
+    { word: "reliable", pos: "(adj.)", kk: "[rɪˈlaɪəb!]", def: "Someone or something can be trusted or believed.", sent: "Otis is a very ________ person.", ch: "可靠的", trans: "Otis是個可靠的人。" },
+    { word: "contact", pos: "(n.)", kk: "[ˈkɑntækt]", def: "The state of physical touching.", sent: "The virus is spread through physical ________.", ch: "接觸", trans: "病毒透過物理接觸傳播。" },
+    { word: "erode", pos: "(v.)", kk: "[ɪˈrod]", def: "To slowly wear away something over time.", sent: "Water can slowly ________ even the hardest rocks.", ch: "侵蝕", trans: "水甚至能慢慢侵蝕最堅硬的岩石。" },
+    { word: "moisture", pos: "(n.)", kk: "[ˈmɔɪstʃɚ]", def: "Liquid water in the form of very small drops.", sent: "Plants need ________ in the soil to grow well.", ch: "水分", trans: "植物需要土壤中的水分才能生長良好。" },
+    { word: "particle", pos: "(n.)", kk: "[ˈpɑrtɪk!]", def: "An extremely small piece of matter.", sent: "A ________ of dust danced in the sunlight.", ch: "粒子", trans: "一粒灰塵在陽光下飛舞。" },
+    { word: "repetition", pos: "(n.)", kk: "[ˌrɛpəˈtɪʃən]", def: "The act of doing something again and again.", sent: "We must avoid the ________ of a mistake.", ch: "重複", trans: "我們必須避免重蹈覆轍。" }
+];
+
+let currentUser = 'Stella';
+let quizSet = [], userHistory = [], curIdx = 0, mode = '';
+
+function setUser(name) {
+    currentUser = name;
+    document.querySelectorAll('.user-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`btn-${name.toLowerCase()}`).classList.add('active');
+    document.getElementById('user-display').innerText = name;
+}
+
+// 升級版真人發音邏輯
+function handleSpeak(t) {
+    // 優先使用真人語音接口
+    const audio = new Audio();
+    audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(t)}&tl=en&client=tw-ob`;
+    
+    audio.play().catch(e => {
+        // 備案：搜尋 iPad 高品質語音
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(t);
+        const voices = window.speechSynthesis.getVoices();
+        const bestVoice = voices.find(v => (v.name.includes('Siri') || v.name.includes('Enhanced')) && v.lang.startsWith('en')) || voices[0];
+        if (bestVoice) u.voice = bestVoice;
+        u.lang = 'en-US';
+        u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+    });
+}
+
+function start(m) {
+    mode = m; curIdx = 0; userHistory = [];
+    quizSet = [...words].sort(() => Math.random() - 0.5).slice(0, 20);
+    while(quizSet.length < 20) quizSet.push(words[Math.floor(Math.random()*words.length)]);
+    document.getElementById('home').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    render();
+}
+
+function render() {
+    currentQ = quizSet[curIdx];
+    document.getElementById('cur-num').innerText = curIdx + 1;
+    document.getElementById('q-def').innerText = currentQ.def;
+    const blankSent = currentQ.sent.replace(new RegExp(currentQ.word, 'gi'), '_______');
+    document.getElementById('q-sent').innerHTML = `Example: ${blankSent}`;
+    const fb = document.getElementById('feedback');
+    if(userHistory[curIdx]) showFeedback(userHistory[curIdx].ok, userHistory[curIdx].val);
+    else fb.style.display = 'none';
+    if(mode === 'C') {
+        document.getElementById('options').classList.add('hidden');
+        document.getElementById('typing').classList.remove('hidden');
+    } else {
+        document.getElementById('options').classList.remove('hidden');
+        document.getElementById('typing').classList.add('hidden');
+        makeOpts(currentQ);
+    }
+}
+
+function makeOpts(correct) {
+    let pool = [correct];
+    while(pool.length < 4) {
+        let r = words[Math.floor(Math.random()*words.length)];
+        if(!pool.some(p => p.word === r.word)) pool.push(r);
+    }
+    const area = document.getElementById('options'); area.innerHTML = '';
+    pool.sort(() => Math.random() - 0.5).forEach(o => {
+        const div = document.createElement('div'); div.className = 'opt-row';
+        div.innerHTML = `<button class="btn-opt" ${userHistory[curIdx]?'disabled':''} onclick="checkAns('${o.word}')">${o.word} <b>${o.pos}</b></button><button class="btn-audio" onclick="handleSpeak('${o.word}')">🔊</button>`;
+        area.appendChild(div);
+    });
+}
+
+function checkAns(v) {
+    if(!v || userHistory[curIdx]) return;
+    const isR = v.trim().toLowerCase() === currentQ.word.toLowerCase();
+    userHistory[curIdx] = { val: v, ok: isR };
+    if(mode !== 'C') document.querySelectorAll('.btn-opt').forEach(b => b.disabled = true);
+    showFeedback(isR, v);
+}
+
+function showFeedback(isR, v) {
+    const fb = document.getElementById('feedback'); fb.style.display = 'block';
+    fb.className = `feedback ${isR ? 'f-correct' : 'f-wrong'}`;
+    const fullSent = currentQ.sent.replace(new RegExp(currentQ.word, 'gi'), `<u>${currentQ.word}</u>`);
+    fb.innerHTML = `
+        <b>${isR ? '✓ Correct!' : '✗ Answer: ' + currentQ.word}</b><br>
+        <div style="display:flex; align-items:center; gap:10px; margin:8px 0;">
+            <b style="font-size:1.2em;">${currentQ.word}</b> 
+            <button class="btn-audio" style="padding:4px 10px; font-size:14px;" onclick="handleSpeak('${currentQ.word}')">🔊</button>
+        </div>
+        <div style="font-size:0.9em; background:#fff; padding:8px; border-radius:6px; border:1px solid #eee;">
+            <strong>English:</strong> ${fullSent}<br>
+            <strong>Chinese:</strong> ${currentQ.trans}
+        </div>`;
+}
+
+function changeQ(s) {
+    if(s === 1) {
+        if(mode === 'C' && !userHistory[curIdx]) { checkAns(document.getElementById('ans-in').value); return; }
+        if(curIdx === 19) { finish(); return; }
+    }
+    curIdx = Math.max(0, curIdx + s); render();
+}
+
+function finish() {
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('report-title').innerText = `${currentUser}'s Report`;
+    const body = document.getElementById('report-body'); body.innerHTML = "";
+    userHistory.forEach((h, i) => {
+        const q = quizSet[i];
+        body.innerHTML += `<div style="padding:10px; margin-bottom:8px; border-radius:8px; background:${h.ok?'#f6ffed':'#fff1f0'};">
+            <b>Q${i+1}. ${q.word}</b> - ${h.ok?'✓':'✗ Answered: '+h.val}</div>`;
+    });
+}
+
+async function exportImg() {
+    const canvas = await html2canvas(document.getElementById('app-content'));
+    const link = document.createElement('a');
+    link.download = `${currentUser}_English_Patterns_0321.png`;
+    link.href = canvas.toDataURL(); link.click();
+}
+
+async function exportPDF() {
+    const { jsPDF } = window.jspdf; const doc = new jsPDF();
+    const canvas = await html2canvas(document.getElementById('app-content'));
+    doc.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, 190, 0);
+    doc.save(`${currentUser}_English_Patterns_0321.pdf`);
+}
+</script>
+</body>
+</html>

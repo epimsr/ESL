@@ -52,8 +52,8 @@
     </div>
 
     <div id="home">
-        <button class="mode-card" onclick="start('A')">Part A: Definition Choice <span>(20 Qs)</span></button>
-        <button class="mode-card" onclick="start('C')">Part B: Spelling Challenge <span>(20 Qs)</span></button>
+        <button class="mode-card" onclick="unlockAndStart('A')">Part A: Definition Choice <span>(20 Qs)</span></button>
+        <button class="mode-card" onclick="unlockAndStart('C')">Part B: Spelling Challenge <span>(20 Qs)</span></button>
     </div>
 
     <div id="quiz" class="hidden">
@@ -104,7 +104,12 @@ const words = [
 ];
 
 let currentUser = 'Stella';
+const subject = 'English';
+const unit = 'PatternsOfChange';
 let quizSet = [], userHistory = [], curIdx = 0, mode = '';
+
+// 建立一個常駐的音訊物件
+const silentAudio = new Audio();
 
 function setUser(name) {
     currentUser = name;
@@ -113,24 +118,49 @@ function setUser(name) {
     document.getElementById('user-display').innerText = name;
 }
 
-// 升級版真人發音邏輯
+setUser('Stella');
+
+// iOS 關鍵：解鎖音軌並開始測驗
+function unlockAndStart(m) {
+    // 播放一個空的短音來解鎖 iOS Safari 的 Audio 通道
+    silentAudio.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==";
+    silentAudio.play().then(() => {
+        start(m);
+    }).catch(e => {
+        console.log("Audio unlock failed, fallback to direct start.");
+        start(m);
+    });
+}
+
+// 修正後的發音邏輯 (對應 iOS 靜音開關與安全限制)
 function handleSpeak(t) {
-    // 優先使用真人語音接口
-    const audio = new Audio();
-    audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(t)}&tl=en&client=tw-ob`;
+    // 停止系統語音排隊
+    window.speechSynthesis.cancel();
+
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(t)}&tl=en&client=tw-ob`;
+    const audio = new Audio(url);
     
+    // 1. 嘗試真人語音
     audio.play().catch(e => {
-        // 備案：搜尋 iPad 高品質語音
-        window.speechSynthesis.cancel();
+        console.log("External Audio failed, using System TTS.");
+        // 2. 備案：高品質系統語音 (最穩定)
         const u = new SpeechSynthesisUtterance(t);
-        const voices = window.speechSynthesis.getVoices();
-        const bestVoice = voices.find(v => (v.name.includes('Siri') || v.name.includes('Enhanced')) && v.lang.startsWith('en')) || voices[0];
-        if (bestVoice) u.voice = bestVoice;
         u.lang = 'en-US';
         u.rate = 0.85;
+        // 挑選高品質聲音
+        const voices = window.speechSynthesis.getVoices();
+        const premium = voices.find(v => (v.name.includes('Siri') || v.name.includes('Enhanced')) && v.lang.startsWith('en'));
+        if (premium) u.voice = premium;
         window.speechSynthesis.speak(u);
     });
 }
+
+function getFormattedDate() {
+    const d = new Date();
+    return (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0');
+}
+
+function generateFileName() { return `${currentUser}_${subject}_${unit}_${getFormattedDate()}`; }
 
 function start(m) {
     mode = m; curIdx = 0; userHistory = [];
@@ -187,14 +217,22 @@ function showFeedback(isR, v) {
     fb.className = `feedback ${isR ? 'f-correct' : 'f-wrong'}`;
     const fullSent = currentQ.sent.replace(new RegExp(currentQ.word, 'gi'), `<u>${currentQ.word}</u>`);
     fb.innerHTML = `
-        <b>${isR ? '✓ Correct!' : '✗ Answer: ' + currentQ.word}</b><br>
-        <div style="display:flex; align-items:center; gap:10px; margin:8px 0;">
-            <b style="font-size:1.2em;">${currentQ.word}</b> 
-            <button class="btn-audio" style="padding:4px 10px; font-size:14px;" onclick="handleSpeak('${currentQ.word}')">🔊</button>
-        </div>
-        <div style="font-size:0.9em; background:#fff; padding:8px; border-radius:6px; border:1px solid #eee;">
-            <strong>English:</strong> ${fullSent}<br>
-            <strong>Chinese:</strong> ${currentQ.trans}
+        <div style="font-weight:bold; border-bottom:1px solid rgba(0,0,0,0.1); padding-bottom:5px; margin-bottom:5px;">${isR ? '✓ Correct!' : '✗ Answer: ' + currentQ.word}</div>
+        <div style="font-size:0.95em;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                <b style="font-size:1.3em;">${currentQ.word}</b> 
+                <button class="btn-audio" style="padding:4px 12px; font-size:14px; margin:0;" onclick="handleSpeak('${currentQ.word}')">🔊 Pronounce</button>
+            </div>
+            <div style="margin-bottom:8px;">
+                <span style="color:var(--primary); font-weight:bold;">${currentQ.kk}</span> ${currentQ.pos}
+            </div>
+            <div style="margin-top:5px;">
+                <strong>Meaning: </strong>${currentQ.ch}<br>
+                <div style="margin-top:6px; padding-left:8px; border-left:3px solid #dadce0;">
+                    <strong>English: </strong>${fullSent}<br>
+                    <strong>Chinese: </strong>${currentQ.trans}
+                </div>
+            </div>
         </div>`;
 }
 
@@ -213,7 +251,7 @@ function finish() {
     const body = document.getElementById('report-body'); body.innerHTML = "";
     userHistory.forEach((h, i) => {
         const q = quizSet[i];
-        body.innerHTML += `<div style="padding:10px; margin-bottom:8px; border-radius:8px; background:${h.ok?'#f6ffed':'#fff1f0'};">
+        body.innerHTML += `<div style="padding:10px; margin-bottom:8px; border-radius:8px; background:${h.ok?'#f6ffed':'#fff1f0'}; border:1px solid ${h.ok?'#b7eb8f':'#ffa39e'};">
             <b>Q${i+1}. ${q.word}</b> - ${h.ok?'✓':'✗ Answered: '+h.val}</div>`;
     });
 }
@@ -221,7 +259,7 @@ function finish() {
 async function exportImg() {
     const canvas = await html2canvas(document.getElementById('app-content'));
     const link = document.createElement('a');
-    link.download = `${currentUser}_English_Patterns_0321.png`;
+    link.download = `${generateFileName()}.png`;
     link.href = canvas.toDataURL(); link.click();
 }
 
@@ -229,7 +267,7 @@ async function exportPDF() {
     const { jsPDF } = window.jspdf; const doc = new jsPDF();
     const canvas = await html2canvas(document.getElementById('app-content'));
     doc.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, 190, 0);
-    doc.save(`${currentUser}_English_Patterns_0321.pdf`);
+    doc.save(`${generateFileName()}.pdf`);
 }
 </script>
 </body>

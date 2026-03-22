@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -44,6 +44,7 @@
 
     <div class="header">
         <h2 id="title-main">English Vocabulary Quiz</h2>
+        <div style="font-size: 14px; color: #5f6368; font-weight: bold;">Patterns of Change Part Two (18 Words)</div>
         <div class="user-selector">
             <button class="user-btn" id="btn-stella" onclick="setUser('Stella')">Stella</button>
             <button class="user-btn" id="btn-diane" onclick="setUser('Diane')">Diane</button>
@@ -51,12 +52,12 @@
     </div>
 
     <div id="home">
-        <button class="mode-card" onclick="unlockAndStart('A')">Part A: Definition Choice <span>(20 Qs)</span></button>
-        <button class="mode-card" onclick="unlockAndStart('C')">Part B: Spelling Challenge <span>(20 Qs)</span></button>
+        <button class="mode-card" onclick="unlockAndStart('A')">Part A: Definition Choice <span>(18 Qs)</span></button>
+        <button class="mode-card" onclick="unlockAndStart('C')">Part B: Spelling Challenge <span>(18 Qs)</span></button>
     </div>
 
     <div id="quiz" class="hidden">
-        <div class="progress"><span id="user-display" style="font-weight:bold;">Stella</span>'s Progress: <span id="cur-num">1</span> / 20</div>
+        <div class="progress"><span id="user-display" style="font-weight:bold;">Stella</span>'s Progress: <span id="cur-num">1</span> / 18</div>
         <div class="q-box">
             <div id="q-def" class="def-text"></div>
             <div id="q-sent" class="sent-text"></div>
@@ -81,26 +82,26 @@
 </div>
 
 <script>
-// 完整單字庫 (整合 Patterns of Change Part 1 & 2)
+// 本週 18 個單字完整資料庫
 const words = [
-    { word: "texture", pos: "(n.)", kk: "[ˈtɛkstʃɚ]", def: "How the surface of an object feels when you touch it.", sent: "I love the smooth ________ of silk.", ch: "觸感/質地", trans: "我喜歡絲綢平滑的觸感。" },
-    { word: "sedimentary", pos: "(adj.)", kk: "[ˌsɛdəˈmɛntərɪ]", def: "Of, relating to, or containing sediment.", sent: "Sandstone is a type of ________ rock.", ch: "沉積的", trans: "砂岩是一種沉積岩。" },
-    { word: "accumulate", pos: "(v.)", kk: "[əˈkjumjəˌlet]", def: "To gather or pile up especially little by little over time.", sent: "Dust began to ________ on the old books.", ch: "堆積/累積", trans: "灰塵開始在舊書上堆積。" },
-    { word: "entirely", pos: "(adv.)", kk: "[ɪnˈtaɪrlɪ]", def: "Completely, totally, or 100%.", sent: "I am ________ satisfied with the result.", ch: "完全地", trans: "我對結果完全滿意。" },
-    { word: "compose", pos: "(v.)", kk: "[kəmˈpoz]", def: "To form by putting together; consist of.", sent: "This salad is ________ of tomatoes and lettuce.", ch: "組成", trans: "這份沙拉是由番茄和生菜組成的。" },
-    { word: "gradually", pos: "(adv.)", kk: "[ˈgrædʒuəlɪ]", def: "Slowly, over a long period of time.", sent: "The weather is ________ getting warmer.", ch: "逐漸地", trans: "天氣正逐漸變暖。" },
-    { word: "eventually", pos: "(adv.)", kk: "[ɪˈvɛntʃuəlɪ]", def: "Something will happen at a later time or in the end.", sent: "Keep trying, and you will ________ succeed.", ch: "最終", trans: "持續嘗試，你最終會成功。" },
-    { word: "metamorphic", pos: "(adj.)", kk: "[ˌmɛtəˈmɔrfɪk]", def: "A striking alteration in appearance or circumstances.", sent: "________ rocks form under great heat and pressure.", ch: "變質的", trans: "變質岩是在高溫高壓下形成的。" },
-    { word: "stratum", pos: "(n.)", kk: "[ˈstretəm]", def: "A single, horizontal layer of material, such as rock or soil.", sent: "The cliff shows many different ________ of rock.", ch: "層/地層", trans: "懸崖顯示出許多不同的岩層。" },
-    { word: "include", pos: "(v.)", kk: "[ɪnˈklud]", def: "To take in or have as part of a whole or group.", sent: "Does the price ________ breakfast?", ch: "包括", trans: "價格包含早餐嗎？" },
-    { word: "variety", pos: "(n.)", kk: "[vəˈraɪətɪ]", def: "Having a mix of different things, types, or forms.", sent: "The store sells a wide ________ of fruits.", ch: "各種各樣", trans: "這家店販賣各種各樣的水果。" },
-    { word: "transform", pos: "(v.)", kk: "[trænsˈfɔrm]", def: "To change something into another thing.", sent: "They plan to ________ the old warehouse into a gallery.", ch: "轉換/變成", trans: "他們計畫將舊倉庫改造成現代藝廊。" },
-    { word: "reliable", pos: "(adj.)", kk: "[rɪˈlaɪəb!]", def: "Someone or something can be trusted or believed.", sent: "Otis is a very ________ person.", ch: "可靠的", trans: "Otis是個可靠的人。" },
-    { word: "contact", pos: "(n.)", kk: "[ˈkɑntækt]", def: "The state of physical touching.", sent: "The virus is spread through physical ________.", ch: "接觸", trans: "病毒透過物理接觸傳播。" },
-    { word: "erode", pos: "(v.)", kk: "[ɪˈrod]", def: "To slowly wear away something over time.", sent: "Water can slowly ________ even the hardest rocks.", ch: "侵蝕", trans: "水甚至能慢慢侵蝕最堅硬的岩石。" },
-    { word: "moisture", pos: "(n.)", kk: "[ˈmɔɪstʃɚ]", def: "Liquid water in the form of very small drops.", sent: "Plants need ________ in the soil to grow well.", ch: "水分", trans: "植物需要土壤中的水分才能生長良好。" },
-    { word: "particle", pos: "(n.)", kk: "[ˈpɑrtɪk!]", def: "An extremely small piece of matter.", sent: "A ________ of dust danced in the sunlight.", ch: "粒子", trans: "一粒灰塵在陽光下飛舞。" },
-    { word: "repetition", pos: "(n.)", kk: "[ˌrɛpəˈtɪʃən]", def: "The act of doing something again and again.", sent: "We must avoid the ________ of a mistake.", ch: "重複", trans: "我們必須避免重蹈覆轍。" }
+    { word: "texture", pos: "(n.)", kk: "[ˈtɛkstʃɚ]", def: "how the surface of an object feels when you touch it, or how it looks like it would feel.", sent: "I love the smooth ________ of silk.", ch: "觸感/質地", trans: "我喜歡絲綢平滑的觸感。" },
+    { word: "variety", pos: "(n.)", kk: "[vəˈraɪətɪ]", def: "having a mix of different things, types, or forms rather than just one kind.", sent: "The store sells a wide ________ of fruits.", ch: "多樣性/各種各樣", trans: "這家店販賣各種各樣的水果。" },
+    { word: "sedimentary", pos: "(adj.)", kk: "[ˌsɛdəˈmɛntərɪ]", def: "of, relating to, or containing sediment.", sent: "Sandstone is a type of ________ rock.", ch: "沉積的", trans: "砂岩是一種沉積岩。" },
+    { word: "deposit", pos: "(v/n)", kk: "[dɪˈpɑzɪt]", def: "to leave something somewhere.", sent: "Floodwaters ________ed a layer of mud on the fields.", ch: "放置/沉積", trans: "洪水在田野上沉積了一層泥土。" },
+    { word: "eventually", pos: "(adv.)", kk: "[ɪˈvɛntʃuəlɪ]", def: "something will happen at a later time or in the end, usually after a long wait.", sent: "Keep trying, and you will ________ succeed.", ch: "最終", trans: "持續嘗試，你最終會成功。" },
+    { word: "gradually", pos: "(adv.)", kk: "[ˈgrædʒuəlɪ]", def: "slowly, over a long period of time.", sent: "The weather is ________ getting warmer.", ch: "逐漸地", trans: "天氣正逐漸變暖。" },
+    { word: "include", pos: "(v.)", kk: "[ɪnˈklud]", def: "to take in or have as part of a whole or group.", sent: "The bill ________s service.", ch: "包括", trans: "帳單包含了服務費。" },
+    { word: "compose", pos: "(v.)", kk: "[kəmˈpoz]", def: "to form by putting together.", sent: "This salad is ________ed of tomatoes and lettuce.", ch: "組成", trans: "這份沙拉是由番茄和生菜組成的。" },
+    { word: "entirely", pos: "(adv.)", kk: "[ɪnˈtaɪrlɪ]", def: "completely, totally, or 100%.", sent: "I am ________ satisfied with the result.", ch: "完全地", trans: "我對結果完全滿意。" },
+    { word: "material", pos: "(n.)", kk: "[məˈtɪrɪəl]", def: "any type of matter or substance used to make objects.", sent: "Brick is a common building ________.", ch: "材料", trans: "磚塊是常見的建築材料。" },
+    { word: "stratum", pos: "(n.)", kk: "[ˈstretəm]", def: "a single, horizontal layer of material, such as rock, soil, or sediment.", sent: "The cliff shows many different ________ of rock.", ch: "地層/層", trans: "懸崖顯示出許多不同的岩層。" },
+    { word: "accumulate", pos: "(v.)", kk: "[əˈkjumjəˌlet]", def: "to gather or pile up especially little by little over time.", sent: "Dust began to ________ on the old books.", ch: "堆積/累積", trans: "灰塵開始在舊書上堆積。" },
+    { word: "continue", pos: "(v.)", kk: "[kənˈtɪnju]", def: "to keep doing something without stopping, or to start again after a break.", sent: "They ________ed to talk after lunch.", ch: "繼續", trans: "午飯後他們繼續交談。" },
+    { word: "escape", pos: "(v.)", kk: "[ɪˈskep]", def: "to get away.", sent: "The gas ________s from the broken pipe.", ch: "逃脫/洩漏", trans: "瓦斯從破裂的管子中洩漏出來。" },
+    { word: "pattern", pos: "(n.)", kk: "[ˈpætɚn]", def: "a design that has shapes, lines, letters, numbers, or colors that repeat.", sent: "The wallpaper has a flower ________.", ch: "花樣/模式", trans: "這壁紙有花卉圖案。" },
+    { word: "beneath", pos: "(prep.)", kk: "[bɪˈniθ]", def: "to be in a lower position, directly under, or covered by something else.", sent: "The cat is hiding ________ the table.", ch: "在...之下", trans: "貓躲在桌子底下。" },
+    { word: "metamorphic", pos: "(adj.)", kk: "[ˌmɛtəˈmɔrfɪk]", def: "a striking alteration in appearance, character, or circumstances.", sent: "________ rocks form under great heat and pressure.", ch: "變質的", trans: "變質岩是在高溫高壓下形成的。" },
+    { word: "limestone", pos: "(n.)", kk: "[ˈlaɪmˌston]", def: "a soft, light-colored sedimentary rock formed over millions of years from shells and skeletons.", sent: "________ is extensively used in building.", ch: "石灰岩", trans: "石灰岩廣泛用於建築。" }
 ];
 
 let currentUser = 'Stella';
@@ -114,7 +115,6 @@ function setUser(name) {
 }
 setUser('Stella');
 
-// iOS 語音解鎖關鍵：在第一次點擊時啟動一個空白音頻
 function unlockAndStart(m) {
     window.speechSynthesis.cancel();
     const silent = new SpeechSynthesisUtterance("");
@@ -122,18 +122,13 @@ function unlockAndStart(m) {
     start(m);
 }
 
-// 真人語音發音核心
 function handleSpeak(t) {
     const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(t)}&tl=en&client=tw-ob`;
     const audio = new Audio(url);
     audio.play().catch(e => {
-        // 備案：高品質系統語音
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(t);
         u.lang = 'en-US'; u.rate = 0.85;
-        const voices = window.speechSynthesis.getVoices();
-        const premium = voices.find(v => (v.name.includes('Siri') || v.name.includes('Enhanced')) && v.lang.startsWith('en'));
-        if (premium) u.voice = premium;
         window.speechSynthesis.speak(u);
     });
 }
@@ -143,12 +138,10 @@ function getFormattedDate() {
     return (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0');
 }
 
-function generateFileName() { return `${currentUser}_English_Patterns_${getFormattedDate()}`; }
-
 function start(m) {
     mode = m; curIdx = 0; userHistory = [];
-    quizSet = [...words].sort(() => Math.random() - 0.5).slice(0, 20);
-    while(quizSet.length < 20) quizSet.push(words[Math.floor(Math.random()*words.length)]);
+    // 隨機打亂所有單字並取 18 題
+    quizSet = [...words].sort(() => Math.random() - 0.5);
     document.getElementById('home').classList.add('hidden');
     document.getElementById('quiz').classList.remove('hidden');
     render();
@@ -166,14 +159,13 @@ function render() {
     if(mode === 'C') {
         document.getElementById('options').classList.add('hidden');
         document.getElementById('typing').classList.remove('hidden');
-        const input = document.getElementById('ans-in');
-        input.value = userHistory[curIdx]?.val || "";
+        document.getElementById('ans-in').value = userHistory[curIdx]?.val || "";
     } else {
         document.getElementById('options').classList.remove('hidden');
         document.getElementById('typing').classList.add('hidden');
         makeOpts(currentQ);
     }
-    document.getElementById('next').innerText = (curIdx === 19) ? "Submit Quiz" : "Next";
+    document.getElementById('next').innerText = (curIdx === 17) ? "Submit Quiz" : "Next";
 }
 
 function makeOpts(correct) {
@@ -221,7 +213,7 @@ function showFeedback(isR, v) {
 function changeQ(s) {
     if(s === 1) {
         if(mode === 'C' && !userHistory[curIdx]) { checkAns(document.getElementById('ans-in').value); return; }
-        if(curIdx === 19) { finish(); return; }
+        if(curIdx === 17) { finish(); return; }
     }
     curIdx = Math.max(0, curIdx + s); render();
 }
@@ -242,16 +234,16 @@ function finish() {
 
 async function exportImg() {
     const canvas = await html2canvas(document.getElementById('app-content'));
-    const link = document.createElement('a'); link.download = `${generateFileName()}.png`;
+    const link = document.createElement('a');
+    link.download = `${currentUser}_English_PatternsTwo_${getFormattedDate()}.png`;
     link.href = canvas.toDataURL(); link.click();
 }
 
 async function exportPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    const { jsPDF } = window.jspdf; const doc = new jsPDF();
     const canvas = await html2canvas(document.getElementById('app-content'));
     doc.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, 190, 0);
-    doc.save(`${generateFileName()}.pdf`);
+    doc.save(`${currentUser}_English_PatternsTwo_${getFormattedDate()}.pdf`);
 }
 </script>
 </body>

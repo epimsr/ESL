@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帥帥家複習系統 - 戰爭陰影下的臺灣</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --primary: #455A64; --secondary: #FFA000; --danger: #C62828; --success: #2E7D32; --bg: #ECEFF1; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; min-height: 95vh; display: flex; flex-direction: column; box-sizing: border-box; }
+        .header { text-align: center; border-bottom: 2px solid #CFD8DC; padding-bottom: 10px; margin-bottom: 15px; }
+        .save-btns { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+        .btn-sm { padding: 4px 8px; font-size: 10px; border: none; border-radius: 4px; cursor: pointer; background: #CFD8DC; }
+        .menu-btn { width: 100%; padding: 20px; margin: 10px 0; border: 2px solid var(--primary); border-radius: 10px; font-size: 1.1rem; background: white; cursor: pointer; font-weight: bold; color: var(--primary); }
+        .menu-btn:hover { background: var(--primary); color: white; }
+        .question-text { font-size: 1.2rem; margin: 20px 0; min-height: 60px; line-height: 1.5; font-weight: bold; }
+        .opt-btn { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #DDD; border-radius: 8px; text-align: left; background: white; cursor: pointer; }
+        .opt-btn.selected { border: 2px solid var(--primary); background: #CFD8DC; }
+        .opt-btn.correct-ui { background: #C8E6C9 !important; border-color: var(--success) !important; }
+        .opt-btn.wrong-ui { background: #FFCDD2 !important; border-color: var(--danger) !important; }
+        input[type="text"] { width: 100%; padding: 12px; font-size: 1.1rem; border: 2px solid #DDD; border-radius: 8px; box-sizing: border-box; outline: none; }
+        .nav-bar { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding-top: 15px; }
+        .btn-nav { padding: 12px 5px; border: none; border-radius: 8px; cursor: pointer; background: #546E7A; color: white; font-weight: bold; }
+        .btn-submit { background: var(--success); }
+        .bottom-actions { margin-top: 15px; border-top: 1px dashed #DDD; padding-top: 15px; }
+        .btn-help { background: #FFF3E0; border: 1px solid var(--secondary); color: #E65100; width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .report-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+        .report-table td, .report-table th { border: 1px solid #EEE; padding: 8px; }
+        .hidden { display: none; }
+        .red-text { color: var(--danger); font-weight: bold; }
+        .green-text { color: var(--success); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-app">
+    <div class="save-btns" id="ui-save">
+        <button class="btn-sm" onclick="doCapture('img')">存照片</button>
+        <button class="btn-sm" onclick="doCapture('pdf')">存 PDF</button>
+    </div>
+
+    <div class="header">
+        <h3 id="display-title">戰爭陰影下的臺灣</h3>
+        <div>
+            <select id="sel-student"><option>Stella</option><option>Diane</option></select>
+            <select id="sel-sub"><option>社會</option></select>
+        </div>
+        <div id="display-date" style="font-size:0.8rem; color: #777; margin-top:5px;"></div>
+    </div>
+
+    <div id="screen-home">
+        <button class="menu-btn" onclick="start('choice')">Part A: 選擇題 (全課重點)</button>
+        <button class="menu-btn" onclick="start('fill')">Part B: 填空題 (全課重點)</button>
+    </div>
+
+    <div id="screen-quiz" class="hidden">
+        <div id="progress-bar" style="font-weight:bold; color:var(--primary);">進度：1 / 10</div>
+        <div class="question-text" id="q-txt"></div>
+        <div id="ans-area"></div>
+        <div id="q-feedback" style="margin-top:20px; min-height: 25px; text-align:center;"></div>
+        
+        <div class="nav-bar">
+            <button class="btn-nav" onclick="move(-1)">上一題</button>
+            <button class="btn-nav btn-submit" id="btn-check" onclick="checkCurrent()">送出答案</button>
+            <button class="btn-nav" id="btn-next" onclick="move(1)">下一題</button>
+        </div>
+
+        <div class="bottom-actions" id="help-area">
+            <button class="btn-help" id="btn-hint" onclick="giveHint()">🆘 求救 (顯示首字提醒)</button>
+        </div>
+    </div>
+
+    <div id="screen-report" class="hidden">
+        <h4 style="text-align:center;">複習成果報表</h4>
+        <table class="report-table" id="table-report">
+            <thead><tr style="background:#F5F5F5;"><th>題目</th><th>學生回答</th><th>正確答案</th></tr></thead>
+            <tbody></tbody>
+        </table>
+        <button class="menu-btn" style="margin-top:20px;" onclick="location.reload()">重新練習</button>
+    </div>
+</div>
+
+<script>
+    // 根據課本照片 IMG_0692 - IMG_0697 出題
+    const dbChoice = [
+        { q: "1930年代日本推行什麼運動，要求臺灣人改日姓、說日語、參拜神社？", o: ["文化運動", "皇民化運動", "斷髮運動"], a: "皇民化運動" },
+        { q: "戰爭期間，日本將臺灣作為「南進基地」，主要在臺灣發展什麼工業？", o: ["輕工業", "軍事與機械工業", "紡織工業"], a: "軍事與機械工業" },
+        { q: "二戰後期物資匱乏，政府對米、糖、鹽等生活必需品實施什麼制度？", o: ["配給制度", "自由貿易", "減價優待"], a: "配給制度" },
+        { q: "當時政府鼓勵臺灣人參拜哪種宗教場所，以展現對天皇的效忠？", o: ["佛寺", "神社", "孔廟"], a: "神社" },
+        { q: "戰爭期間，民眾聽到空襲警報時必須迅速躲進哪裡以保性命？", o: ["學校教室", "防空洞", "百貨公司"], a: "防空洞" },
+        { q: "1940年代，哪一個國家的盟軍開始對臺灣各大城市進行大規模轟炸？", o: ["美國", "英國", "德國"], a: "美國" },
+        { q: "皇民化運動中，被認定全家都能流利使用日語的家庭稱為？", o: ["國語家庭", "模範家庭", "皇民家庭"], a: "國語家庭" },
+        { q: "二戰期間，許多臺灣青年被徵召前往南洋等地擔任什麼職務？", o: ["商人", "軍人或軍夫", "外交官"], a: "軍人或軍夫" },
+        { q: "二戰末期，許多臺灣女性被迫成為「慰安婦」，這是指什麼？", o: ["戰地醫護員", "受日軍摧殘的受害者", "工廠作業員"], a: "受日軍摧殘的受害者" },
+        { q: "日本在哪一年正式宣佈投降，結束了二次大戰與對臺統治？", o: ["1937年", "1943年", "1945年"], a: "1945年" }
+    ];
+
+    const dbFill = [
+        { q: "日本為了讓臺灣人徹底效忠天皇，推行了「什麼」化運動？", a: "皇民" },
+        { q: "當時政府鼓勵臺灣人改用「什麼」國姓氏？", a: "日" },
+        { q: "戰爭期間，臺灣被視為支援日本向南擴張的「什麼」進基地？", a: "南" },
+        { q: "必需品需憑配給票購買，這種制度稱為「什麼」制度？", a: "配給" },
+        { q: "民眾為了躲避美國飛機轟炸，必須躲入「什麼」洞？", a: "防空" },
+        { q: "二戰結束後，日本宣佈無條件「什麼」，臺灣結束日治時期？", a: "投降" },
+        { q: "皇民化運動中，推廣說「什麼」語以取代臺灣本土方言？", a: "日" },
+        { q: "1937年爆發了「什麼」戰爭，日本開始加強對臺灣的控管？", a: "中日" },
+        { q: "戰爭後期，食鹽、砂糖、肥料等物資都受到嚴格的「什麼」？", a: "管制" },
+        { q: "日本在臺灣發展電力、化學等工業，是為了「什麼」用途？", a: "軍事" }
+    ];
+
+    let qs = [], userAns = [], checked = [], cur = 0, mode = '';
+    const now = new Date();
+    const dateShort = `${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}`;
+    document.getElementById('display-date').innerText = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
+
+    function start(type) {
+        mode = type;
+        const source = (type === 'choice') ? dbChoice : dbFill;
+        qs = [...source].sort(() => Math.random() - 0.5);
+        userAns = new Array(qs.length).fill("");
+        checked = new Array(qs.length).fill(false);
+        cur = 0;
+        document.getElementById('screen-home').classList.add('hidden');
+        document.getElementById('screen-quiz').classList.remove('hidden');
+        document.getElementById('help-area').style.display = (mode === 'choice') ? 'none' : 'block';
+        render();
+    }
+
+    function render() {
+        const q = qs[cur];
+        document.getElementById('progress-bar').innerText = `進度：${cur + 1} / ${qs.length}`;
+        document.getElementById('q-txt').innerText = q.q;
+        const area = document.getElementById('ans-area');
+        const feedback = document.getElementById('q-feedback');
+        area.innerHTML = "";
+        feedback.innerHTML = "";
+
+        if (mode === 'choice') {
+            q.o.forEach(o => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn' + (userAns[cur] === o ? ' selected' : '');
+                if (checked[cur]) {
+                    if (o === q.a) b.classList.add('correct-ui');
+                    else if (userAns[cur] === o) b.classList.add('wrong-ui');
+                }
+                b.innerText = o;
+                b.onclick = () => { if(!checked[cur]) { userAns[cur] = o; render(); } };
+                area.appendChild(b);
+            });
+        } else {
+            const input = document.createElement('input');
+            input.type = "text";
+            input.value = userAns[cur];
+            input.disabled = checked[cur];
+            input.onblur = (e) => userAns[cur] = e.target.value;
+            input.onkeydown = (e) => { if(e.key==='Enter') { userAns[cur] = e.target.value; checkCurrent(); } };
+            area.appendChild(input);
+            if (!checked[cur]) input.focus();
+        }
+
+        if (checked[cur]) {
+            const isOk = userAns[cur].trim() === q.a;
+            feedback.innerHTML = isOk ? `<span class="green-text">✔ 正確！</span>` : `<span class="red-text">✘ 錯誤，正確答案：${q.a}</span>`;
+        }
+        document.getElementById('btn-check').style.display = checked[cur] ? 'none' : 'block';
+        document.getElementById('btn-next').innerText = (cur === qs.length - 1) ? "查看報表" : "下一題";
+    }
+
+    function checkCurrent() {
+        if (!userAns[cur] || userAns[cur].trim() === "") { alert("請先回答！"); return; }
+        checked[cur] = true;
+        render();
+    }
+
+    function move(step) {
+        if (step === 1 && cur === qs.length - 1) { 
+            if(!checked[cur]) { alert("請先送出答案！"); return; }
+            showReport(); 
+            return; 
+        }
+        cur = Math.max(0, Math.min(qs.length - 1, cur + step));
+        render();
+    }
+
+    function giveHint() {
+        alert("💡 第一個字是：「" + qs[cur].a[0] + "」");
+    }
+
+    function showReport() {
+        document.getElementById('screen-quiz').classList.add('hidden');
+        document.getElementById('screen-report').classList.remove('hidden');
+        const body = document.querySelector('#table-report tbody');
+        body.innerHTML = "";
+        qs.forEach((q, i) => {
+            const isWrong = userAns[i] !== q.a;
+            body.innerHTML += `<tr><td>${q.q}</td><td class="${isWrong?'red-text':''}">${userAns[i]||'未答'}</td><td>${q.a}</td></tr>`;
+        });
+    }
+
+    function doCapture(type) {
+        const student = document.getElementById('sel-student').value;
+        const subject = document.getElementById('sel-sub').value;
+        const title = "戰爭陰影下的臺灣";
+        const fileName = `${student}_${subject}_${title}_${dateShort}`;
+        const ui = document.getElementById('ui-save');
+        ui.style.display = 'none';
+        html2canvas(document.body).then(canvas => {
+            if (type === 'img') {
+                const link = document.createElement('a');
+                link.download = `${fileName}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } else {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const w = pdf.internal.pageSize.getWidth();
+                const h = (canvas.height * w) / canvas.width;
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h);
+                pdf.save(`${fileName}.pdf`);
+            }
+            ui.style.display = 'flex';
+        });
+    }
+</script>
+</body>
+</html>

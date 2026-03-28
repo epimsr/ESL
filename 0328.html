@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reading No.5 Quiz</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root { --primary: #1a73e8; --secondary: #5f6368; --success: #188038; --error: #d93025; --bg: #f8f9fa; }
+        body { font-family: -apple-system, "PingFang TC", sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #202124; -webkit-tap-highlight-color: transparent; }
+        .container { max-width: 650px; margin: 0 auto; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; min-height: 90vh; display: flex; flex-direction: column; }
+        .header { text-align: center; border-bottom: 2px solid var(--bg); margin-bottom: 15px; padding-bottom: 10px; position: relative; }
+        .user-selector { margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
+        .user-btn { padding: 8px 20px; border-radius: 20px; border: 1px solid #dadce0; background: white; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.3s; }
+        .user-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .save-tools { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+        .btn-s { padding: 4px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #dadce0; background: white; cursor: pointer; }
+        .mode-card { width: 100%; padding: 18px; margin: 8px 0; border-radius: 10px; border: none; background: var(--primary); color: white; font-size: 17px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .q-box { background: #f1f3f4; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .def-text { color: var(--primary); font-weight: bold; margin-bottom: 10px; font-size: 16px; }
+        .sent-text { font-style: italic; border-left: 4px solid #dadce0; padding-left: 10px; line-height: 1.5; color: #3c4043; background: #fff; padding: 10px; border-radius: 4px; }
+        .opt-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .btn-opt { flex: 1; text-align: left; padding: 12px; border: 1px solid #dadce0; border-radius: 8px; background: white; font-size: 15px; cursor: pointer; }
+        .btn-opt:disabled { background: #f1f3f4; color: #9aa0a6; cursor: not-allowed; }
+        .btn-audio { padding: 10px; background: #e8f0fe; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--primary); }
+        .input-field { width: 100%; padding: 14px; font-size: 18px; border: 2px solid #dadce0; border-radius: 8px; box-sizing: border-box; margin-bottom: 10px; text-align: center; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 8px; display: none; line-height: 1.6; border: 1px solid #ddd; }
+        .f-correct { background: #e6f4ea; color: var(--success); border-color: #cce8d6; }
+        .f-wrong { background: #fce8e6; color: var(--error); border-color: #f8d0cb; }
+        .nav { display: flex; justify-content: space-between; margin-top: auto; padding-top: 20px; }
+        .btn-nav { padding: 10px 20px; border-radius: 6px; border: none; background: var(--secondary); color: white; font-weight: bold; cursor: pointer; }
+        .progress { text-align: center; font-size: 13px; color: var(--secondary); margin-bottom: 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app-content">
+    <div class="save-tools">
+        <button class="btn-s" onclick="exportImg()">📷 圖片</button>
+        <button class="btn-s" onclick="exportPDF()">📄 PDF</button>
+    </div>
+
+    <div class="header">
+        <h2 id="title-main">Reading No.5 Quiz</h2>
+        <div style="font-size: 14px; color: #5f6368; font-weight: bold;">Gulf Spill Superheroes (18 Words)</div>
+        <div class="user-selector">
+            <button class="user-btn" id="btn-stella" onclick="setUser('Stella')">Stella</button>
+            <button class="user-btn" id="btn-diane" onclick="setUser('Diane')">Diane</button>
+        </div>
+    </div>
+
+    <div id="home">
+        <button class="mode-card" onclick="unlockAndStart('A')">Part A: Definition Choice <span>(18 Qs)</span></button>
+        <button class="mode-card" onclick="unlockAndStart('C')">Part B: Spelling Challenge <span>(18 Qs)</span></button>
+    </div>
+
+    <div id="quiz" class="hidden">
+        <div class="progress"><span id="user-display" style="font-weight:bold;">Stella</span>'s Progress: <span id="cur-num">1</span> / 18</div>
+        <div class="q-box">
+            <div id="q-def" class="def-text"></div>
+            <div id="q-sent" class="sent-text"></div>
+        </div>
+        <div id="options"></div>
+        <div id="typing" class="hidden">
+            <input type="text" id="ans-in" class="input-field" placeholder="Type answer here..." autocomplete="off" autocapitalize="none">
+            <button class="btn-audio" style="width:100%; margin-bottom:10px; font-size:14px; background:#fef7e0; color:#5f6368;" onclick="handleSpeak(currentQ.word)">🔊 真人發音提示</button>
+        </div>
+        <div id="feedback" class="feedback"></div>
+        <div class="nav">
+            <button class="btn-nav" id="prev" onclick="changeQ(-1)">Previous</button>
+            <button class="btn-nav" id="next" onclick="changeQ(1)" style="background: var(--primary);">Next</button>
+        </div>
+    </div>
+
+    <div id="result" class="hidden">
+        <h4 id="report-title">Quiz Report</h4>
+        <div id="report-body"></div>
+        <button class="mode-card" style="margin-top:20px;" onclick="location.reload()">Restart Quiz</button>
+    </div>
+</div>
+
+<script>
+// 本週 18 個單字完整資料庫 (Reading No.5)
+const words = [
+    { word: "artificial", pos: "(adj.)", kk: "[ˌɑrtəˈfɪʃəl]", def: "Made by people; not natural.", sent: "This candy uses ________ flavor.", ch: "人工的", trans: "這款糖果使用的是人工香料。" },
+    { word: "collaborate", pos: "(v.)", kk: "[kəˈlæbəˌret]", def: "To work with someone else on a project.", sent: "The two writers ________d on the script.", ch: "合作", trans: "這兩位作家合作編寫劇本。" },
+    { word: "dedicate", pos: "(v.)", kk: "[ˈdɛdɪˌket]", def: "To give all of your energy or time to something.", sent: "She is completely ________d to her work.", ch: "盡心盡力的", trans: "她完全投入於她的工作。" },
+    { word: "flexible", pos: "(adj.)", kk: "[ˈflɛksəb!]", def: "Able to bend or change easily.", sent: "My schedule is very ________ this month.", ch: "靈活的/可彎曲的", trans: "這個月我的行程非常靈活。" },
+    { word: "function", pos: "(n.)", kk: "[ˈfʌŋkʃən]", def: "The special job of a person or thing.", sent: "The ________ of an umbrella is to keep you dry.", ch: "職責/功能", trans: "雨傘的功能是讓你保持乾爽。" },
+    { word: "mimic", pos: "(v.)", kk: "[ˈmɪmɪk]", def: "To copy how someone or something looks or acts.", sent: "This lamp ________s natural light.", ch: "模仿", trans: "這盞燈模仿自然光。" },
+    { word: "obstacle", pos: "(n.)", kk: "[ˈɑbstək!]", def: "Something that stops you from moving forward.", sent: "We must overcome every ________ to win.", ch: "障礙", trans: "我們必須克服重重障礙才能獲勝。" },
+    { word: "technique", pos: "(n.)", kk: "[tɛkˈnik]", def: "A way of doing an activity that needs skill.", sent: "He has a great ________ for playing piano.", ch: "技術/技巧", trans: "他彈鋼琴的技巧非常高超。" },
+    { word: "superhero", pos: "(n.)", kk: "[ˈsupɚˌhɪro]", def: "A brave person with special powers.", sent: "Children love to dress up as their favorite ________.", ch: "超級英雄", trans: "小孩喜歡打扮成他們最喜歡的超級英雄。" },
+    { word: "enemy", pos: "(n.)", kk: "[ˈɛnəmɪ]", def: "Someone who wants to hurt others.", sent: "He made many ________ies during his career.", ch: "敵人", trans: "他在職業生涯中樹敵眾多。" },
+    { word: "drill", pos: "(v/n)", kk: "[drɪl]", def: "To make a hole in something using a tool; or a practice exercise.", sent: "Our school is having a fire ________ today.", ch: "鑽孔/演習", trans: "我們學校今天舉行消防演習。" },
+    { word: "explode", pos: "(v.)", kk: "[ɪkˈsplod]", def: "To blow up suddenly with a loud noise.", sent: "The bomb ________d in the middle of the field.", ch: "爆炸", trans: "炸彈在田野中央爆炸了。" },
+    { word: "spew", pos: "(v.)", kk: "[spju]", def: "To flow out fast and in large amounts.", sent: "Water ________ed out of the hole in the pipe.", ch: "噴出/湧出", trans: "水從管子的洞裡噴湧而出。" },
+    { word: "disaster", pos: "(n.)", kk: "[dɪˈzæstɚ]", def: "A sudden event causing much damage or suffering.", sent: "The hurricane was a terrible natural ________.", ch: "災難", trans: "這場颶風是場可怕的自然災難。" },
+    { word: "require", pos: "(v.)", kk: "[rɪˈkwaɪr]", def: "To need something / to demand.", sent: "This job ________s a lot of patience.", ch: "需要/要求", trans: "這份工作需要很大的耐心。" },
+    { word: "ability", pos: "(n.)", kk: "[əˈbɪlətɪ]", def: "The power to do something; skill or talent.", sent: "She has a natural ________ in playing the piano.", ch: "能力/技能", trans: "她有彈鋼琴的天賦。" },
+    { word: "immediately", pos: "(adv.)", kk: "[ɪˈmidɪɪtlɪ]", def: "Right now; without waiting.", sent: "Please come here ________.", ch: "立刻地", trans: "請立刻過來這裡。" },
+    { word: "battle", pos: "(n/v)", kk: "[ˈbæt!]", def: "A fight or struggle against something.", sent: "They are ________ing against the waves.", ch: "戰役/奮鬥", trans: "他們正與海浪奮戰。" }
+];
+
+let currentUser = 'Stella';
+let quizSet = [], userHistory = [], curIdx = 0, mode = '';
+
+function setUser(name) {
+    currentUser = name;
+    document.querySelectorAll('.user-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`btn-${name.toLowerCase()}`).classList.add('active');
+    document.getElementById('user-display').innerText = name;
+}
+setUser('Stella');
+
+function unlockAndStart(m) {
+    window.speechSynthesis.cancel();
+    const silent = new SpeechSynthesisUtterance("");
+    window.speechSynthesis.speak(silent);
+    start(m);
+}
+
+function handleSpeak(t) {
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(t)}&tl=en&client=tw-ob`;
+    const audio = new Audio(url);
+    audio.play().catch(e => {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(t);
+        u.lang = 'en-US'; u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+    });
+}
+
+function start(m) {
+    mode = m; curIdx = 0; userHistory = [];
+    quizSet = [...words].sort(() => Math.random() - 0.5);
+    document.getElementById('home').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    render();
+}
+
+function render() {
+    currentQ = quizSet[curIdx];
+    document.getElementById('cur-num').innerText = curIdx + 1;
+    document.getElementById('q-def').innerText = currentQ.def;
+    const blankSent = currentQ.sent.replace(new RegExp(currentQ.word, 'gi'), '_______');
+    document.getElementById('q-sent').innerHTML = `Example: ${blankSent}`;
+    const fb = document.getElementById('feedback');
+    if(userHistory[curIdx]) showFeedback(userHistory[curIdx].ok, userHistory[curIdx].val);
+    else fb.style.display = 'none';
+    if(mode === 'C') {
+        document.getElementById('options').classList.add('hidden');
+        document.getElementById('typing').classList.remove('hidden');
+        document.getElementById('ans-in').value = userHistory[curIdx]?.val || "";
+    } else {
+        document.getElementById('options').classList.remove('hidden');
+        document.getElementById('typing').classList.add('hidden');
+        makeOpts(currentQ);
+    }
+    document.getElementById('next').innerText = (curIdx === 17) ? "Submit Quiz" : "Next";
+}
+
+function makeOpts(correct) {
+    let pool = [correct];
+    while(pool.length < 4) {
+        let r = words[Math.floor(Math.random()*words.length)];
+        if(!pool.some(p => p.word === r.word)) pool.push(r);
+    }
+    const area = document.getElementById('options'); area.innerHTML = '';
+    pool.sort(() => Math.random() - 0.5).forEach(o => {
+        const div = document.createElement('div'); div.className = 'opt-row';
+        div.innerHTML = `<button class="btn-opt" ${userHistory[curIdx]?'disabled':''} onclick="checkAns('${o.word}')">${o.word} <b>${o.pos}</b></button><button class="btn-audio" onclick="handleSpeak('${o.word}')">🔊</button>`;
+        area.appendChild(div);
+    });
+}
+
+function checkAns(v) {
+    if(!v || userHistory[curIdx]) return;
+    const isR = v.trim().toLowerCase() === currentQ.word.toLowerCase();
+    userHistory[curIdx] = { val: v, ok: isR };
+    if(mode !== 'C') document.querySelectorAll('.btn-opt').forEach(b => b.disabled = true);
+    showFeedback(isR, v);
+}
+
+function showFeedback(isR, v) {
+    const fb = document.getElementById('feedback'); fb.style.display = 'block';
+    fb.className = `feedback ${isR ? 'f-correct' : 'f-wrong'}`;
+    const fullSent = currentQ.sent.replace(new RegExp(currentQ.word, 'gi'), `<span style="color:var(--primary); font-weight:bold; text-decoration:underline;">${currentQ.word}</span>`);
+    document.getElementById('q-sent').innerHTML = `Example: ${fullSent}`;
+    fb.innerHTML = `
+        <div style="font-weight:bold; border-bottom:1px solid rgba(0,0,0,0.1); padding-bottom:5px; margin-bottom:5px;">${isR ? '✓ Correct!' : '✗ Incorrect. Answer: ' + currentQ.word}</div>
+        <div style="font-size:0.95em;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;"><b style="font-size:1.3em;">${currentQ.word}</b> <button class="btn-audio" style="padding:4px 12px; font-size:14px; margin:0;" onclick="handleSpeak('${currentQ.word}')">🔊 Pronounce</button></div>
+            <div style="margin-bottom:8px;"><span style="color:var(--primary); font-weight:bold;">${currentQ.kk}</span> ${currentQ.pos}</div>
+            <div style="margin-top:5px;">
+                <strong>中文意思：</strong>${currentQ.ch}<br>
+                <div style="margin-top:6px; padding-left:8px; border-left:3px solid #dadce0;">
+                    <strong>英文例句：</strong>${fullSent}<br>
+                    <strong>例句翻譯：</strong>${currentQ.trans}
+                </div>
+            </div>
+        </div>`;
+}
+
+function changeQ(s) {
+    if(s === 1) {
+        if(mode === 'C' && !userHistory[curIdx]) { checkAns(document.getElementById('ans-in').value); return; }
+        if(curIdx === 17) { finish(); return; }
+    }
+    curIdx = Math.max(0, curIdx + s); render();
+}
+
+function finish() {
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('report-title').innerText = `${currentUser}'s Quiz Report`;
+    const body = document.getElementById('report-body'); body.innerHTML = "";
+    userHistory.forEach((h, i) => {
+        const q = quizSet[i];
+        if(!h) h = { val: "N/A", ok: false };
+        body.innerHTML += `<div class="report-item" style="padding:10px; border-radius:8px; background:${h.ok?'#f6ffed':'#fff1f0'}; margin-bottom:5px; border:1px solid ${h.ok?'#b7eb8f':'#ffa39e'};">
+            <span style="color:${h.ok?'#389e0d':'#cf1322'}; font-weight:bold;">Q${i+1}. ${h.ok?'✓':'✗'} ${q.word}</span><br>
+            Your Answer: ${h.val} | Correct: ${q.word}</div>`;
+    });
+}
+
+async function exportImg() {
+    const canvas = await html2canvas(document.getElementById('app-content'));
+    const link = document.createElement('a');
+    link.download = `${currentUser}_English_GulfSpill_0328.png`;
+    link.href = canvas.toDataURL(); link.click();
+}
+
+async function exportPDF() {
+    const { jsPDF } = window.jspdf; const doc = new jsPDF();
+    const canvas = await html2canvas(document.getElementById('app-content'));
+    doc.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, 190, 0);
+    doc.save(`${currentUser}_English_GulfSpill_0328.pdf`);
+}
+</script>
+</body>
+</html>

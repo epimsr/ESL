@@ -131,6 +131,348 @@ canvas{display:block;border-radius:8px;max-width:100%;background:#f7fbf7;}
   <div class="formula">施力 × 施力臂 ＝ 抗力 × 抗力臂<small>槓桿平衡公式</small></div>
 </div>
 
+<!-- ── 省力槓桿圖解 ── -->
+<div class="card" style="background:#f1f8e9;border:2px solid #4caf50;margin-top:18px;">
+  <h3 style="color:#1b5e20;margin-bottom:12px;"><span class="tag" style="font-size:14px;vertical-align:middle;">省力</span>&nbsp; 抗力點在中間的槓桿圖解</h3>
+  <p style="font-size:14px;color:#555;margin-bottom:16px;">支點在<strong>一端</strong>、<strong>抗力點在中間</strong>（靠近支點）、施力點在另一端。施力臂 ＞ 抗力臂 → <strong style="color:#2d7a3a;">省力！</strong></p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;">
+
+    <!-- 開瓶器 -->
+    <div style="flex:1;min-width:260px;max-width:360px;background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);">
+      <div style="text-align:center;font-weight:700;font-size:15px;color:#1b5e20;margin-bottom:10px;">🍾 開瓶器</div>
+      <svg viewBox="0 0 320 220" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <defs>
+          <marker id="s_dn1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1976d2"/></marker>
+          <marker id="s_up1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,8 L8,4 L0,0 Z" fill="#2d7a3a"/></marker>
+        </defs>
+        <rect width="320" height="220" fill="#f9fbe7" rx="8"/>
+        <rect x="22" y="103" width="30" height="55" fill="#b0bec5" rx="4"/>
+        <rect x="14" y="80" width="46" height="26" fill="#607d8b" rx="3"/>
+        <text x="37" y="72" text-anchor="middle" fill="#546e7a" font-size="10" font-weight="600">瓶蓋</text>
+        <rect x="36" y="73" width="244" height="11" rx="5" fill="#8d6e63"/>
+        <circle cx="40" cy="79" r="13" fill="#e53935" opacity="0.92"/>
+        <text x="40" y="84" text-anchor="middle" fill="white" font-size="11" font-weight="700">支點</text>
+        <polygon points="40,93 28,112 52,112" fill="#e53935" opacity="0.35"/>
+        <line x1="20" y1="112" x2="60" y2="112" stroke="#e53935" stroke-width="1.5" opacity="0.5"/>
+        <text x="40" y="124" text-anchor="middle" fill="#c62828" font-size="10">瓶口邊緣</text>
+        <circle cx="118" cy="79" r="13" fill="#2d7a3a" opacity="0.92"/>
+        <text x="118" y="84" text-anchor="middle" fill="white" font-size="11" font-weight="700">抗力點</text>
+        <line x1="118" y1="47" x2="118" y2="63" stroke="#2d7a3a" stroke-width="2.5" marker-end="url(#s_up1)"/>
+        <text x="118" y="42" text-anchor="middle" fill="#2d7a3a" font-size="10.5" font-weight="600">瓶蓋頂力↑</text>
+        <circle cx="268" cy="79" r="13" fill="#1976d2" opacity="0.92"/>
+        <text x="268" y="84" text-anchor="middle" fill="white" font-size="11" font-weight="700">施力點</text>
+        <line x1="268" y1="47" x2="268" y2="63" stroke="#1976d2" stroke-width="2.5" marker-end="url(#s_dn1)"/>
+        <text x="268" y="42" text-anchor="middle" fill="#1976d2" font-size="10.5" font-weight="600">手向下壓↓</text>
+        <line x1="40" y1="147" x2="118" y2="147" stroke="#2d7a3a" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <line x1="40" y1="142" x2="40" y2="152" stroke="#2d7a3a" stroke-width="1.5"/>
+        <line x1="118" y1="142" x2="118" y2="152" stroke="#2d7a3a" stroke-width="1.5"/>
+        <text x="79" y="165" text-anchor="middle" fill="#2d7a3a" font-size="11" font-weight="600">抗力臂（短）</text>
+        <line x1="40" y1="175" x2="268" y2="175" stroke="#1976d2" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <line x1="40" y1="170" x2="40" y2="180" stroke="#1976d2" stroke-width="1.5"/>
+        <line x1="268" y1="170" x2="268" y2="180" stroke="#1976d2" stroke-width="1.5"/>
+        <text x="154" y="192" text-anchor="middle" fill="#1976d2" font-size="11" font-weight="600">施力臂（長）</text>
+        <rect x="86" y="201" width="148" height="17" rx="8" fill="#e8f5e9"/>
+        <text x="160" y="213" text-anchor="middle" fill="#1b5e20" font-size="11" font-weight="700">✅ 施力臂 ＞ 抗力臂 → 省力</text>
+      </svg>
+    </div>
+
+    <!-- 拔釘器 -->
+    <div style="flex:1;min-width:260px;max-width:360px;background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);">
+      <div style="text-align:center;font-weight:700;font-size:15px;color:#1b5e20;margin-bottom:10px;">🔨 拔釘器（鐵鎚爪端）</div>
+      <svg viewBox="0 0 320 220" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <defs>
+          <marker id="s_dn2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1976d2"/></marker>
+          <marker id="s_up2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,8 L8,4 L0,0 Z" fill="#2d7a3a"/></marker>
+        </defs>
+        <rect width="320" height="220" fill="#f9fbe7" rx="8"/>
+        <rect x="0" y="132" width="320" height="28" fill="#d7ccc8" rx="0"/>
+        <rect x="0" y="130" width="320" height="4" fill="#a1887f"/>
+        <text x="160" y="148" text-anchor="middle" fill="#795548" font-size="10">木板</text>
+        <rect x="105" y="93" width="7" height="39" fill="#90a4ae"/>
+        <polygon points="105,93 112,93 108.5,83" fill="#78909c"/>
+        <line x1="40" y1="130" x2="280" y2="50" stroke="#6d4c41" stroke-width="10" stroke-linecap="round"/>
+        <path d="M33,124 Q24,116 33,108 Q41,100 40,130" fill="#5d4037" stroke="#4e342e" stroke-width="1.2"/>
+        <circle cx="40" cy="130" r="13" fill="#e53935" opacity="0.92"/>
+        <text x="40" y="135" text-anchor="middle" fill="white" font-size="11" font-weight="700">支點</text>
+        <text x="40" y="153" text-anchor="middle" fill="#c62828" font-size="10">爪尖著地</text>
+        <circle cx="109" cy="108" r="13" fill="#2d7a3a" opacity="0.92"/>
+        <text x="109" y="113" text-anchor="middle" fill="white" font-size="11" font-weight="700">抗力點</text>
+        <line x1="109" y1="77" x2="109" y2="91" stroke="#2d7a3a" stroke-width="2.5" marker-end="url(#s_up2)"/>
+        <text x="109" y="71" text-anchor="middle" fill="#2d7a3a" font-size="10" font-weight="600">釘子抗力</text>
+        <circle cx="280" cy="50" r="13" fill="#1976d2" opacity="0.92"/>
+        <text x="280" y="55" text-anchor="middle" fill="white" font-size="11" font-weight="700">施力點</text>
+        <line x1="280" y1="19" x2="280" y2="34" stroke="#1976d2" stroke-width="2.5" marker-end="url(#s_dn2)"/>
+        <text x="280" y="14" text-anchor="middle" fill="#1976d2" font-size="10" font-weight="600">手施力↓</text>
+        <line x1="40" y1="168" x2="109" y2="168" stroke="#2d7a3a" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <line x1="40" y1="163" x2="40" y2="173" stroke="#2d7a3a" stroke-width="1.5"/>
+        <line x1="109" y1="163" x2="109" y2="173" stroke="#2d7a3a" stroke-width="1.5"/>
+        <text x="74" y="185" text-anchor="middle" fill="#2d7a3a" font-size="11" font-weight="600">抗力臂（短）</text>
+        <text x="210" y="185" text-anchor="middle" fill="#1976d2" font-size="11" font-weight="600">← 施力臂（長）→</text>
+        <rect x="86" y="201" width="148" height="17" rx="8" fill="#e8f5e9"/>
+        <text x="160" y="213" text-anchor="middle" fill="#1b5e20" font-size="11" font-weight="700">✅ 施力臂 ＞ 抗力臂 → 省力</text>
+      </svg>
+    </div>
+
+  </div>
+
+  <div style="margin-top:14px;background:#c8e6c9;border-radius:10px;padding:12px 16px;font-size:13.5px;line-height:1.8;">
+    <strong>📌 省力槓桿共同特點：</strong><br>
+    • <span style="color:#e53935;font-weight:700;">支點</span>在<strong>一端</strong>（開瓶器：瓶口邊緣；拔釘器：爪尖著地點）<br>
+    • <span style="color:#2d7a3a;font-weight:700;">抗力點</span>在<strong>中間</strong>（靠近支點），抗力臂較短<br>
+    • <span style="color:#1976d2;font-weight:700;">施力點</span>在<strong>另一端</strong>，施力臂較長<br>
+    • 施力臂 ＞ 抗力臂 → <strong style="color:#1b5e20;">省力！用較小的力就能克服較大的抗力</strong>
+  </div>
+</div>
+
+<!-- ── 不省力也不費力 圖解 ── -->
+<div class="card" style="background:#e8eaf6;border:2px solid #1976d2;margin-top:18px;">
+  <h3 style="color:#0d47a1;margin-bottom:12px;"><span class="tag bl" style="font-size:14px;vertical-align:middle;">不省力也不費力</span>&nbsp; 支點在中間的槓桿圖解</h3>
+  <p style="font-size:14px;color:#555;margin-bottom:16px;">施力點在一端、<strong>支點在中間</strong>、抗力點在另一端。施力臂 ＝ 抗力臂 → <strong style="color:#0d47a1;">不省力也不費力！</strong></p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;">
+
+    <!-- 剪刀 -->
+    <div style="flex:1;min-width:260px;max-width:360px;background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);">
+      <div style="text-align:center;font-weight:700;font-size:15px;color:#0d47a1;margin-bottom:10px;">✂️ 剪刀</div>
+      <svg viewBox="0 0 320 220" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <defs>
+          <marker id="n_dn1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1976d2"/></marker>
+          <marker id="n_up1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,8 L8,4 L0,0 Z" fill="#2d7a3a"/></marker>
+        </defs>
+        <rect width="320" height="220" fill="#f3f4f9" rx="8"/>
+        <ellipse cx="52" cy="79" rx="21" ry="15" fill="none" stroke="#607d8b" stroke-width="5"/>
+        <line x1="68" y1="79" x2="268" y2="79" stroke="#546e7a" stroke-width="9" stroke-linecap="round"/>
+        <ellipse cx="52" cy="105" rx="21" ry="15" fill="none" stroke="#78909c" stroke-width="4.5"/>
+        <line x1="68" y1="105" x2="268" y2="105" stroke="#78909c" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="52" cy="79" r="13" fill="#1976d2" opacity="0.92"/>
+        <text x="52" y="84" text-anchor="middle" fill="white" font-size="11" font-weight="700">施力點</text>
+        <line x1="52" y1="47" x2="52" y2="63" stroke="#1976d2" stroke-width="2.5" marker-end="url(#n_dn1)"/>
+        <text x="52" y="41" text-anchor="middle" fill="#1976d2" font-size="10.5" font-weight="600">手指施力↓</text>
+        <circle cx="155" cy="79" r="13" fill="#e53935" opacity="0.92"/>
+        <text x="155" y="84" text-anchor="middle" fill="white" font-size="11" font-weight="700">支點</text>
+        <polygon points="155,93 142,114 168,114" fill="#e53935" opacity="0.4"/>
+        <line x1="134" y1="114" x2="176" y2="114" stroke="#e53935" stroke-width="1.5" opacity="0.5"/>
+        <text x="155" y="126" text-anchor="middle" fill="#c62828" font-size="10">鉸鏈螺釘</text>
+        <circle cx="260" cy="79" r="13" fill="#2d7a3a" opacity="0.92"/>
+        <text x="260" y="84" text-anchor="middle" fill="white" font-size="11" font-weight="700">抗力點</text>
+        <line x1="260" y1="47" x2="260" y2="63" stroke="#2d7a3a" stroke-width="2.5" marker-end="url(#n_up1)"/>
+        <text x="260" y="41" text-anchor="middle" fill="#2d7a3a" font-size="10.5" font-weight="600">紙張抗力↑</text>
+        <line x1="52" y1="148" x2="155" y2="148" stroke="#1976d2" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <line x1="52" y1="143" x2="52" y2="153" stroke="#1976d2" stroke-width="1.5"/>
+        <line x1="155" y1="143" x2="155" y2="153" stroke="#1976d2" stroke-width="1.5"/>
+        <text x="103" y="166" text-anchor="middle" fill="#1976d2" font-size="11" font-weight="600">施力臂</text>
+        <text x="155" y="178" text-anchor="middle" fill="#555" font-size="14" font-weight="900">=</text>
+        <line x1="155" y1="170" x2="260" y2="170" stroke="#2d7a3a" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <line x1="155" y1="165" x2="155" y2="175" stroke="#2d7a3a" stroke-width="1.5"/>
+        <line x1="260" y1="165" x2="260" y2="175" stroke="#2d7a3a" stroke-width="1.5"/>
+        <text x="207" y="188" text-anchor="middle" fill="#2d7a3a" font-size="11" font-weight="600">抗力臂</text>
+        <rect x="58" y="201" width="204" height="17" rx="8" fill="#e8eaf6"/>
+        <text x="160" y="213" text-anchor="middle" fill="#0d47a1" font-size="11" font-weight="700">⚖️ 施力臂 ＝ 抗力臂 → 不省力也不費力</text>
+      </svg>
+    </div>
+
+    <!-- 蹺蹺板 -->
+    <div style="flex:1;min-width:260px;max-width:360px;background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);">
+      <div style="text-align:center;font-weight:700;font-size:15px;color:#0d47a1;margin-bottom:10px;">🎠 蹺蹺板</div>
+      <svg viewBox="0 0 320 220" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <defs>
+          <marker id="n_dn2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1976d2"/></marker>
+          <marker id="n_up2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,8 L8,4 L0,0 Z" fill="#2d7a3a"/></marker>
+        </defs>
+        <rect width="320" height="220" fill="#f3f4f9" rx="8"/>
+        <rect x="0" y="158" width="320" height="18" fill="#e0e0e0"/>
+        <polygon points="160,112 136,158 184,158" fill="#e53935" opacity="0.65"/>
+        <rect x="28" y="104" width="264" height="12" rx="5" fill="#a0877a"/>
+        <circle cx="52" cy="80" r="13" fill="#1976d2" opacity="0.82"/>
+        <text x="52" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="700">施力點</text>
+        <line x1="52" y1="48" x2="52" y2="64" stroke="#1976d2" stroke-width="2.5" marker-end="url(#n_dn2)"/>
+        <text x="52" y="42" text-anchor="middle" fill="#1976d2" font-size="10.5" font-weight="600">下壓施力↓</text>
+        <circle cx="160" cy="110" r="13" fill="#e53935" opacity="0.92"/>
+        <text x="160" y="115" text-anchor="middle" fill="white" font-size="11" font-weight="700">支點</text>
+        <text x="160" y="175" text-anchor="middle" fill="#c62828" font-size="10" font-weight="600">中心支架</text>
+        <circle cx="268" cy="80" r="13" fill="#2d7a3a" opacity="0.82"/>
+        <text x="268" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="700">抗力點</text>
+        <line x1="268" y1="64" x2="268" y2="48" stroke="#2d7a3a" stroke-width="2.5" marker-end="url(#n_up2)"/>
+        <text x="268" y="42" text-anchor="middle" fill="#2d7a3a" font-size="10.5" font-weight="600">抬起抗力↑</text>
+        <line x1="52" y1="188" x2="160" y2="188" stroke="#1976d2" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <line x1="52" y1="183" x2="52" y2="193" stroke="#1976d2" stroke-width="1.5"/>
+        <line x1="160" y1="183" x2="160" y2="193" stroke="#1976d2" stroke-width="1.5"/>
+        <text x="106" y="206" text-anchor="middle" fill="#1976d2" font-size="11" font-weight="600">施力臂</text>
+        <text x="160" y="213" text-anchor="middle" fill="#555" font-size="14" font-weight="900">=</text>
+        <line x1="160" y1="188" x2="268" y2="188" stroke="#2d7a3a" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <line x1="160" y1="183" x2="160" y2="193" stroke="#2d7a3a" stroke-width="1.5"/>
+        <line x1="268" y1="183" x2="268" y2="193" stroke="#2d7a3a" stroke-width="1.5"/>
+        <text x="214" y="206" text-anchor="middle" fill="#2d7a3a" font-size="11" font-weight="600">抗力臂</text>
+      </svg>
+    </div>
+
+  </div>
+
+  <div style="margin-top:14px;background:#c5cae9;border-radius:10px;padding:12px 16px;font-size:13.5px;line-height:1.8;">
+    <strong>📌 不省力也不費力槓桿共同特點：</strong><br>
+    • <span style="color:#1976d2;font-weight:700;">施力點</span>在<strong>一端</strong>（剪刀：手指握環；蹺蹺板：坐在一端的人）<br>
+    • <span style="color:#e53935;font-weight:700;">支點</span>在<strong>中間</strong>（剪刀：鉸鏈螺釘；蹺蹺板：中心支架），平衡兩側<br>
+    • <span style="color:#2d7a3a;font-weight:700;">抗力點</span>在<strong>另一端</strong>（剪刀：刀刃尖端；蹺蹺板：另一端的人）<br>
+    • 施力臂 ＝ 抗力臂 → <strong style="color:#0d47a1;">不省力也不費力，但可精確控制方向與位置</strong>
+  </div>
+</div>
+
+<!-- ── 筷子 & 夾子 圖解 ── -->
+<div class="card" style="background:#fff9f0;border:2px solid #ffc107;margin-top:18px;">
+  <h3 style="color:#e65100;margin-bottom:14px;">🥢 筷子 & 夾子：施力點在中間的槓桿圖解</h3>
+  <p style="font-size:14px;color:#555;margin-bottom:16px;">兩者都屬於「<strong>施力點在中間</strong>」的槓桿：支點在一端、施力點在中間、抗力點在另一端。雖然費力，但能精確控制夾取範圍。</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;">
+
+    <!-- 筷子圖解 -->
+    <div style="flex:1;min-width:260px;max-width:360px;background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);">
+      <div style="text-align:center;font-weight:700;font-size:15px;color:#2d7a3a;margin-bottom:10px;">🥢 筷子</div>
+      <svg viewBox="0 0 320 220" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <!-- 背景 -->
+        <rect width="320" height="220" fill="#fffdf5" rx="8"/>
+
+        <!-- 上方筷子（固定桿） -->
+        <line x1="55" y1="28" x2="265" y2="72" stroke="#a0522d" stroke-width="9" stroke-linecap="round"/>
+        <!-- 下方筷子（活動桿） -->
+        <line x1="55" y1="48" x2="265" y2="100" stroke="#c47c3e" stroke-width="9" stroke-linecap="round"/>
+
+        <!-- 支點圓圈（左端，拇指 & 無名指固定處） -->
+        <circle cx="55" cy="38" r="14" fill="#e53935" opacity="0.9"/>
+        <text x="55" y="43" text-anchor="middle" fill="white" font-size="11" font-weight="700">支點</text>
+
+        <!-- 施力點（中間，食指下壓處） -->
+        <circle cx="162" cy="74" r="14" fill="#1976d2" opacity="0.9"/>
+        <text x="162" y="79" text-anchor="middle" fill="white" font-size="11" font-weight="700">施力點</text>
+        <!-- 施力箭頭（向下） -->
+        <line x1="162" y1="52" x2="162" y2="59" stroke="#1976d2" stroke-width="2.5" marker-end="url(#arrowB)"/>
+        <text x="162" y="47" text-anchor="middle" fill="#1976d2" font-size="11" font-weight="600">食指施力</text>
+
+        <!-- 抗力點（右端，筷子尖端夾食物） -->
+        <circle cx="265" cy="86" r="14" fill="#2d7a3a" opacity="0.9"/>
+        <text x="265" y="91" text-anchor="middle" fill="white" font-size="11" font-weight="700">抗力點</text>
+        <!-- 食物圓形 -->
+        <ellipse cx="271" cy="115" rx="14" ry="10" fill="#ff9800" opacity="0.85"/>
+        <text x="271" y="119" text-anchor="middle" fill="white" font-size="10" font-weight="700">食物</text>
+        <!-- 夾住箭頭（上下） -->
+        <line x1="265" y1="101" x2="265" y2="106" stroke="#2d7a3a" stroke-width="2" marker-end="url(#arrowG)"/>
+        <line x1="271" y1="127" x2="271" y2="122" stroke="#2d7a3a" stroke-width="2" marker-end="url(#arrowG2)"/>
+
+        <!-- 臂長標示 -->
+        <line x1="55" y1="150" x2="162" y2="150" stroke="#1976d2" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="55" y1="145" x2="55" y2="155" stroke="#1976d2" stroke-width="1.5"/>
+        <line x1="162" y1="145" x2="162" y2="155" stroke="#1976d2" stroke-width="1.5"/>
+        <text x="108" y="168" text-anchor="middle" fill="#1976d2" font-size="11" font-weight="600">施力臂（短）</text>
+
+        <line x1="162" y1="175" x2="265" y2="175" stroke="#2d7a3a" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="162" y1="170" x2="162" y2="180" stroke="#2d7a3a" stroke-width="1.5"/>
+        <line x1="265" y1="170" x2="265" y2="180" stroke="#2d7a3a" stroke-width="1.5"/>
+        <text x="213" y="193" text-anchor="middle" fill="#2d7a3a" font-size="11" font-weight="600">抗力臂（長）</text>
+
+        <!-- 箭頭定義 -->
+        <defs>
+          <marker id="arrowB" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#1976d2"/>
+          </marker>
+          <marker id="arrowG" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#2d7a3a"/>
+          </marker>
+          <marker id="arrowG2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,8 L8,4 L0,0 Z" fill="#2d7a3a"/>
+          </marker>
+        </defs>
+
+        <!-- 說明標籤 -->
+        <text x="34" y="68" text-anchor="middle" fill="#e53935" font-size="10">拇指＋</text>
+        <text x="34" y="79" text-anchor="middle" fill="#e53935" font-size="10">無名指</text>
+        <text x="34" y="90" text-anchor="middle" fill="#e53935" font-size="10">固定</text>
+
+        <!-- 費力標示 -->
+        <rect x="88" y="200" width="144" height="18" rx="9" fill="#fce4ec"/>
+        <text x="160" y="213" text-anchor="middle" fill="#c62828" font-size="11" font-weight="700">⚠ 施力臂短＜抗力臂 → 費力</text>
+      </svg>
+    </div>
+
+    <!-- 夾子圖解 -->
+    <div style="flex:1;min-width:260px;max-width:360px;background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);">
+      <div style="text-align:center;font-weight:700;font-size:15px;color:#2d7a3a;margin-bottom:10px;">🗜 夾子（麵包夾）</div>
+      <svg viewBox="0 0 320 220" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <defs>
+          <marker id="arrowR2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#1976d2"/>
+          </marker>
+          <marker id="arrowD" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#2d7a3a"/>
+          </marker>
+          <marker id="arrowU" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,8 L8,4 L0,0 Z" fill="#2d7a3a"/>
+          </marker>
+        </defs>
+        <!-- 背景 -->
+        <rect width="320" height="220" fill="#fffdf5" rx="8"/>
+
+        <!-- 夾子上臂 -->
+        <path d="M 50,70 Q 52,58 60,55 L 260,55" stroke="#607d8b" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <!-- 夾子下臂 -->
+        <path d="M 50,90 Q 52,102 60,105 L 260,105" stroke="#78909c" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <!-- 彈簧圈（左端） -->
+        <path d="M 38,70 Q 30,75 30,80 Q 30,85 38,90" stroke="#e53935" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M 35,72 Q 24,80 35,88" stroke="#e53935" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+        <!-- 支點（左端彈簧） -->
+        <circle cx="42" cy="80" r="14" fill="#e53935" opacity="0.9"/>
+        <text x="42" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="700">支點</text>
+
+        <!-- 施力點（中間） -->
+        <circle cx="155" cy="80" r="14" fill="#1976d2" opacity="0.9"/>
+        <text x="155" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="700">施力點</text>
+        <!-- 上下施力箭頭 -->
+        <line x1="155" y1="40" x2="155" y2="50" stroke="#1976d2" stroke-width="2.5" marker-end="url(#arrowR2)"/>
+        <text x="155" y="35" text-anchor="middle" fill="#1976d2" font-size="11" font-weight="600">手指施力</text>
+        <line x1="155" y1="120" x2="155" y2="110" stroke="#1976d2" stroke-width="2.5" marker-end="url(#arrowU)"/>
+
+        <!-- 抗力點（右端） -->
+        <circle cx="260" cy="80" r="14" fill="#2d7a3a" opacity="0.9"/>
+        <text x="260" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="700">抗力點</text>
+        <!-- 夾住物體（麵包） -->
+        <rect x="246" y="122" width="28" height="18" rx="6" fill="#ff9800" opacity="0.85"/>
+        <text x="260" y="135" text-anchor="middle" fill="white" font-size="10" font-weight="700">物品</text>
+        <line x1="260" y1="95" x2="260" y2="107" stroke="#2d7a3a" stroke-width="2" marker-end="url(#arrowD)"/>
+        <line x1="260" y1="121" x2="260" y2="114" stroke="#2d7a3a" stroke-width="2" marker-end="url(#arrowU)"/>
+
+        <!-- 臂長標示 -->
+        <line x1="42" y1="148" x2="155" y2="148" stroke="#1976d2" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="42" y1="143" x2="42" y2="153" stroke="#1976d2" stroke-width="1.5"/>
+        <line x1="155" y1="143" x2="155" y2="153" stroke="#1976d2" stroke-width="1.5"/>
+        <text x="98" y="165" text-anchor="middle" fill="#1976d2" font-size="11" font-weight="600">施力臂（短）</text>
+
+        <line x1="155" y1="173" x2="260" y2="173" stroke="#2d7a3a" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="155" y1="168" x2="155" y2="178" stroke="#2d7a3a" stroke-width="1.5"/>
+        <line x1="260" y1="168" x2="260" y2="178" stroke="#2d7a3a" stroke-width="1.5"/>
+        <text x="207" y="191" text-anchor="middle" fill="#2d7a3a" font-size="11" font-weight="600">抗力臂（長）</text>
+
+        <!-- 費力標示 -->
+        <rect x="88" y="200" width="144" height="18" rx="9" fill="#fce4ec"/>
+        <text x="160" y="213" text-anchor="middle" fill="#c62828" font-size="11" font-weight="700">⚠ 施力臂短＜抗力臂 → 費力</text>
+
+        <!-- 說明 -->
+        <text x="16" y="58" text-anchor="middle" fill="#e53935" font-size="9.5">彈簧</text>
+        <text x="16" y="70" text-anchor="middle" fill="#e53935" font-size="9.5">鉸鏈</text>
+      </svg>
+    </div>
+
+  </div><!-- end flex row -->
+
+  <!-- 比較說明 -->
+  <div style="margin-top:14px;background:#fff3e0;border-radius:10px;padding:12px 16px;font-size:13.5px;line-height:1.8;">
+    <strong>📌 共同特點：</strong><br>
+    • <span style="color:#e53935;font-weight:700;">支點</span>在<strong>一端</strong>（筷子：拇指＋無名指固定端；夾子：彈簧鉸鏈端）<br>
+    • <span style="color:#1976d2;font-weight:700;">施力點</span>在<strong>中間</strong>（手指施力處），施力臂較短<br>
+    • <span style="color:#2d7a3a;font-weight:700;">抗力點</span>在<strong>另一端</strong>（夾取物品處），抗力臂較長<br>
+    • 施力臂 ＜ 抗力臂 → <strong style="color:#c62828;">費力，但末端移動範圍大，操作靈活方便</strong>
+  </div>
+</div>
+
 <div class="act-hd"><div class="act-num">2</div><h2>輪軸與滑輪如何便利生活</h2></div>
 <div class="def-box"><strong>輪軸</strong>：由兩個半徑不同、固定在同一軸心的圓柱組成，是槓桿原理的應用。半徑較大的圓柱稱為「<strong>輪</strong>」，較小的稱為「<strong>軸</strong>」。</div>
 
@@ -145,6 +487,22 @@ canvas{display:block;border-radius:8px;max-width:100%;background:#f7fbf7;}
     </div>
     <canvas id="cPulley" width="580" height="270"></canvas>
     <div class="info-badge" id="pulleyInfo"></div>
+  </div>
+</div>
+
+<!-- YouTube 影片 -->
+<div class="anim-wrap" style="margin-top:14px;">
+  <div class="anim-title">🎬 滑輪原理解說影片</div>
+  <div class="anim-body" style="padding:0;overflow:hidden;border-radius:10px;background:#000;">
+    <div style="position:relative;width:100%;padding-bottom:56.25%;">
+      <iframe
+        src="https://www.youtube.com/embed/YRrdF3P8A4w"
+        title="定滑輪與動滑輪原理"
+        style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
   </div>
 </div>
 
@@ -417,115 +775,205 @@ setPulley(0);
 
 function drawPulley(){
   PC.clearRect(0,0,PW,PH);
-  const bob=Math.sin(pT*.045)*16;
-  const R=38;
+  const bob=Math.sin(pT*.042)*13;
+  const R=50;
 
-  // ceiling
-  PC.fillStyle='#a5d6a7';PC.fillRect(0,0,PW,18);
+  /* ── 局部輔助函式 ── */
+  // 繩索
+  function rope(x1,y1,x2,y2){
+    PC.save();PC.strokeStyle='#5d4037';PC.lineWidth=3;PC.lineCap='round';
+    PC.beginPath();PC.moveTo(x1,y1);PC.lineTo(x2,y2);PC.stroke();PC.restore();
+  }
+  // 彩色點
+  function dot(x,y,r,c){
+    PC.beginPath();PC.arc(x,y,r,0,Math.PI*2);PC.fillStyle=c;PC.fill();
+  }
+  // 梯形重物（仿課本圖示）
+  function drawWeight(cx,ty){
+    const bh=40,tw=26,bw=18;
+    PC.beginPath();
+    PC.moveTo(cx-tw,ty);PC.lineTo(cx+tw,ty);
+    PC.lineTo(cx+bw,ty+bh);PC.lineTo(cx-bw,ty+bh);
+    PC.closePath();
+    PC.fillStyle='#bdbdbd';PC.fill();
+    PC.strokeStyle='#9e9e9e';PC.lineWidth=1.5;PC.stroke();
+    lbl(PC,'重物',cx,ty+bh*.55,'#444',12,'center',true);
+  }
+  // 天花板橫槓（帶斜線紋理）
+  function drawCeil(cx,hw){
+    PC.fillStyle='#bdbdbd';PC.fillRect(cx-hw,0,hw*2,13);
+    PC.fillStyle='#9e9e9e';PC.fillRect(cx-hw,0,hw*2,4);
+    PC.strokeStyle='#9e9e9e';PC.lineWidth=1;
+    for(let i=0;i<6;i++){
+      PC.beginPath();
+      PC.moveTo(cx-hw+i*(hw*2/5)+6,0);
+      PC.lineTo(cx-hw+i*(hw*2/5)-4,13);
+      PC.stroke();
+    }
+  }
+  // 黃色滑輪（含灰色軸桿、輻條）
+  function drawWheel(cx,cy,rot,r){
+    r=r||R;
+    // 黃色圓形
+    PC.beginPath();PC.arc(cx,cy,r,0,Math.PI*2);
+    PC.fillStyle='#fdd835';PC.fill();
+    PC.strokeStyle='#f9a825';PC.lineWidth=4;PC.stroke();
+    // 灰色垂直軸桿（仿課本）
+    PC.fillStyle='#bdbdbd';
+    PC.fillRect(cx-7,cy-r+3,14,r*2-6);
+    // 中心轂
+    PC.beginPath();PC.arc(cx,cy,r*0.2,0,Math.PI*2);
+    PC.fillStyle='#9e9e9e';PC.fill();
+    PC.strokeStyle='#757575';PC.lineWidth=2;PC.stroke();
+    // 旋轉輻條
+    for(let i=0;i<6;i++){
+      const a=rot+i*Math.PI/3;
+      PC.save();PC.strokeStyle='#e65100';PC.lineWidth=2.5;
+      PC.beginPath();
+      PC.moveTo(cx+r*0.2*Math.cos(a),cy+r*0.2*Math.sin(a));
+      PC.lineTo(cx+(r-7)*Math.cos(a),cy+(r-7)*Math.sin(a));
+      PC.stroke();PC.restore();
+    }
+  }
 
+  /* ════════ 定滑輪 ════════ */
   if(pMode===0){
-    // FIXED PULLEY centered
-    const cx=PW/2, cy=58;
-    PC.fillStyle='#4e342e';PC.fillRect(cx-4,18,8,cy-R-18);
-    // wheel
-    PC.beginPath();PC.arc(cx,cy,R,0,Math.PI*2);PC.fillStyle='#ffd54f';PC.fill();
-    PC.strokeStyle='#f57f17';PC.lineWidth=4;PC.stroke();
-    PC.beginPath();PC.arc(cx,cy,R-10,0,Math.PI*2);PC.strokeStyle='#e65100';PC.lineWidth=3;PC.stroke();
-    // spokes
-    [0,1,2].forEach(i=>{
-      const a=pT*.05+i*Math.PI*2/3;
-      PC.save();PC.strokeStyle='#bf360c';PC.lineWidth=2;
-      PC.beginPath();PC.moveTo(cx,cy);PC.lineTo(cx+(R-11)*Math.cos(a),cy+(R-11)*Math.sin(a));PC.stroke();PC.restore();
-    });
-    // ropes
-    PC.strokeStyle='#6d4c41';PC.lineWidth=3;
-    const lx=cx-12,rx=cx+12;
-    PC.beginPath();PC.moveTo(lx,cy+R);PC.lineTo(lx,148+bob);PC.stroke();
-    PC.beginPath();PC.moveTo(rx,cy+R);PC.lineTo(rx,185+bob*.4);PC.stroke();
-    // weight
-    PC.fillStyle='#1976d2';PC.fillRect(lx-22,148+bob,44,44);PC.strokeStyle='rgba(0,0,0,.15)';PC.lineWidth=1;PC.strokeRect(lx-22,148+bob,44,44);
-    lbl(PC,'重物',lx,170+bob,'#fff',12,'center',true);
-    // effort arrow
-    arrow(PC,rx,200+bob*.4,rx,228+bob*.2,'#e53935',2.5);
-    lbl(PC,'施力↓',rx+24,218+bob*.2,'#e53935',12,'center',true);
-    lbl(PC,'定滑輪',cx+R+10,cy,'#2d7a3a',13,'left',true);
-    lbl(PC,'物體↑移動',lx-26,155+bob,'#1976d2',11,'right',false);
-    lbl(PC,'（施力↓ 與 物體↑ 方向相反）',PW/2,PH-12,'#e53935',12,'center',true);
+    const cx=PW/2, cy=82;
 
+    // 天花板
+    drawCeil(cx,90);
+    // 軸桿連天花板
+    PC.fillStyle='#bdbdbd';PC.fillRect(cx-6,13,12,cy-R-13);
+
+    // 畫輪
+    drawWheel(cx,cy,pT*.045);
+
+    // 青色臂線（抗力點 ← 支點 → 施力點）
+    PC.save();PC.strokeStyle='#00acc1';PC.lineWidth=3;
+    PC.beginPath();PC.moveTo(cx-R,cy);PC.lineTo(cx+R,cy);PC.stroke();PC.restore();
+
+    // 標示點
+    dot(cx-R,cy,7,'#00bcd4');   // 抗力點（青）
+    dot(cx,cy,9,'#e53935');      // 支點（紅）
+    dot(cx+R,cy,7,'#43a047');   // 施力點（綠）
+
+    // 臂長文字（圓內）
+    lbl(PC,'抗力臂',cx-R*.52,cy-16,'#37474f',11,'center',true);
+    lbl(PC,'施力臂',cx+R*.52,cy-16,'#37474f',11,'center',true);
+
+    // 點標籤（圓外）
+    lbl(PC,'抗力點',cx-R-45,cy+4,'#00838f',11,'center',false);
+    lbl(PC,'支\n點',cx+3,cy+22,'#c62828',11,'left',false);
+    lbl(PC,'施力點',cx+R+44,cy+4,'#2e7d32',11,'center',false);
+
+    // 左側繩＋重物
+    const lx=cx-R+3;
+    rope(lx,cy+R,lx,152+bob);
+    drawWeight(lx,152+bob);
+
+    // 右側繩＋施力箭頭↓
+    const rx=cx+R-3;
+    rope(rx,cy+R,rx,206+bob*.4);
+    arrow(PC,rx,228+bob*.3,rx,258+bob*.25,'#e53935',2.5);
+    lbl(PC,'施力',rx+28,244+bob*.28,'#e53935',12,'center',false);
+
+    // 說明
+    lbl(PC,'抗力臂 ＝ 施力臂 → 不省力也不費力，但可改變施力方向',PW/2,PH-4,'#555',11,'center',true);
+
+  /* ════════ 動滑輪 ════════ */
   } else if(pMode===1){
-    // MOVING PULLEY
-    const ancX=PW*.62, pulCY=105+bob*.25, pulCX=PW*.42;
-    const handX=PW*.18;
-    PC.fillStyle='#4e342e';PC.fillRect(ancX-3,18,6,80);
-    // fixed rope from ceiling-right to pulley top
-    PC.strokeStyle='#6d4c41';PC.lineWidth=3;
-    PC.beginPath();PC.moveTo(ancX,98);PC.lineTo(pulCX+R*.6,pulCY-R*.6);PC.stroke();
-    // effort rope from hand up to pulley
-    PC.beginPath();PC.moveTo(handX,pulCY-R);PC.lineTo(handX,38);PC.stroke();
-    // wheel
-    PC.beginPath();PC.arc(pulCX,pulCY,R,0,Math.PI*2);PC.fillStyle='#ffd54f';PC.fill();
-    PC.strokeStyle='#f57f17';PC.lineWidth=4;PC.stroke();
-    PC.beginPath();PC.arc(pulCX,pulCY,R-10,0,Math.PI*2);PC.strokeStyle='#e65100';PC.lineWidth=3;PC.stroke();
-    [0,1,2].forEach(i=>{
-      const a=pT*.05+i*Math.PI*2/3;
-      PC.save();PC.strokeStyle='#bf360c';PC.lineWidth=2;
-      PC.beginPath();PC.moveTo(pulCX,pulCY);PC.lineTo(pulCX+(R-11)*Math.cos(a),pulCY+(R-11)*Math.sin(a));PC.stroke();PC.restore();
-    });
-    // weight below
-    const wY=pulCY+R;
-    PC.fillStyle='#1976d2';PC.fillRect(pulCX-22,wY,44,44);PC.strokeStyle='rgba(0,0,0,.15)';PC.lineWidth=1;PC.strokeRect(pulCX-22,wY,44,44);
-    lbl(PC,'重物',pulCX,wY+22,'#fff',12,'center',true);
-    arrow(PC,handX,76,handX,40,'#e53935',2.5);
-    lbl(PC,'施力↑',handX-30,56,'#e53935',12,'center',true);
-    lbl(PC,'動滑輪',pulCX+R+10,pulCY,'#2d7a3a',13,'left',true);
-    lbl(PC,'（施力↑ 與 物體↑ 方向相同，省力！）',PW/2,PH-12,'#2d7a3a',12,'center',true);
+    const cy=112+bob*.25;
+    // 滑輪左緣、右緣 x 座標
+    const cx=PW*.5;
+    const lx=cx-R;   // 支點側（固定繩）
+    const rx=cx+R;   // 施力點側（施力繩）
 
+    // 左天花板（鉤子正上方）
+    drawCeil(lx,52);
+
+    // 鉤形（垂直正上方，x=lx）
+    PC.save();PC.strokeStyle='#757575';PC.lineWidth=4;PC.lineCap='round';PC.lineJoin='round';
+    PC.beginPath();PC.moveTo(lx,13);PC.lineTo(lx,24);
+    PC.arc(lx+9,24,9,Math.PI,0,false);PC.stroke();PC.restore();
+
+    // 繩①：垂直，固定鉤 ↓ 滑輪左緣（支點），x=lx
+    rope(lx,33,lx,cy);
+
+    // 繩②：垂直，滑輪右緣（施力點）↑ 自由端（不接天花板）
+    rope(rx,cy,rx,cy-55);
+
+    // 畫輪（繩在前面畫，輪蓋在後）
+    drawWheel(cx,cy,-pT*.045);
+
+    // 青色臂線（支點→施力點 全徑）
+    PC.save();PC.strokeStyle='#00acc1';PC.lineWidth=3;
+    PC.beginPath();PC.moveTo(lx,cy);PC.lineTo(rx,cy);PC.stroke();PC.restore();
+
+    // 標示點
+    dot(lx,cy,9,'#e53935');    // 支點（紅，左緣）
+    dot(cx,cy,7,'#00bcd4');    // 抗力點（青，軸心）
+    dot(rx,cy,7,'#43a047');   // 施力點（綠，右緣）
+
+    // 臂長文字（在圓內）
+    lbl(PC,'施力臂',cx,cy-16,'#37474f',11,'center',true);
+    lbl(PC,'抗力臂',cx-R*.5,cy+20,'#37474f',11,'center',false);
+
+    // 點標籤（圓外，不重疊繩子）
+    lbl(PC,'支點',lx-38,cy+5,'#c62828',12,'center',false);
+    lbl(PC,'抗力點',cx+16,cy+22,'#00838f',11,'left',false);
+    lbl(PC,'施力點',rx+42,cy+5,'#2e7d32',11,'center',false);
+
+    // 軸心→垂直繩→重物（跟隨滑輪上下）
+    PC.fillStyle='#bdbdbd';PC.fillRect(cx-6,cy+R,12,14);
+    rope(cx,cy+R+14,cx,cy+R+36);
+    drawWeight(cx,cy+R+36);
+
+    // 施力箭頭↑（繩子自由端，不接天花板）
+    const arrTop=cy-52, arrBot=cy-30;
+    arrow(PC,rx,arrBot,rx,arrTop,'#e53935',2.5);
+    lbl(PC,'施力',rx+28,arrTop+12,'#e53935',12,'center',false);
+
+    // 說明
+    lbl(PC,'施力臂 ＝ 2 × 抗力臂 → 省力！施力方向與物體移動方向相同（↑）',PW/2,PH-4,'#2d7a3a',11,'center',true);
+
+  /* ════════ 定＋動 組合 ════════ */
   } else {
-    // COMBINED: fixed(right) + moving(left)
-    const fcx=PW*.68, fcy=50; // fixed pulley
-    const mcx=PW*.32; const mcy=130+bob*.2; // moving pulley
+    const Rf=40, Rm=46;
+    const fcx=PW*.69, fcy=52;
+    const mcx=PW*.36, mcy=128+bob*.2;
     const handX=PW*.1;
 
-    // ceiling anchors
-    PC.fillStyle='#4e342e';PC.fillRect(fcx-3,18,6,fcy-R-18);
-    PC.fillStyle='#4e342e';PC.fillRect(PW*.55,18,6,50);
+    // 天花板（兩段）
+    drawCeil(fcx,62);
+    drawCeil(PW*.53,55);
 
-    // fixed pulley
-    PC.beginPath();PC.arc(fcx,fcy,R*.8,0,Math.PI*2);PC.fillStyle='#ffd54f';PC.fill();
-    PC.strokeStyle='#f57f17';PC.lineWidth=3;PC.stroke();
-    [0,1,2].forEach(i=>{
-      const a=-pT*.05+i*Math.PI*2/3;
-      PC.save();PC.strokeStyle='#bf360c';PC.lineWidth=1.5;
-      PC.beginPath();PC.moveTo(fcx,fcy);PC.lineTo(fcx+(R*.8-8)*Math.cos(a),fcy+(R*.8-8)*Math.sin(a));PC.stroke();PC.restore();
-    });
+    // 定滑輪軸桿
+    PC.fillStyle='#bdbdbd';PC.fillRect(fcx-5,13,10,fcy-Rf-13);
 
-    // moving pulley
-    PC.beginPath();PC.arc(mcx,mcy,R*.85,0,Math.PI*2);PC.fillStyle='#80cbc4';PC.fill();
-    PC.strokeStyle='#00796b';PC.lineWidth=3;PC.stroke();
-    [0,1,2].forEach(i=>{
-      const a=pT*.05+i*Math.PI*2/3;
-      PC.save();PC.strokeStyle='#004d40';PC.lineWidth=1.5;
-      PC.beginPath();PC.moveTo(mcx,mcy);PC.lineTo(mcx+(R*.85-9)*Math.cos(a),mcy+(R*.85-9)*Math.sin(a));PC.stroke();PC.restore();
-    });
+    // 繩①：天花板左錨→動滑輪左緣
+    rope(PW*.53+3,68,mcx-Rm*.6,mcy-Rm*.6);
+    // 繩②：動滑輪右→定滑輪左下
+    rope(mcx+Rm*.65,mcy-Rm*.55,fcx-10,fcy+Rf*.8);
+    // 繩③：定滑輪左下→手
+    rope(fcx-10,fcy+Rf*.8,handX,mcy-20);
 
-    // ropes
-    PC.strokeStyle='#6d4c41';PC.lineWidth=3;
-    // anchor rope (left of moving pulley → ceiling)
-    PC.beginPath();PC.moveTo(mcx-R*.6,mcy-R*.6);PC.lineTo(PW*.55+3,68);PC.stroke();
-    // rope over fixed pulley from moving pulley right → up
-    PC.beginPath();PC.moveTo(mcx+R*.7,mcy-R*.5);PC.lineTo(fcx-8,fcy+R*.8);PC.stroke();
-    // rope from fixed pulley to hand
-    PC.beginPath();PC.moveTo(fcx-8,fcy+R*.8);PC.lineTo(handX,mcy-20);PC.stroke();
+    // 畫輪
+    drawWheel(fcx,fcy,-pT*.045,Rf);
+    drawWheel(mcx,mcy,pT*.045,Rm);
 
-    // weight
-    const wY=mcy+R*.85;
-    PC.fillStyle='#1976d2';PC.fillRect(mcx-22,wY,44,44);PC.strokeStyle='rgba(0,0,0,.15)';PC.lineWidth=1;PC.strokeRect(mcx-22,wY,44,44);
-    lbl(PC,'重物',mcx,wY+22,'#fff',12,'center',true);
-    arrow(PC,handX,mcy-20,handX,mcy-55,'#e53935',2.5);
-    lbl(PC,'施力↑',handX-30,mcy-38,'#e53935',11,'right',true);
-    lbl(PC,'定滑輪',fcx+R*.8+6,fcy,'#ff8c00',12,'left',true);
-    lbl(PC,'動滑輪',mcx+R*.85+6,mcy,'#2d7a3a',12,'left',true);
-    lbl(PC,'組合：省力 ＋ 方便改變施力方向',PW/2,PH-12,'#2d7a3a',12,'center',true);
+    // 標籤
+    lbl(PC,'定滑輪',fcx+Rf+8,fcy,'#e65100',12,'left',true);
+    lbl(PC,'動滑輪',mcx+Rm+8,mcy,'#2d7a3a',12,'left',true);
+
+    // 重物
+    drawWeight(mcx,mcy+Rm);
+
+    // 施力箭頭↑
+    arrow(PC,handX,mcy-20,handX,mcy-56,'#e53935',2.5);
+    lbl(PC,'施力↑',handX-30,mcy-38,'#e53935',11,'right',false);
+
+    // 說明
+    lbl(PC,'組合：動滑輪省力 ＋ 定滑輪改變施力方向，兼具兩種效果',PW/2,PH-4,'#1976d2',11,'center',true);
   }
 }
 

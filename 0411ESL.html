@@ -30,4 +30,161 @@
 <body>
 
 <div class="container">
-    <h1>2026 Spring Vocabulary List
+    <h1>2026 Spring Vocabulary List</h1>
+
+    <section id="part1">
+        <h2>第一大題：綠色螢光筆單字 (聽音拼寫)</h2>
+        <div id="p1-list"></div>
+    </section>
+
+    <section id="part2">
+        <h2>第二大題：情境圖片拼字 (看圖＋音標提示)</h2>
+        <div id="p2-list"></div>
+    </section>
+
+    <section id="part3">
+        <h2>第三大題：中英雙譯挑戰 (拼字＋中文)</h2>
+        <div id="p3-list"></div>
+    </section>
+</div>
+
+<script>
+const vocab = {
+    p1: [
+        { w: "transport", zh: "運輸", u: "public transport", s: "Public transport is very convenient in Tokyo.", t: "東京的大眾運輸非常方便。" },
+        { w: "compliment", zh: "稱讚", u: "receive a compliment", s: "It's nice to receive a compliment from your teacher.", t: "收到老師的稱讚是很棒的事。" },
+        { w: "misunderstand", zh: "誤解", u: "misunderstand the instructions", s: "Please read carefully so you don't misunderstand.", t: "請仔細閱讀，以免產生誤解。" },
+        { w: "complex", zh: "複雜的", u: "a complex problem", s: "This math problem is too complex for me.", t: "這道數學題對我來說太複雜了。" },
+        { w: "insist", zh: "堅持", u: "insist on something", s: "I insist on the importance of daily practice.", t: "我堅持每日練習的重要性。" },
+        { w: "structure", zh: "結構", u: "structure of the building", s: "The architect explained the structure of the house.", t: "建築師解釋了這棟房子的結構。" },
+        { w: "transform", zh: "轉變", u: "transform into", s: "Ice transforms into water when it melts.", t: "冰融化後會轉變成水。" },
+        { w: "explode", zh: "爆炸", u: "explode with energy", s: "The fireworks exploded in the night sky.", t: "煙火在夜空中爆炸。" },
+        { w: "region", zh: "地區", u: "mountainous region", s: "This region is famous for its hot springs.", t: "這個地區以溫泉聞名。" },
+        { w: "expert", zh: "專家", u: "an expert in architecture", s: "My father is an expert in construction.", t: "我父親是建築施工方面的專家。" }
+    ],
+    p2: [
+        { w: "artificial", img: "robot", zh: "人工的", u: "artificial light", s: "The room was filled with artificial light.", t: "房間裡充滿了人工光線。" },
+        { w: "collaborate", img: "teamwork", zh: "合作", u: "collaborate on a project", s: "Let's collaborate on this science project.", t: "讓我們合作這個科學專題吧。" },
+        { w: "flexible", img: "gymnastics", zh: "靈活的/有彈性的", u: "flexible schedule", s: "Yoga helps my body become more flexible.", t: "瑜伽幫助我的身體變得更靈活。" },
+        { w: "function", img: "engine", zh: "功能/職責", u: "function properly", s: "Does this machine still function properly?", t: "這台機器還能正常運作嗎？" },
+        { w: "mimic", img: "monkey", zh: "模仿", u: "mimic behavior", s: "The child tried to mimic his father's walk.", t: "孩子試著模仿他父親走路的樣子。" },
+        { w: "obstacle", img: "hurdle", zh: "障礙", u: "overcome an obstacle", s: "Patience is needed to overcome obstacles.", t: "克服障礙需要耐心。" },
+        { w: "technique", img: "painting", zh: "技術/技巧", u: "new technique", s: "She has a unique technique for drawing stars.", t: "她畫星星有一套獨特的技巧。" },
+        { w: "enemy", img: "opponent", zh: "敵人", u: "common enemy", s: "In movies, the hero always defeats the enemy.", t: "在電影裡，英雄總是擊敗敵人。" },
+        { w: "require", img: "document", zh: "要求/需要", u: "require assistance", s: "Learning a language requires hard work.", t: "學習語言需要努力。" },
+        { w: "sensitive", img: "ear", zh: "敏感的", u: "sensitive to light", s: "Cats have very sensitive hearing.", t: "貓的聽覺非常靈敏。" },
+        { w: "volunteer", img: "charity", zh: "志工/自願", u: "volunteer work", s: "She spent her summer as a hospital volunteer.", t: "她暑假在醫院當志工。" },
+        { w: "insurance", img: "shield", zh: "保險", u: "life insurance", s: "It's important to have health insurance.", t: "有醫療保險是很重要的。" },
+        { w: "distinct", img: "unique", zh: "不同的", u: "distinct differences", s: "There is a distinct difference between the two.", t: "這兩者之間有明顯的不同。" }
+    ],
+    p3: [
+        { w: "exclaim", zh: "大叫", u: "exclaim loudly", s: "‘Look!’ he exclaimed, pointing to the sky.", t: "「看！」他指著天空大叫。" },
+        { w: "period", zh: "一段時間", u: "a long period", s: "We have a rest period after lunch.", t: "午餐後我們有一段休息時間。" },
+        { w: "sketch", zh: "草圖", u: "pencil sketch", s: "The artist drew a quick sketch of the city.", t: "藝術家快速畫了一張城市的草圖。" },
+        { w: "crystal", zh: "水晶", u: "crystal clear", s: "The vase is made of beautiful crystal.", t: "這個花瓶是由漂亮的水晶製成的。" },
+        { w: "flexible", zh: "靈活", u: "flexible mind", s: "Having a flexible plan is better for travel.", t: "旅行時有一個靈活的計畫會更好。" },
+        { w: "technique", zh: "技術", u: "advanced technique", s: "The doctor used a new surgical technique.", t: "醫生使用了新的手術技術。" },
+        { w: "require", zh: "要求", u: "require attention", s: "Plants require water and sunlight to grow.", t: "植物生長需要水和陽光。" },
+        { w: "distinct", zh: "不同", u: "distinct taste", s: "The two fruits have distinct flavors.", t: "這兩種水果有截然不同的風味。" }
+    ]
+};
+
+// --- 發音核心邏輯 ---
+function speak(text) {
+    // 延遲 50ms 解決 Chrome/Safari 切頭問題
+    setTimeout(() => {
+        window.speechSynthesis.cancel(); 
+        const msg = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices();
+        
+        // 優先順序：Google US English (Chrome) > Samantha (Safari/iOS)
+        const bestVoice = voices.find(v => v.name === 'Google US English') || 
+                          voices.find(v => v.name === 'Samantha') ||
+                          voices.find(v => v.lang.startsWith('en-US'));
+        
+        if (bestVoice) msg.voice = bestVoice;
+        msg.lang = 'en-US';
+        msg.rate = 0.85; 
+        window.speechSynthesis.speak(msg);
+    }, 50);
+}
+
+// 預熱語音清單
+if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+
+function check(part, i) {
+    const item = vocab[part][i];
+    const resDiv = document.getElementById(`${part}-res-${i}`);
+    let isCorrect = false;
+
+    if (part === 'p3') {
+        const enVal = document.getElementById(`${part}-en-${i}`).value.trim().toLowerCase();
+        const zhVal = document.getElementById(`${part}-zh-${i}`).value.trim();
+        // 寬鬆比對：只要輸入的中文包含在標準答案內，或標準答案包含輸入
+        isCorrect = (enVal === item.w.toLowerCase() && (item.zh.includes(zhVal) || zhVal.includes(item.zh)));
+    } else {
+        const val = document.getElementById(`${part}-in-${i}`).value.trim().toLowerCase();
+        isCorrect = (val === item.w.toLowerCase());
+    }
+
+    resDiv.style.display = "block";
+    if (isCorrect) {
+        resDiv.className = "result correct";
+        resDiv.innerHTML = `✅ <b>正確！做得好！</b>`;
+    } else {
+        resDiv.className = "result wrong";
+        resDiv.innerHTML = `❌ <b>再檢查看看！</b> 正確答案是：<b>${item.w}</b> (${item.zh})`;
+    }
+
+    resDiv.innerHTML += `
+        <div class="details">
+            <br><b>常用用法：</b> ${item.u}
+            <br><b>例句：</b> ${item.s}
+            <br><b>翻譯：</b> ${item.t}
+        </div>`;
+}
+
+function init() {
+    const p1 = document.getElementById('p1-list');
+    vocab.p1.forEach((x, i) => {
+        p1.innerHTML += `
+            <div class="question-block">
+                <button class="btn-audio" onclick="speak('${x.w}')">🔊 播放發音</button>
+                <input type="text" id="p1-in-${i}" placeholder="拼拼看...">
+                <button class="btn-submit" onclick="check('p1', ${i})">檢查</button>
+                <div id="p1-res-${i}" class="result"></div>
+            </div>`;
+    });
+
+    const p2 = document.getElementById('p2-list');
+    vocab.p2.forEach((x, i) => {
+        p2.innerHTML += `
+            <div class="question-block">
+                <img class="image-hint" src="https://source.unsplash.com/featured/?${x.img}" alt="hint">
+                <input type="text" id="p2-in-${i}" placeholder="看圖拼字...">
+                <button class="btn-audio" onclick="speak('${x.w}')">💡 聽發音提示</button>
+                <button class="btn-submit" onclick="check('p2', ${i})">檢查</button>
+                <div id="p2-res-${i}" class="result"></div>
+            </div>`;
+    });
+
+    const p3 = document.getElementById('p3-list');
+    vocab.p3.forEach((x, i) => {
+        p3.innerHTML += `
+            <div class="question-block">
+                <button class="btn-audio" onclick="speak('${x.w}')">🔊 播放發音</button>
+                <input type="text" id="p3-en-${i}" placeholder="拼寫單字">
+                <input type="text" id="p3-zh-${i}" class="zh-box" placeholder="輸入中文">
+                <button class="btn-submit" onclick="check('p3', ${i})">檢查</button>
+                <div id="p3-res-${i}" class="result"></div>
+            </div>`;
+    });
+}
+
+window.onload = init;
+</script>
+
+</body>
+</html>

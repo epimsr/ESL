@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>英語複習 - Body Parts & Illness</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script><style>
   :root {
     --sky: #e0f4ff;
     --blue: #3b82f6;
@@ -589,27 +589,42 @@ const partBWords = [
   { word: 'stomachache', zh: '肚子痛', emoji: '🤢', phonetic: '/ˈstʌməkeɪk/' },
 ];
 
-// 使用 Google TTS（音質自然清晰）
-let currentAudio = null;
+// 等待語音載入，優先選 Chrome 高品質英文語音
+let _voices = [];
+
+function loadVoices() {
+  _voices = window.speechSynthesis.getVoices();
+}
+loadVoices();
+window.speechSynthesis.onvoiceschanged = loadVoices;
+
+function getBestVoice() {
+  // 優先順序：Google US English > en-US > en
+  const preferred = [
+    v => v.name === 'Google US English',
+    v => v.name.includes('Samantha'),       // macOS/iOS 自然語音
+    v => v.lang === 'en-US' && v.localService,
+    v => v.lang === 'en-US',
+    v => v.lang.startsWith('en'),
+  ];
+  for (const fn of preferred) {
+    const found = _voices.find(fn);
+    if (found) return found;
+  }
+  return null;
+}
 
 function speak(text) {
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-  }
-  const encoded = encodeURIComponent(text);
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encoded}`;
-  currentAudio = new Audio(url);
-  currentAudio.volume = 1.0;
-  currentAudio.play().catch(() => {
-    // 若 Google TTS 被擋，退回瀏覽器 TTS
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'en-US';
-    utter.rate = 0.82;
-    utter.volume = 1;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utter);
-  });
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US';
+  utter.rate = 0.88;
+  utter.pitch = 1.0;
+  utter.volume = 1.0;
+  const voice = getBestVoice();
+  if (voice) utter.voice = voice;
+  // Chrome 有時需要短暫延遲才不會切掉開頭
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
 }
 
 function buildGrid(words, containerId, type) {

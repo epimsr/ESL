@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二單元｜生活中的文化展現 — 重點複習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #3AAFC9;
+    --sky-light: #D6F0F7;
+    --sky-mid: #7DCDE0;
+    --green: #5AAB6A;
+    --green-light: #D6EFD9;
+    --orange: #E8873A;
+    --orange-light: #FDEBD5;
+    --gold: #C8963C;
+    --cream: #FBF8F2;
+    --ink: #1C2B3A;
+    --ink-soft: #3D5166;
+    --muted: #7A93A8;
+    --white: #FFFFFF;
+    --card-shadow: 0 4px 18px rgba(58,175,201,0.10), 0 1px 4px rgba(0,0,0,0.06);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.8;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #2A8FAA 0%, #3AAFC9 50%, #5ACED0 100%);
+    color: white;
+    text-align: center;
+    padding: 56px 24px 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .unit-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 999px;
+    padding: 4px 20px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(26px, 6vw, 42px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .hero p {
+    font-size: 15px;
+    opacity: 0.88;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .wave {
+    display: block;
+    margin-top: -2px;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── LESSON HEADER ── */
+  .lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 40px 0 20px;
+  }
+  .lesson-num {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+  .lesson-num.blue { background: var(--sky); }
+  .lesson-num.green { background: var(--green); }
+  .lesson-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(18px, 4vw, 24px);
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .section-head {
+    padding: 14px 20px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-head.sky { background: var(--sky); }
+  .section-head.green { background: var(--green); }
+  .section-head.orange { background: var(--orange); }
+  .section-head.gold { background: var(--gold); }
+  .section-body { padding: 18px 20px; }
+
+  /* ── KEY POINTS ── */
+  .kp-list { list-style: none; }
+  .kp-list li {
+    padding: 8px 0 8px 22px;
+    position: relative;
+    font-size: 15px;
+    border-bottom: 1px dashed #E8EFF4;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .kp-list li:last-child { border-bottom: none; }
+  .kp-list li::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--sky);
+    font-size: 10px;
+    top: 12px;
+  }
+  .kp-list li.green-dot::before { color: var(--green); }
+  .kp-list li.orange-dot::before { color: var(--orange); }
+
+  /* ── TAG HIGHLIGHT ── */
+  .tag {
+    display: inline-block;
+    background: var(--sky-light);
+    color: var(--sky);
+    border-radius: 6px;
+    padding: 1px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 2px;
+  }
+  .tag.green { background: var(--green-light); color: var(--green); }
+  .tag.orange { background: var(--orange-light); color: #B05E18; }
+
+  /* ── FACTOR GRID ── */
+  .factor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .factor-card {
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .factor-card .icon { font-size: 26px; margin-bottom: 6px; }
+  .factor-card .fc-title {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .factor-card .fc-body { font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; }
+  .factor-card.sky { background: var(--sky-light); }
+  .factor-card.green { background: var(--green-light); }
+  .factor-card.orange { background: var(--orange-light); }
+  .factor-card.gold { background: #FEF5E3; }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px; top: 6px; bottom: 6px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--sky), var(--green));
+    border-radius: 2px;
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -22px; top: 6px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--sky);
+    background: white;
+  }
+  .tl-item:nth-child(2)::before { border-color: var(--sky-mid); }
+  .tl-item:nth-child(3)::before { border-color: var(--green); }
+  .tl-item:nth-child(4)::before { border-color: var(--orange); }
+  .tl-era {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .tl-content {
+    background: #F5FBFD;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  /* ── RICE TYPES COMPARE ── */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .compare-box {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  .compare-box .cb-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+  .compare-box ul { padding-left: 16px; }
+  .compare-box ul li { margin-bottom: 4px; color: var(--ink-soft); }
+  .compare-box.a { background: var(--sky-light); }
+  .compare-box.b { background: var(--orange-light); }
+  .compare-box.a .cb-title { color: var(--sky); }
+  .compare-box.b .cb-title { color: #B05E18; }
+
+  /* ── BUILDING CARDS ── */
+  .building-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .bld-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid;
+  }
+  .bld-card .bld-head {
+    padding: 10px 14px;
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+  }
+  .bld-card .bld-body {
+    padding: 12px 14px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .bld-card.sky { border-color: var(--sky); }
+  .bld-card.sky .bld-head { background: var(--sky); }
+  .bld-card.sky .bld-body { background: var(--sky-light); }
+  .bld-card.green { border-color: var(--green); }
+  .bld-card.green .bld-head { background: var(--green); }
+  .bld-card.green .bld-body { background: var(--green-light); }
+  .bld-card.orange { border-color: var(--orange); }
+  .bld-card.orange .bld-head { background: var(--orange); }
+  .bld-card.orange .bld-body { background: var(--orange-light); }
+  .bld-card.gold { border-color: var(--gold); }
+  .bld-card.gold .bld-head { background: var(--gold); }
+  .bld-card.gold .bld-body { background: #FEF5E3; }
+
+  /* ── SUMMARY BOX ── */
+  .summary-box {
+    background: linear-gradient(135deg, #EAF8FB, #D6EFD9);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-top: 36px;
+    border-left: 5px solid var(--sky);
+  }
+  .summary-box h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .summary-box p {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.85;
+  }
+
+  /* ── PERSON SPOTLIGHT ── */
+  .person-box {
+    display: flex;
+    gap: 14px;
+    background: linear-gradient(135deg, #FEF5E3, #FDF2E0);
+    border-radius: 12px;
+    padding: 16px;
+    border: 2px solid var(--gold);
+    align-items: flex-start;
+  }
+  .person-avatar {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .person-info .name {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .person-info p { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+
+  /* ── KEYWORD CLOUD ── */
+  .keyword-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .kw {
+    background: white;
+    border: 2px solid var(--sky);
+    color: var(--sky);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 13.5px;
+    font-weight: 700;
+  }
+  .kw.green { border-color: var(--green); color: var(--green); }
+  .kw.orange { border-color: var(--orange); color: #B05E18; }
+
+  /* ── DIVIDER ── */
+  .lesson-divider {
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--sky), var(--green), var(--orange));
+    margin: 40px 0 0;
+    opacity: 0.35;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid #E0EBF0;
+  }
+
+  @media (max-width: 520px) {
+    .compare-row { grid-template-columns: 1fr; }
+    .factor-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="unit-badge">翰林版 五年級下冊 ｜ 第二單元</div>
+  <h1>生活中的文化展現</h1>
+  <p>不同族群在臺灣交融，展現多元的米食文化與建築樣貌。</p>
+  <svg class="wave" viewBox="0 0 1440 54" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,32 C360,54 1080,0 1440,32 L1440,54 L0,54 Z" fill="#FBF8F2"/>
+  </svg>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  第一課                                    -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="lesson-header">
+    <div class="lesson-num blue">1</div>
+    <div class="lesson-title">臺灣為什麼有多元的米食文化？</div>
+  </div>
+
+  <!-- 一、耕種環境 -->
+  <div class="section-card">
+    <div class="section-head sky">🌾 臺灣有利水稻生長的自然環境</div>
+    <div class="section-body">
+      <div class="factor-grid">
+        <div class="factor-card sky">
+          <div class="icon">☀️🌧️</div>
+          <div class="fc-title">氣候</div>
+          <div class="fc-body">溫暖濕熱，雨量充沛，全年適合稻米生長。</div>
+        </div>
+        <div class="factor-card green">
+          <div class="icon">🏔️🌾</div>
+          <div class="fc-title">地形</div>
+          <div class="fc-body">西部與北部平原地勢平坦，蘭陽平原、嘉南平原為主要稻作區。</div>
+        </div>
+        <div class="factor-card orange">
+          <div class="icon">💧</div>
+          <div class="fc-title">水利設施</div>
+          <div class="fc-body">河流提供水源；各時期移民興建水圳、水庫，深遠影響稻作。</div>
+        </div>
+        <div class="factor-card gold">
+          <div class="icon">🌱</div>
+          <div class="fc-title">品種改良</div>
+          <div class="fc-body">日治時期引進並改良「蓬萊米」，適合臺灣氣候，口感佳。</div>
+        </div>
+      </div>
+      <ul class="kp-list" style="margin-top:14px;">
+        <li>臺灣種植水稻歷史悠久，史前遺址已發現<span class="tag">碳化稻米</span>化石。</li>
+        <li>大航海時代，來臺開墾者帶來稻米種植技術。</li>
+        <li>蘭陽平原由蘭陽溪等溪流沖積而成，是臺灣重要穀倉之一。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 二、歷史演變時間軸 -->
+  <div class="section-card">
+    <div class="section-head sky">📜 各時期的水稻發展</div>
+    <div class="section-body">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-era">史前時代</div>
+          <div class="tl-content">遺址中發現碳化稻米，證實五千年前已有栽培技術。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-era">大航海時代（17世紀起）</div>
+          <div class="tl-content">來自中國的移民帶來水稻品種與耕作技術，逐漸開闢規模化稻田；稻米成為臺灣重要主食。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-era">清帝國時期</div>
+          <div class="tl-content">移民建設水利設施、擴展農田，提高農作物產量。稻米成為<span class="tag">出口貿易</span>的重要商品。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-era">日治時期</div>
+          <div class="tl-content">日本人不習慣在來米口感，總督府引進日本水稻品種，在臺改良出<span class="tag orange">蓬萊米</span>，口感Q彈香甜，沿用至今。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 三、在來米 vs 蓬萊米 -->
+  <div class="section-card">
+    <div class="section-head sky">🍚 在來米 vs. 蓬萊米</div>
+    <div class="section-body">
+      <div class="compare-row">
+        <div class="compare-box a">
+          <div class="cb-title">在來米（臺灣本地品種）</div>
+          <ul>
+            <li>日文稱「在來」，意為「直以來」</li>
+            <li>米粒細長，黏性較低</li>
+            <li>適合製作<strong>粿（糕點）、湯圓</strong>等糕點</li>
+            <li>原住民族與早期漢人移民主要品種</li>
+          </ul>
+        </div>
+        <div class="compare-box b">
+          <div class="cb-title">蓬萊米（日治時期改良）</div>
+          <ul>
+            <li>磯永吉在陽明山試種日本水稻改良而來</li>
+            <li>米粒圓短，Q彈、香甜、黏性高</li>
+            <li>適合直接煮成<strong>白米飯</strong>食用</li>
+            <li>現今臺灣農民主要耕種品種</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 四、米食融合 -->
+  <div class="section-card">
+    <div class="section-head green">🥢 米食融合發展臺灣風味</div>
+    <div class="section-body">
+      <p style="font-size:14.5px;color:var(--ink-soft);margin-bottom:14px;">
+        臺灣因不同族群互動，帶來各具特色的米食料理，形成豐富的飲食文化。
+      </p>
+      <div class="factor-grid">
+        <div class="factor-card sky">
+          <div class="icon">🌿</div>
+          <div class="fc-title">原住民族</div>
+          <div class="fc-body">就地取材，米放竹子火烤；糯米製糕點，與自然共生。</div>
+        </div>
+        <div class="factor-card orange">
+          <div class="icon">🍜</div>
+          <div class="fc-title">中國移民</div>
+          <div class="fc-body">帶來米粉、粿等加工品，配合醬料及蔬菜切條食用。</div>
+        </div>
+        <div class="factor-card green">
+          <div class="icon">🎋</div>
+          <div class="fc-title">越南人</div>
+          <div class="fc-body">米做成竹筒飯；河粉（米做細條）配香料及湯。</div>
+        </div>
+        <div class="factor-card gold">
+          <div class="icon">🍙</div>
+          <div class="fc-title">日本人</div>
+          <div class="fc-body">壽司、御飯糰等，影響現代臺灣便利商店飲食文化。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 五、米食轉變與創新 -->
+  <div class="section-card">
+    <div class="section-head orange">📉 米食發展的轉變與創新</div>
+    <div class="section-body">
+      <ul class="kp-list">
+        <li class="orange-dot">國際交流頻繁、政府開放<span class="tag orange">國外農產品進口</span>，異國美食進入臺灣，民眾選擇多元化。</li>
+        <li class="orange-dot">稻米食用量<strong>逐年下降</strong>，連帶影響稻米種植面積縮減。</li>
+        <li class="orange-dot">政府對策：舉辦<span class="tag">文化宣導活動</span>、推動食米教育、企業開發米食加工品（米餅、米奶茶、米蛋糕…）。</li>
+        <li class="orange-dot">目標：讓米食文化<strong>持續傳承與推廣</strong>。</li>
+      </ul>
+      <div style="margin-top:12px;background:#FEF5E3;border-radius:10px;padding:12px 14px;font-size:13.5px;color:var(--ink-soft);">
+        📊 <strong>數據</strong>：民國70年每人每年平均食用稻米近100公斤，到民國110年已大幅下降。
+      </div>
+    </div>
+  </div>
+
+  <!-- 磯永吉 人物介紹 -->
+  <div class="section-card">
+    <div class="section-head gold">⭐ 人物聚焦 — 磯永吉與蓬萊米</div>
+    <div class="section-body">
+      <div class="person-box">
+        <div class="person-avatar">🧑‍🔬</div>
+        <div class="person-info">
+          <div class="name">磯永吉（1886–1972）</div>
+          <p>
+            日治時期農業學家，被尊稱為「<strong>臺灣蓬萊米之父</strong>」。在陽明山試種日本水稻，經多次改良，育成適合臺灣氣候、產量高、品質佳、抗病蟲的蓬萊米。二次大戰後留臺擔任農業顧問，退休時獲臺灣政府頒勳章表揚。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 關鍵字 -->
+  <div class="section-card">
+    <div class="section-head sky">🔑 第一課關鍵詞彙</div>
+    <div class="section-body">
+      <div class="keyword-row">
+        <span class="kw">在來米</span>
+        <span class="kw">蓬萊米</span>
+        <span class="kw">磯永吉</span>
+        <span class="kw green">水利設施</span>
+        <span class="kw green">嘉南平原</span>
+        <span class="kw green">蘭陽平原</span>
+        <span class="kw orange">米食文化</span>
+        <span class="kw orange">品種改良</span>
+        <span class="kw orange">碳化稻米</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  第二課                                    -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="lesson-divider"></div>
+
+  <div class="lesson-header">
+    <div class="lesson-num green">2</div>
+    <div class="lesson-title">建築如何反映文化與生活方式？</div>
+  </div>
+
+  <!-- 一、建築概念 -->
+  <div class="section-card">
+    <div class="section-head green">🏠 從建築看見生活智慧與文化</div>
+    <div class="section-body">
+      <ul class="kp-list">
+        <li class="green-dot">臺灣建築樣貌多元豐富，反映不同時期各族群的<span class="tag green">自然環境、生活需求、材料與技術</span>。</li>
+        <li class="green-dot">建築是歷史與文化變遷的重要見證，功能和建材會隨時代改變。</li>
+        <li class="green-dot">觀察不同時期建築特色，可了解各族群的生活智慧。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 二、干欄式住屋 -->
+  <div class="section-card">
+    <div class="section-head green">🌿 干欄式住屋（原住民族建築）</div>
+    <div class="section-body">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-era">史前時代</div>
+          <div class="tl-content">十三行遺址出土多柱洞遺跡，考古學家推測史前人已為防止洪水與野獸侵擾而建造干欄式住屋。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-era">清帝國時期</div>
+          <div class="tl-content">平埔族就地取材，以木頭、竹子和茅草建造房屋，架高以適應自然環境。泰雅族將糧倉架高，防潮又防鼠。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-era">日治時期</div>
+          <div class="tl-content">日治時期照片保留當時各族住屋樣貌。卑南族13、14歲男子集中生活於高架男子集會所，學習傳統禮俗與戰鬥技術。</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;background:var(--green-light);border-radius:10px;padding:12px 14px;font-size:13.5px;color:var(--ink-soft);">
+        <strong>建築特色</strong>：就地取材（木頭、竹子、茅草）；房屋架高防淹水、野生動物、鼠患；通風良好，保持室內乾燥；遇颱風容易損壞。
+      </div>
+    </div>
+  </div>
+
+  <!-- 三、漢人建築 -->
+  <div class="section-card">
+    <div class="section-head sky">🏯 漢人聚落建築見證社會變遷</div>
+    <div class="section-body">
+      <div class="building-grid">
+        <div class="bld-card sky">
+          <div class="bld-head">🏠 四合院</div>
+          <div class="bld-body">
+            <strong>代表：</strong>摘星山莊（臺中市）<br>
+            四面房屋圍繞中庭；家族人口增加時向左右擴建，展現重視<strong>家族團結</strong>的文化。屋頂傾斜以排雨水；院子多半朝南，以避開北方寒冷季風。<br>
+            <span class="tag" style="margin-top:6px;display:inline-block;">檻孔</span>：牆上小孔，可向外觀察或防禦。
+          </div>
+        </div>
+        <div class="bld-card orange">
+          <div class="bld-head">🏬 傳統市街（街屋）</div>
+          <div class="bld-body">
+            <strong>代表：</strong>剝皮寮（臺北市）<br>
+            狹長型商店住宅，左右鄰居共用牆壁，常見於熱鬧商業街道。<strong>一樓做店鋪、二樓住家</strong>；木梯連接，生活與工作兼顧。<br>
+            寺廟（如龍山寺）是居民重要信仰場所，雕刻彩繪由漢人工匠建造。
+          </div>
+        </div>
+      </div>
+      <ul class="kp-list" style="margin-top:14px;">
+        <li>清帝國時期漢人移民來自中國，社會治安不穩定，建房時留有檻孔用以防禦。</li>
+        <li>市街發展後，居民在市街興建寺廟，供奉家鄉帶來的神明，工匠甚至以西方人形象雕刻。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 四、日治建築 -->
+  <div class="section-card">
+    <div class="section-head orange">🏛️ 日治建築：現代化與文化共存</div>
+    <div class="section-body">
+      <p style="font-size:14.5px;color:var(--ink-soft);margin-bottom:14px;">
+        日治時期政府主導，西式建築出現在政府機關、火車站、郵局、學校等公共場所，成為地標。
+      </p>
+      <div class="building-grid">
+        <div class="bld-card sky">
+          <div class="bld-head">🧱 紅磚建築</div>
+          <div class="bld-body">
+            <strong>代表：</strong>日新國小（臺北市）<br>
+            「紅樓」為學校最具特色建築。日治時期以機器統一製磚，提升耐震與防火。紅磚最早由荷蘭人引進，後漢人移民帶來燒磚技術。修復後成歷史建築，持續作為校舍。
+          </div>
+        </div>
+        <div class="bld-card gold">
+          <div class="bld-head">🏰 融合式洋樓</div>
+          <div class="bld-body">
+            <strong>代表：</strong>一德洋樓（臺中市）<br>
+            融合漢人三合院、日式與西式建築風格。一樓西式圓柱與拱廊外觀；二樓強化耐震用鋼筋水泥；部分室內為日式設計鋪榻榻米；大廳擺西式沙發，牆上掛油畫。
+          </div>
+        </div>
+      </div>
+      <ul class="kp-list" style="margin-top:14px;">
+        <li class="orange-dot">臺灣位於地震帶，氣候炎熱多雨，公共建築採用<span class="tag orange">鋼筋、水泥、新式紅磚</span>，提升耐震防火功能，並設計窗戶加強通風採光。</li>
+        <li class="orange-dot">民間建築也出現變化：有些住宅外觀有高大柱子，展現現代感，反映在地文化、日式與西式共存。</li>
+        <li class="orange-dot">部分日治時期建築修復後再利用，成為<strong>展覽館或藝文空間</strong>，讓人認識當時文化與生活樣貌。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 關鍵字 -->
+  <div class="section-card">
+    <div class="section-head green">🔑 第二課關鍵詞彙</div>
+    <div class="section-body">
+      <div class="keyword-row">
+        <span class="kw green">干欄式住屋</span>
+        <span class="kw green">四合院</span>
+        <span class="kw green">街屋</span>
+        <span class="kw">檻孔</span>
+        <span class="kw">紅磚建築</span>
+        <span class="kw">融合式洋樓</span>
+        <span class="kw orange">因地制宜</span>
+        <span class="kw orange">就地取材</span>
+        <span class="kw orange">鋼筋水泥</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 總結 -->
+  <div class="summary-box">
+    <h3>📌 單元核心觀念總結</h3>
+    <p>
+      臺灣的多元文化由不同時期來臺族群共同塑造。在<strong>米食文化</strong>方面，從原住民族、漢人移民到日本統治，各帶來獨特的稻米品種、耕作技術與飲食習慣，交融出豐富的臺灣米食面貌。在<strong>建築文化</strong>方面，原住民族的干欄式住屋、清代漢人的四合院與市街、日治時期的紅磚與融合式洋樓，都體現了「<strong>因地制宜、就地取材</strong>」的生活智慧，也見證了臺灣社會的變遷與多元文化共存。
+    </p>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  翰林版・五年級下冊・社會科・第二單元重點複習｜僅供學習參考
+</footer>
+
+</body>
+</html>

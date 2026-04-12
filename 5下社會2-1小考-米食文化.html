@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一課測驗｜臺灣為什麼有多元的米食文化？</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#1FA8A8;--teal-light:#E0F5F5;--teal-mid:#5ECECE;
+  --amber:#E8A020;--amber-light:#FEF3DC;
+  --green:#3D9E5E;--green-light:#DFF2E8;
+  --red:#D94040;--red-light:#FDEBEB;
+  --ink:#12252E;--ink2:#3A5566;--muted:#7A9BAC;
+  --bg:#F4FAFA;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+.header{background:linear-gradient(135deg,#0D8080 0%,#1FA8A8 55%,#38C8C0 100%);color:#fff;padding:40px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.header::after{content:'🌾';position:absolute;font-size:180px;opacity:.07;right:-20px;top:-30px;transform:rotate(-15deg);pointer-events:none}
+.lesson-tag{display:inline-block;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.45);border-radius:999px;padding:4px 18px;font-size:12px;letter-spacing:2px;margin-bottom:14px}
+.header h1{font-family:'Noto Serif TC',serif;font-size:clamp(20px,5vw,32px);font-weight:900;letter-spacing:1px;line-height:1.3;margin-bottom:10px}
+.header p{font-size:14px;opacity:.85}
+.wave-sep{display:block;margin-top:-2px}
+
+.section-title{
+  font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;
+  color:var(--white);background:var(--teal);
+  padding:10px 20px;border-radius:12px;
+  margin:28px 0 14px;display:flex;align-items:center;gap:8px;
+}
+
+.progress-wrap{max-width:720px;margin:0 auto;padding:20px 20px 0}
+.progress-bar-bg{height:8px;background:#D4E8E8;border-radius:4px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(to right,var(--teal),var(--teal-mid));border-radius:4px;transition:width .5s ease}
+.progress-label{text-align:right;font-size:12px;color:var(--muted);margin-top:5px}
+
+.container{max-width:720px;margin:0 auto;padding:16px 20px 60px}
+
+.q-card{background:var(--white);border-radius:18px;box-shadow:0 4px 24px rgba(31,168,168,.10),0 1px 4px rgba(0,0,0,.05);margin-bottom:18px;overflow:hidden;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.q-num{display:flex;align-items:center;gap:10px;background:var(--teal-light);padding:11px 18px 9px;border-bottom:2px solid #C5EBEB}
+.q-num .num{width:30px;height:30px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.q-num .type-badge{font-size:11px;font-weight:700;background:var(--teal);color:#fff;border-radius:999px;padding:2px 10px}
+.q-body{padding:16px 18px 8px}
+.q-text{font-size:15px;line-height:1.8;font-weight:500;margin-bottom:12px}
+
+.opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.opt-btn{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:10px 13px;background:#F6FBFB;border:2px solid #C8E6E6;border-radius:10px;cursor:pointer;font-size:14px;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;transition:all .17s;line-height:1.6}
+.opt-btn:hover:not(:disabled){background:var(--teal-light);border-color:var(--teal);color:var(--ink)}
+.opt-btn .circle{width:23px;height:23px;border-radius:50%;border:2px solid #A8CCCC;background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .17s}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:#1C5C38}
+.opt-btn.correct .circle{background:var(--green);border-color:var(--green);color:#fff}
+.opt-btn.wrong{background:var(--red-light);border-color:var(--red);color:var(--red)}
+.opt-btn.wrong .circle{background:var(--red);border-color:var(--red);color:#fff}
+.opt-btn:disabled{cursor:default}
+
+.feedback{margin:4px 0 10px;padding:9px 13px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.correct{background:var(--green-light);color:#1C5C38;border-left:4px solid var(--green)}
+.feedback.wrong{background:var(--red-light);color:var(--red);border-left:4px solid var(--red)}
+.feedback.show{display:block}
+
+.fill-input{width:100%;padding:10px 14px;border:2px solid #C8E6E6;border-radius:10px;font-size:15px;font-family:'Noto Sans TC',sans-serif;color:var(--ink);background:#F6FBFB;margin-bottom:8px;transition:border-color .2s}
+.fill-input:focus{outline:none;border-color:var(--teal)}
+.fill-input.correct{border-color:var(--green);background:var(--green-light)}
+.fill-input.wrong{border-color:var(--red);background:var(--red-light)}
+
+.check-btn{padding:8px 20px;background:var(--teal);color:#fff;border:none;border-radius:999px;font-size:14px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:10px;transition:background .2s}
+.check-btn:hover{background:#178888}
+.check-btn:disabled{background:#A0CCCC;cursor:default}
+
+.result-panel{background:linear-gradient(135deg,#0D8080,#1FA8A8);color:#fff;border-radius:20px;padding:32px 24px;text-align:center;margin-top:16px;display:none;box-shadow:0 8px 32px rgba(31,168,168,.25)}
+.result-panel.show{display:block}
+.result-score{font-family:'Noto Serif TC',serif;font-size:64px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:8px}
+.result-score span{font-size:28px;font-weight:400;opacity:.8}
+.result-msg{font-size:16px;opacity:.9;margin-bottom:20px}
+.result-bar-bg{height:10px;background:rgba(255,255,255,.25);border-radius:5px;overflow:hidden;margin-bottom:24px}
+.result-bar-fill{height:100%;background:#fff;border-radius:5px;transition:width 1s ease}
+.retry-btn{display:inline-block;padding:12px 32px;background:#fff;color:var(--teal);border:none;border-radius:999px;font-size:15px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:transform .15s}
+.retry-btn:hover{transform:scale(1.04)}
+
+.submit-wrap{text-align:center;margin:24px 0}
+.submit-btn{padding:14px 40px;background:linear-gradient(135deg,var(--teal),#38C8C0);color:#fff;border:none;border-radius:999px;font-size:16px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(31,168,168,.30);transition:transform .15s,box-shadow .15s}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(31,168,168,.35)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="lesson-tag">第一課 ｜ 五年級下冊 社會科</div>
+  <h1>臺灣為什麼有多元的<br>米食文化？</h1>
+  <p>選擇題 15 題 ＋ 填充題 8 題，共 23 題</p>
+  <svg class="wave-sep" viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,24 C360,44 1080,4 1440,24 L1440,40 L0,40 Z" fill="#F4FAFA"/>
+  </svg>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progBar" style="width:0%"></div></div>
+  <div class="progress-label" id="progLabel">已作答 0 / 23 題</div>
+</div>
+
+<div class="container">
+
+<div class="section-title">📝 一、選擇題（共 15 題）</div>
+
+<!-- Q1 -->
+<div class="q-card" style="animation-delay:.04s">
+  <div class="q-num"><div class="num">1</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">臺灣哪一項自然條件最有利於水稻生長？</div>
+    <div class="opts" id="q1">
+      <button class="opt-btn" onclick="choose('q1',this,'A')"><div class="circle">A</div>四面環海、漁業資源豐富</button>
+      <button class="opt-btn" onclick="choose('q1',this,'B')"><div class="circle">B</div>溫暖濕熱的氣候與充沛的雨量</button>
+      <button class="opt-btn" onclick="choose('q1',this,'C')"><div class="circle">C</div>全年低溫，有利農作保存</button>
+      <button class="opt-btn" onclick="choose('q1',this,'D')"><div class="circle">D</div>山地廣大，土地極為肥沃</button>
+    </div>
+    <div class="feedback" id="q1-fb"></div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="q-card" style="animation-delay:.06s">
+  <div class="q-num"><div class="num">2</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">考古學家在史前遺址中發現了什麼，證實臺灣五千年前就有種植稻米的技術？</div>
+    <div class="opts" id="q2">
+      <button class="opt-btn" onclick="choose('q2',this,'A')"><div class="circle">A</div>古代農耕石器</button>
+      <button class="opt-btn" onclick="choose('q2',this,'B')"><div class="circle">B</div>碳化稻米（化石）</button>
+      <button class="opt-btn" onclick="choose('q2',this,'C')"><div class="circle">C</div>荷蘭人的農耕紀錄</button>
+      <button class="opt-btn" onclick="choose('q2',this,'D')"><div class="circle">D</div>移民帶來的水稻種子</button>
+    </div>
+    <div class="feedback" id="q2-fb"></div>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="q-card" style="animation-delay:.08s">
+  <div class="q-num"><div class="num">3</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">蘭陽平原與嘉南平原是臺灣重要的稻米產區，其主要原因是？</div>
+    <div class="opts" id="q3">
+      <button class="opt-btn" onclick="choose('q3',this,'A')"><div class="circle">A</div>靠近港口，方便出口</button>
+      <button class="opt-btn" onclick="choose('q3',this,'B')"><div class="circle">B</div>地勢平坦且有河流提供充足水源</button>
+      <button class="opt-btn" onclick="choose('q3',this,'C')"><div class="circle">C</div>日治時期特別規定這兩區種植稻米</button>
+      <button class="opt-btn" onclick="choose('q3',this,'D')"><div class="circle">D</div>原住民族世代在此種植，土質特殊</button>
+    </div>
+    <div class="feedback" id="q3-fb"></div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="q-card" style="animation-delay:.10s">
+  <div class="q-num"><div class="num">4</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">清帝國時期，稻米在臺灣的地位有何轉變？</div>
+    <div class="opts" id="q4">
+      <button class="opt-btn" onclick="choose('q4',this,'A')"><div class="circle">A</div>稻米種植面積縮減，漸漸不再重要</button>
+      <button class="opt-btn" onclick="choose('q4',this,'B')"><div class="circle">B</div>只供原住民族食用，漢人不吃米</button>
+      <button class="opt-btn" onclick="choose('q4',this,'C')"><div class="circle">C</div>擴展農田、提高產量，稻米成為重要出口商品</button>
+      <button class="opt-btn" onclick="choose('q4',this,'D')"><div class="circle">D</div>政府禁止出口，只允許島內自給自足</button>
+    </div>
+    <div class="feedback" id="q4-fb"></div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card" style="animation-delay:.12s">
+  <div class="q-num"><div class="num">5</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">日治時期，日本總督府為什麼要引進日本水稻品種在臺灣改良？</div>
+    <div class="opts" id="q5">
+      <button class="opt-btn" onclick="choose('q5',this,'A')"><div class="circle">A</div>為了增加出口創匯，賺取外國資金</button>
+      <button class="opt-btn" onclick="choose('q5',this,'B')"><div class="circle">B</div>日本人不習慣在來米的口感，希望種出符合自己飲食習慣的米</button>
+      <button class="opt-btn" onclick="choose('q5',this,'C')"><div class="circle">C</div>在來米產量太低，無法滿足糧食需求</button>
+      <button class="opt-btn" onclick="choose('q5',this,'D')"><div class="circle">D</div>原住民族希望改變稻米口感</button>
+    </div>
+    <div class="feedback" id="q5-fb"></div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="q-card" style="animation-delay:.14s">
+  <div class="q-num"><div class="num">6</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">蓬萊米是由哪位農業學家改良育成的？他被後人尊稱為什麼？</div>
+    <div class="opts" id="q6">
+      <button class="opt-btn" onclick="choose('q6',this,'A')"><div class="circle">A</div>八田與一，「嘉南大圳之父」</button>
+      <button class="opt-btn" onclick="choose('q6',this,'B')"><div class="circle">B</div>後藤新平，「臺灣現代化之父」</button>
+      <button class="opt-btn" onclick="choose('q6',this,'C')"><div class="circle">C</div>磯永吉，「臺灣蓬萊米之父」</button>
+      <button class="opt-btn" onclick="choose('q6',this,'D')"><div class="circle">D</div>田健治郎，「臺灣農業之父」</button>
+    </div>
+    <div class="feedback" id="q6-fb"></div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="q-card" style="animation-delay:.16s">
+  <div class="q-num"><div class="num">7</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">在來米與蓬萊米的用途有何不同？以下哪項「正確」？</div>
+    <div class="opts" id="q7">
+      <button class="opt-btn" onclick="choose('q7',this,'A')"><div class="circle">A</div>在來米適合直接煮飯，蓬萊米適合製作糕點</button>
+      <button class="opt-btn" onclick="choose('q7',this,'B')"><div class="circle">B</div>在來米適合製作粿、湯圓等糕點；蓬萊米適合煮成白米飯</button>
+      <button class="opt-btn" onclick="choose('q7',this,'C')"><div class="circle">C</div>兩者用途完全相同，只是名稱不同</button>
+      <button class="opt-btn" onclick="choose('q7',this,'D')"><div class="circle">D</div>蓬萊米是原住民族傳統品種，在來米是日本引進的</button>
+    </div>
+    <div class="feedback" id="q7-fb"></div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="q-card" style="animation-delay:.18s">
+  <div class="q-num"><div class="num">8</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">磯永吉退休後，臺灣政府對他有何表揚與肯定？</div>
+    <div class="opts" id="q8">
+      <button class="opt-btn" onclick="choose('q8',this,'A')"><div class="circle">A</div>頒給他臺灣公民身分，讓他永久居留</button>
+      <button class="opt-btn" onclick="choose('q8',this,'B')"><div class="circle">B</div>頒勳章表揚，每年致贈蓬萊米，感謝他對臺灣農業研究的貢獻</button>
+      <button class="opt-btn" onclick="choose('q8',this,'C')"><div class="circle">C</div>以他的名字命名一條河流</button>
+      <button class="opt-btn" onclick="choose('q8',this,'D')"><div class="circle">D</div>聘請他擔任總統府顧問</button>
+    </div>
+    <div class="feedback" id="q8-fb"></div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="q-card" style="animation-delay:.20s">
+  <div class="q-num"><div class="num">9</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">原住民族的米食特色是什麼？</div>
+    <div class="opts" id="q9">
+      <button class="opt-btn" onclick="choose('q9',this,'A')"><div class="circle">A</div>製作壽司和御飯糰</button>
+      <button class="opt-btn" onclick="choose('q9',this,'B')"><div class="circle">B</div>製作河粉，配合香料及湯食用</button>
+      <button class="opt-btn" onclick="choose('q9',this,'C')"><div class="circle">C</div>就地取材，米放竹子火烤；糯米製成各式糕點</button>
+      <button class="opt-btn" onclick="choose('q9',this,'D')"><div class="circle">D</div>製作米粉，配醬料與蔬菜切條食用</button>
+    </div>
+    <div class="feedback" id="q9-fb"></div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card" style="animation-delay:.22s">
+  <div class="q-num"><div class="num">10</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">下列哪一種米食，是越南移民帶來臺灣的飲食文化？</div>
+    <div class="opts" id="q10">
+      <button class="opt-btn" onclick="choose('q10',this,'A')"><div class="circle">A</div>壽司、御飯糰</button>
+      <button class="opt-btn" onclick="choose('q10',this,'B')"><div class="circle">B</div>年糕、湯圓</button>
+      <button class="opt-btn" onclick="choose('q10',this,'C')"><div class="circle">C</div>河粉（米做成細條）配香料及湯</button>
+      <button class="opt-btn" onclick="choose('q10',this,'D')"><div class="circle">D</div>米粉炒配豆芽菜</button>
+    </div>
+    <div class="feedback" id="q10-fb"></div>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="q-card" style="animation-delay:.24s">
+  <div class="q-num"><div class="num">11</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">近年來臺灣民眾米食消費量下降的主要原因是？</div>
+    <div class="opts" id="q11">
+      <button class="opt-btn" onclick="choose('q11',this,'A')"><div class="circle">A</div>政府明令限制米食消費</button>
+      <button class="opt-btn" onclick="choose('q11',this,'B')"><div class="circle">B</div>蓬萊米品質變差，民眾不愛吃</button>
+      <button class="opt-btn" onclick="choose('q11',this,'C')"><div class="circle">C</div>國際交流頻繁，異國美食引入，飲食選擇多元化</button>
+      <button class="opt-btn" onclick="choose('q11',this,'D')"><div class="circle">D</div>稻田面積增加太快，供過於求，價格崩跌</button>
+    </div>
+    <div class="feedback" id="q11-fb"></div>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="q-card" style="animation-delay:.26s">
+  <div class="q-num"><div class="num">12</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">政府為促進米食文化傳承，採取了哪些行動？（選出「包含最多正確措施」的選項）</div>
+    <div class="opts" id="q12">
+      <button class="opt-btn" onclick="choose('q12',this,'A')"><div class="circle">A</div>舉辦文化宣導活動、推動食米教育</button>
+      <button class="opt-btn" onclick="choose('q12',this,'B')"><div class="circle">B</div>強制規定每人每日必須食用定量白米</button>
+      <button class="opt-btn" onclick="choose('q12',this,'C')"><div class="circle">C</div>禁止所有異國食品進口</button>
+      <button class="opt-btn" onclick="choose('q12',this,'D')"><div class="circle">D</div>減少稻田面積，提高稻米售價</button>
+    </div>
+    <div class="feedback" id="q12-fb"></div>
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="q-card" style="animation-delay:.28s">
+  <div class="q-num"><div class="num">13</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">民間廠商為推廣米食文化，開發了哪些創新米食加工品？（選出最符合課文的選項）</div>
+    <div class="opts" id="q13">
+      <button class="opt-btn" onclick="choose('q13',this,'A')"><div class="circle">A</div>米餅、米奶茶、米蛋糕</button>
+      <button class="opt-btn" onclick="choose('q13',this,'B')"><div class="circle">B</div>米汽車、米手機殼</button>
+      <button class="opt-btn" onclick="choose('q13',this,'C')"><div class="circle">C</div>米製鋼筋、米做建材</button>
+      <button class="opt-btn" onclick="choose('q13',this,'D')"><div class="circle">D</div>只維持傳統年糕，不開發新產品</button>
+    </div>
+    <div class="feedback" id="q13-fb"></div>
+  </div>
+</div>
+
+<!-- Q14 -->
+<div class="q-card" style="animation-delay:.30s">
+  <div class="q-num"><div class="num">14</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">下列關於「影響臺灣水稻耕種發展的因素」敘述，哪一項「不正確」？</div>
+    <div class="opts" id="q14">
+      <button class="opt-btn" onclick="choose('q14',this,'A')"><div class="circle">A</div>臺灣溫暖濕熱的氣候有利水稻生長</button>
+      <button class="opt-btn" onclick="choose('q14',this,'B')"><div class="circle">B</div>西部與北部的平原地形提供種稻的農地</button>
+      <button class="opt-btn" onclick="choose('q14',this,'C')"><div class="circle">C</div>各時期移民興建水利設施，提供充足灌溉水源</button>
+      <button class="opt-btn" onclick="choose('q14',this,'D')"><div class="circle">D</div>臺灣四面環海，海水提供了稻田所需的鹽分養分</button>
+    </div>
+    <div class="feedback" id="q14-fb"></div>
+  </div>
+</div>
+
+<!-- Q15 -->
+<div class="q-card" style="animation-delay:.32s">
+  <div class="q-num"><div class="num">15</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">臺灣米食文化多元豐富的根本原因是什麼？</div>
+    <div class="opts" id="q15">
+      <button class="opt-btn" onclick="choose('q15',this,'A')"><div class="circle">A</div>政府規定每個族群都必須學習不同米食料理</button>
+      <button class="opt-btn" onclick="choose('q15',this,'B')"><div class="circle">B</div>不同時期來臺的各族群，帶來各自的飲食文化與米食習慣，相互交融</button>
+      <button class="opt-btn" onclick="choose('q15',this,'C')"><div class="circle">C</div>臺灣氣候特殊，只適合種植特定米種，形成獨特口味</button>
+      <button class="opt-btn" onclick="choose('q15',this,'D')"><div class="circle">D</div>日本人強制推行多元米食教育</button>
+    </div>
+    <div class="feedback" id="q15-fb"></div>
+  </div>
+</div>
+
+<!-- 填充題區 -->
+<div class="section-title">✏️ 二、填充題（共 8 題）</div>
+
+<!-- F1 -->
+<div class="q-card" style="animation-delay:.34s">
+  <div class="q-num"><div class="num">16</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">臺灣溫暖濕熱的氣候與充沛的<span style="color:var(--teal);font-weight:700;">＿＿</span>，加上西部與北部的平原地形，非常適合水稻的生長。</div>
+    <input class="fill-input" id="f1-inp" type="text" placeholder="請輸入答案" maxlength="6">
+    <button class="check-btn" id="f1-check" onclick="checkFill('f1',['雨量','降雨量','雨水'],'正確！充沛的雨量是臺灣水稻生長的重要自然條件之一。')">確認答案</button>
+    <div class="feedback" id="f1-fb"></div>
+  </div>
+</div>
+
+<!-- F2 -->
+<div class="q-card" style="animation-delay:.36s">
+  <div class="q-num"><div class="num">17</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">南科考古館展示的<span style="color:var(--teal);font-weight:700;">＿＿稻米</span>，證實五千年前的史前人類已具備栽培稻米的技術。</div>
+    <input class="fill-input" id="f2-inp" type="text" placeholder="填入兩字" maxlength="4">
+    <button class="check-btn" id="f2-check" onclick="checkFill('f2',['碳化'],'正確！碳化稻米是臺灣最古老的水稻栽培證據。')">確認答案</button>
+    <div class="feedback" id="f2-fb"></div>
+  </div>
+</div>
+
+<!-- F3 -->
+<div class="q-card" style="animation-delay:.38s">
+  <div class="q-num"><div class="num">18</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">清帝國時期，移民建設水利設施、擴展農田，使稻米不僅成為主食，也成為臺灣主要的<span style="color:var(--teal);font-weight:700;">＿＿＿＿</span>商品。</div>
+    <input class="fill-input" id="f3-inp" type="text" placeholder="請輸入答案" maxlength="8">
+    <button class="check-btn" id="f3-check" onclick="checkFill('f3',['出口貿易','出口','外銷'],'正確！清帝國時期稻米成為臺灣重要的出口貿易商品。')">確認答案</button>
+    <div class="feedback" id="f3-fb"></div>
+  </div>
+</div>
+
+<!-- F4 -->
+<div class="q-card" style="animation-delay:.40s">
+  <div class="q-num"><div class="num">19</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">日治時期，農業學家<span style="color:var(--teal);font-weight:700;">＿＿＿＿</span>在陽明山試種日本水稻，經多次改良與試驗，成功育成蓬萊米，被後人尊稱為「臺灣蓬萊米之父」。</div>
+    <input class="fill-input" id="f4-inp" type="text" placeholder="填入人名" maxlength="6">
+    <button class="check-btn" id="f4-check" onclick="checkFill('f4',['磯永吉'],'正確！磯永吉終生投入臺灣稻米改良，貢獻卓著。')">確認答案</button>
+    <div class="feedback" id="f4-fb"></div>
+  </div>
+</div>
+
+<!-- F5 -->
+<div class="q-card" style="animation-delay:.42s">
+  <div class="q-num"><div class="num">20</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">日常吃的白米飯是用<span style="color:var(--teal);font-weight:700;">＿＿米</span>煮的；而製作粿（糕粑）、湯圓等糕點，則是使用<span style="color:var(--teal);font-weight:700;">＿＿米</span>。（依序填入兩種米的名稱）</div>
+    <input class="fill-input" id="f5-inp" type="text" placeholder="例：蓬萊米、在來米" maxlength="12">
+    <button class="check-btn" id="f5-check" onclick="checkFill('f5',['蓬萊米、在來米','蓬萊米,在來米','蓬萊、在來'],'正確！蓬萊米黏性高適合煮飯，在來米黏性低適合製作糕點。')">確認答案</button>
+    <div class="feedback" id="f5-fb"></div>
+  </div>
+</div>
+
+<!-- F6 -->
+<div class="q-card" style="animation-delay:.44s">
+  <div class="q-num"><div class="num">21</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">隨著國際交流頻繁，愈來愈多異國美食被引進臺灣，使民眾食用稻米的量逐年<span style="color:var(--teal);font-weight:700;">＿＿</span>（增加／下降）。</div>
+    <input class="fill-input" id="f6-inp" type="text" placeholder="請輸入答案" maxlength="4">
+    <button class="check-btn" id="f6-check" onclick="checkFill('f6',['下降','減少','降低'],'正確！因為飲食選擇多元化，民眾食米量逐年下降。')">確認答案</button>
+    <div class="feedback" id="f6-fb"></div>
+  </div>
+</div>
+
+<!-- F7 -->
+<div class="q-card" style="animation-delay:.46s">
+  <div class="q-num"><div class="num">22</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">原住民族的米食料理，體現了「<span style="color:var(--teal);font-weight:700;">＿＿＿＿</span>」的精神，例如將米放入竹子中火烤，利用當地隨手可得的材料製作食物。</div>
+    <input class="fill-input" id="f7-inp" type="text" placeholder="請輸入四字詞語" maxlength="6">
+    <button class="check-btn" id="f7-check" onclick="checkFill('f7',['就地取材'],'正確！就地取材是原住民族飲食與建築的共同智慧。')">確認答案</button>
+    <div class="feedback" id="f7-fb"></div>
+  </div>
+</div>
+
+<!-- F8 -->
+<div class="q-card" style="animation-delay:.48s">
+  <div class="q-num"><div class="num">23</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">為了讓米食文化能夠持續傳承，政府舉辦文化宣導活動、推動<span style="color:var(--teal);font-weight:700;">＿＿</span>教育；民間廠商也積極開發米食加工品，讓米食文化能夠繼續推廣。（填兩字）</div>
+    <input class="fill-input" id="f8-inp" type="text" placeholder="請輸入答案" maxlength="6">
+    <button class="check-btn" id="f8-check" onclick="checkFill('f8',['食米','米食'],'正確！政府推動食米教育，讓學童體驗種稻與烹煮米食料理。')">確認答案</button>
+    <div class="feedback" id="f8-fb"></div>
+  </div>
+</div>
+
+<div class="submit-wrap">
+  <button class="submit-btn" onclick="submitAll()">📊 查看最終成績</button>
+</div>
+
+<div class="result-panel" id="resultPanel">
+  <div class="result-score" id="resultScore">—<span>分</span></div>
+  <div class="result-msg" id="resultMsg"></div>
+  <div class="result-bar-bg"><div class="result-bar-fill" id="resultBar" style="width:0%"></div></div>
+  <button class="retry-btn" onclick="location.reload()">🔄 重新作答</button>
+</div>
+
+</div><!-- /container -->
+
+<script>
+const TOTAL = 23;
+const answers = {};
+
+const mcCorrect = {
+  q1:'B',q2:'B',q3:'B',q4:'C',q5:'B',
+  q6:'C',q7:'B',q8:'B',q9:'C',q10:'C',
+  q11:'C',q12:'A',q13:'A',q14:'D',q15:'B'
+};
+const mcFeedback = {
+  q1:{r:'正確！臺灣溫暖濕熱的氣候與充沛雨量是水稻生長的最重要自然條件。',w:'答案是 B。溫暖濕熱的氣候與充沛雨量，才是最有利水稻生長的自然條件。'},
+  q2:{r:'正確！南科考古館展示的碳化稻米，證實五千年前就有栽培稻米的技術。',w:'答案是 B。碳化稻米是臺灣史前時代最重要的稻作考古證據。'},
+  q3:{r:'正確！蘭陽、嘉南等平原地勢平坦，加上河流提供充足水源，成為主要稻米產區。',w:'答案是 B。平坦地形與充足水源，才是兩大平原成為稻米產區的主因。'},
+  q4:{r:'正確！清帝國時期移民建設水利設施、擴展農田，稻米產量大增並成為出口商品。',w:'答案是 C。清帝國時期稻米不只是主食，更成為重要的出口貿易商品。'},
+  q5:{r:'正確！日本人不習慣在來米的口感，因此引進日本水稻品種在臺灣改良，育成蓬萊米。',w:'答案是 B。主要原因是日本人飲食習慣上的差異，希望在臺灣種出符合自己口味的米。'},
+  q6:{r:'正確！磯永吉在陽明山試種並改良日本水稻，育成蓬萊米，被尊為「臺灣蓬萊米之父」。',w:'答案是 C。磯永吉才是改良蓬萊米的農業學家；八田與一是負責嘉南大圳的工程師。'},
+  q7:{r:'正確！在來米黏性低，適合製作粿、湯圓等糕點；蓬萊米Q彈香甜，適合煮成日常白米飯。',w:'答案是 B。在來米做糕點，蓬萊米煮飯，兩者用途不同。'},
+  q8:{r:'正確！臺灣政府頒勳章表揚磯永吉，並每年致贈蓬萊米，以感謝他對臺灣農業的貢獻。',w:'答案是 B。政府以頒勳章與贈送蓬萊米的方式感謝磯永吉的貢獻。'},
+  q9:{r:'正確！原住民族就地取材，將米放入竹子中火烤，糯米製成各式糕點，展現獨特的飲食文化。',w:'答案是 C。壽司御飯糰是日本文化；河粉是越南；米粉是中國移民帶來的。'},
+  q10:{r:'正確！河粉（米做成細條）配香料及湯，是越南移民帶來的米食文化。',w:'答案是 C。河粉是越南移民帶來的米食，壽司是日本文化，年糕湯圓是漢人傳統。'},
+  q11:{r:'正確！國際交流頻繁，異國美食引入，讓民眾有了更多元的飲食選擇，米食消費量因此下降。',w:'答案是 C。飲食選擇多元化是消費下降的主因，並非政府禁令或品質問題。'},
+  q12:{r:'正確！政府舉辦文化宣導活動、推動食米教育，是課文提到的促進米食傳承措施。',w:'答案是 A。政府是以宣導、教育方式鼓勵米食，並未採取強制或禁止手段。'},
+  q13:{r:'正確！課文提到民間廠商開發米餅、米奶茶、米蛋糕等創新米食加工品。',w:'答案是 A。課文明確提到米餅、米奶茶、米蛋糕是民間廠商開發的創新米食。'},
+  q14:{r:'正確！海水含有鹽分，對稻作有害而非有益，課文中也未提到此論點，這是錯誤的敘述。',w:'答案是 D。海水含鹽分，對水稻生長有害，課文並未提到此為有利因素。'},
+  q15:{r:'正確！不同時期來臺的各族群各帶來獨特飲食文化與米食習慣，彼此交融，形成多元的臺灣米食文化。',w:'答案是 B。多元米食文化是各族群飲食文化長期交融的結果，並非政府規定或氣候單一造成。'}
+};
+
+function choose(qid, btn, val) {
+  if (answers[qid] !== undefined) return;
+  const correct = mcCorrect[qid];
+  const btns = document.querySelectorAll('#'+qid+' .opt-btn');
+  btns.forEach(b => b.disabled = true);
+  const fb = document.getElementById(qid+'-fb');
+  const isRight = val === correct;
+  if (isRight) {
+    btn.classList.add('correct');
+    btn.querySelector('.circle').textContent = '✓';
+    fb.className = 'feedback correct show';
+    fb.textContent = '✅ ' + mcFeedback[qid].r;
+    answers[qid] = true;
+  } else {
+    btn.classList.add('wrong');
+    btn.querySelector('.circle').textContent = '✗';
+    btns.forEach(b => {
+      const m = b.onclick?.toString().match(/'([A-D])'\)$/);
+      if (m && m[1] === correct) b.classList.add('correct');
+    });
+    fb.className = 'feedback wrong show';
+    fb.textContent = '❌ ' + mcFeedback[qid].w;
+    answers[qid] = false;
+  }
+  updateProgress();
+}
+
+function checkFill(fid, accepted, msg) {
+  if (answers[fid] !== undefined) return;
+  const inp = document.getElementById(fid+'-inp');
+  const val = inp.value.trim();
+  const fb = document.getElementById(fid+'-fb');
+  const isRight = accepted.some(a => val === a);
+  inp.disabled = true;
+  document.getElementById(fid+'-check').disabled = true;
+  if (isRight) {
+    inp.classList.add('correct');
+    fb.className = 'feedback correct show';
+    fb.textContent = '✅ ' + msg;
+    answers[fid] = true;
+  } else {
+    inp.classList.add('wrong');
+    fb.className = 'feedback wrong show';
+    fb.textContent = '❌ 答案是「' + accepted[0] + '」。' + msg;
+    answers[fid] = false;
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = Object.keys(answers).length;
+  const pct = Math.round(done / TOTAL * 100);
+  document.getElementById('progBar').style.width = pct + '%';
+  document.getElementById('progLabel').textContent = `已作答 ${done} / ${TOTAL} 題`;
+}
+
+function submitAll() {
+  const scored = Object.values(answers).filter(v => v === true).length;
+  const pct = Math.round(scored / TOTAL * 100);
+  const panel = document.getElementById('resultPanel');
+  panel.classList.add('show');
+  document.getElementById('resultScore').innerHTML = `${pct}<span>分</span>`;
+  const msgs = [[90,'🌾 米食達人！全部掌握了！'],[70,'👍 掌握得不錯，再複習看看！'],[50,'📖 需要多複習，再加油！'],[0,'💪 沒關係，重新再試一次！']];
+  const msg = msgs.find(m => pct >= m[0]);
+  document.getElementById('resultMsg').textContent = `${scored} / ${TOTAL} 題答對 — ${msg[1]}`;
+  setTimeout(() => { document.getElementById('resultBar').style.width = pct + '%'; }, 100);
+  panel.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

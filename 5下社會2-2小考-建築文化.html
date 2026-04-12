@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二課測驗｜建築如何反映文化與生活方式？</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#2C7A4B;--forest-light:#DFF2E8;--forest-mid:#5AAB7A;
+  --rust:#C05C2A;--rust-light:#FDEEE5;
+  --green:#3D9E5E;--green-light:#DFF2E8;
+  --red:#D94040;--red-light:#FDEBEB;
+  --ink:#1A2B1F;--ink2:#3A5545;--muted:#7A9B88;
+  --bg:#F5FAF6;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+.header{background:linear-gradient(135deg,#1A5C35 0%,#2C7A4B 55%,#4AAA6E 100%);color:#fff;padding:40px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.header::after{content:'🏠';position:absolute;font-size:180px;opacity:.07;right:-20px;top:-20px;transform:rotate(10deg);pointer-events:none}
+.lesson-tag{display:inline-block;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.45);border-radius:999px;padding:4px 18px;font-size:12px;letter-spacing:2px;margin-bottom:14px}
+.header h1{font-family:'Noto Serif TC',serif;font-size:clamp(20px,5vw,32px);font-weight:900;letter-spacing:1px;line-height:1.3;margin-bottom:10px}
+.header p{font-size:14px;opacity:.85}
+.wave-sep{display:block;margin-top:-2px}
+
+.section-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--white);background:var(--forest);padding:10px 20px;border-radius:12px;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+
+.progress-wrap{max-width:720px;margin:0 auto;padding:20px 20px 0}
+.progress-bar-bg{height:8px;background:#C8E2D0;border-radius:4px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(to right,var(--forest),var(--forest-mid));border-radius:4px;transition:width .5s ease}
+.progress-label{text-align:right;font-size:12px;color:var(--muted);margin-top:5px}
+
+.container{max-width:720px;margin:0 auto;padding:16px 20px 60px}
+
+.q-card{background:var(--white);border-radius:18px;box-shadow:0 4px 24px rgba(44,122,75,.10),0 1px 4px rgba(0,0,0,.05);margin-bottom:18px;overflow:hidden;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.q-num{display:flex;align-items:center;gap:10px;background:var(--forest-light);padding:11px 18px 9px;border-bottom:2px solid #B8DECA}
+.q-num .num{width:30px;height:30px;background:var(--forest);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.q-num .type-badge{font-size:11px;font-weight:700;background:var(--forest);color:#fff;border-radius:999px;padding:2px 10px}
+.q-body{padding:16px 18px 8px}
+.q-text{font-size:15px;line-height:1.8;font-weight:500;margin-bottom:12px}
+
+.opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.opt-btn{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:10px 13px;background:#F5FAF6;border:2px solid #BDD8C6;border-radius:10px;cursor:pointer;font-size:14px;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;transition:all .17s;line-height:1.6}
+.opt-btn:hover:not(:disabled){background:var(--forest-light);border-color:var(--forest);color:var(--ink)}
+.opt-btn .circle{width:23px;height:23px;border-radius:50%;border:2px solid #9ABBA8;background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .17s}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:#1C5C38}
+.opt-btn.correct .circle{background:var(--green);border-color:var(--green);color:#fff}
+.opt-btn.wrong{background:var(--red-light);border-color:var(--red);color:var(--red)}
+.opt-btn.wrong .circle{background:var(--red);border-color:var(--red);color:#fff}
+.opt-btn:disabled{cursor:default}
+
+.feedback{margin:4px 0 10px;padding:9px 13px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.correct{background:var(--green-light);color:#1C5C38;border-left:4px solid var(--green)}
+.feedback.wrong{background:var(--red-light);color:var(--red);border-left:4px solid var(--red)}
+.feedback.show{display:block}
+
+.fill-input{width:100%;padding:10px 14px;border:2px solid #BDD8C6;border-radius:10px;font-size:15px;font-family:'Noto Sans TC',sans-serif;color:var(--ink);background:#F5FAF6;margin-bottom:8px;transition:border-color .2s}
+.fill-input:focus{outline:none;border-color:var(--forest)}
+.fill-input.correct{border-color:var(--green);background:var(--green-light)}
+.fill-input.wrong{border-color:var(--red);background:var(--red-light)}
+
+.check-btn{padding:8px 20px;background:var(--forest);color:#fff;border:none;border-radius:999px;font-size:14px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:10px;transition:background .2s}
+.check-btn:hover{background:#1A5C35}
+.check-btn:disabled{background:#88B898;cursor:default}
+
+.result-panel{background:linear-gradient(135deg,#1A5C35,#2C7A4B);color:#fff;border-radius:20px;padding:32px 24px;text-align:center;margin-top:16px;display:none;box-shadow:0 8px 32px rgba(44,122,75,.25)}
+.result-panel.show{display:block}
+.result-score{font-family:'Noto Serif TC',serif;font-size:64px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:8px}
+.result-score span{font-size:28px;font-weight:400;opacity:.8}
+.result-msg{font-size:16px;opacity:.9;margin-bottom:20px}
+.result-bar-bg{height:10px;background:rgba(255,255,255,.25);border-radius:5px;overflow:hidden;margin-bottom:24px}
+.result-bar-fill{height:100%;background:#fff;border-radius:5px;transition:width 1s ease}
+.retry-btn{display:inline-block;padding:12px 32px;background:#fff;color:var(--forest);border:none;border-radius:999px;font-size:15px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:transform .15s}
+.retry-btn:hover{transform:scale(1.04)}
+
+.submit-wrap{text-align:center;margin:24px 0}
+.submit-btn{padding:14px 40px;background:linear-gradient(135deg,var(--forest),#4AAA6E);color:#fff;border:none;border-radius:999px;font-size:16px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(44,122,75,.30);transition:transform .15s,box-shadow .15s}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(44,122,75,.35)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="lesson-tag">第二課 ｜ 五年級下冊 社會科</div>
+  <h1>建築如何反映<br>文化與生活方式？</h1>
+  <p>選擇題 15 題 ＋ 填充題 8 題，共 23 題</p>
+  <svg class="wave-sep" viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,24 C360,44 1080,4 1440,24 L1440,40 L0,40 Z" fill="#F5FAF6"/>
+  </svg>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progBar" style="width:0%"></div></div>
+  <div class="progress-label" id="progLabel">已作答 0 / 23 題</div>
+</div>
+
+<div class="container">
+
+<div class="section-title">📝 一、選擇題（共 15 題）</div>
+
+<!-- Q1 -->
+<div class="q-card" style="animation-delay:.04s">
+  <div class="q-num"><div class="num">1</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">觀察臺灣各時期的建築，我們可以了解到什麼？</div>
+    <div class="opts" id="q1">
+      <button class="opt-btn" onclick="choose('q1',this,'A')"><div class="circle">A</div>只能看出建築材料的差異</button>
+      <button class="opt-btn" onclick="choose('q1',this,'B')"><div class="circle">B</div>可以了解各族群的生活智慧，以及臺灣歷史與文化的變遷</button>
+      <button class="opt-btn" onclick="choose('q1',this,'C')"><div class="circle">C</div>可以判斷哪個族群的建築技術最高超</button>
+      <button class="opt-btn" onclick="choose('q1',this,'D')"><div class="circle">D</div>只能了解日治時期的建築風格</button>
+    </div>
+    <div class="feedback" id="q1-fb"></div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="q-card" style="animation-delay:.06s">
+  <div class="q-num"><div class="num">2</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">干欄式住屋「架高地板」的主要目的是？</div>
+    <div class="opts" id="q2">
+      <button class="opt-btn" onclick="choose('q2',this,'A')"><div class="circle">A</div>居高臨下欣賞風景，展示家族地位</button>
+      <button class="opt-btn" onclick="choose('q2',this,'B')"><div class="circle">B</div>防止洪水、野生動物及鼠類侵擾，並保持室內通風乾燥</button>
+      <button class="opt-btn" onclick="choose('q2',this,'C')"><div class="circle">C</div>方便向外商交易，提升貿易效率</button>
+      <button class="opt-btn" onclick="choose('q2',this,'D')"><div class="circle">D</div>節省地面建材，降低建造成本</button>
+    </div>
+    <div class="feedback" id="q2-fb"></div>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="q-card" style="animation-delay:.08s">
+  <div class="q-num"><div class="num">3</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">干欄式住屋的主要建材是？</div>
+    <div class="opts" id="q3">
+      <button class="opt-btn" onclick="choose('q3',this,'A')"><div class="circle">A</div>鋼筋、水泥、玻璃</button>
+      <button class="opt-btn" onclick="choose('q3',this,'B')"><div class="circle">B</div>石材、磚塊、石灰</button>
+      <button class="opt-btn" onclick="choose('q3',this,'C')"><div class="circle">C</div>木頭、竹子、茅草等天然材料</button>
+      <button class="opt-btn" onclick="choose('q3',this,'D')"><div class="circle">D</div>紅磚、瓦片、水泥</button>
+    </div>
+    <div class="feedback" id="q3-fb"></div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="q-card" style="animation-delay:.10s">
+  <div class="q-num"><div class="num">4</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">十三行遺址出土了許多柱洞遺跡，考古學家從此推測什麼？</div>
+    <div class="opts" id="q4">
+      <button class="opt-btn" onclick="choose('q4',this,'A')"><div class="circle">A</div>史前人已在此建造石造神廟</button>
+      <button class="opt-btn" onclick="choose('q4',this,'B')"><div class="circle">B</div>史前人為防止洪水與野獸侵擾，已建造干欄式住屋</button>
+      <button class="opt-btn" onclick="choose('q4',this,'C')"><div class="circle">C</div>漢人移民很早就在此定居並建城</button>
+      <button class="opt-btn" onclick="choose('q4',this,'D')"><div class="circle">D</div>日本人曾在此建造木造建築</button>
+    </div>
+    <div class="feedback" id="q4-fb"></div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card" style="animation-delay:.12s">
+  <div class="q-num"><div class="num">5</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">清帝國時期漢人移民建造的「四合院」，四面房屋圍繞中庭的設計，主要展現了什麼文化特色？</div>
+    <div class="opts" id="q5">
+      <button class="opt-btn" onclick="choose('q5',this,'A')"><div class="circle">A</div>重視商業貿易，方便接待客人</button>
+      <button class="opt-btn" onclick="choose('q5',this,'B')"><div class="circle">B</div>重視家族團結，家族人口增加時可向左右擴建</button>
+      <button class="opt-btn" onclick="choose('q5',this,'C')"><div class="circle">C</div>重視宗教信仰，中庭用作祭祀神明</button>
+      <button class="opt-btn" onclick="choose('q5',this,'D')"><div class="circle">D</div>為了抵禦強烈颱風，選擇封閉式設計</button>
+    </div>
+    <div class="feedback" id="q5-fb"></div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="q-card" style="animation-delay:.14s">
+  <div class="q-num"><div class="num">6</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">四合院的院子「多半朝南」，屋頂設計成「斜坡形狀」，分別是為了解決什麼問題？</div>
+    <div class="opts" id="q6">
+      <button class="opt-btn" onclick="choose('q6',this,'A')"><div class="circle">A</div>朝南：方便觀賞日落；斜屋頂：美觀好看</button>
+      <button class="opt-btn" onclick="choose('q6',this,'B')"><div class="circle">B</div>朝南：避開北方寒冷季風；斜屋頂：方便雨水排出</button>
+      <button class="opt-btn" onclick="choose('q6',this,'C')"><div class="circle">C</div>朝南：迎接東南季風；斜屋頂：防止地震損壞</button>
+      <button class="opt-btn" onclick="choose('q6',this,'D')"><div class="circle">D</div>朝南：方便農耕；斜屋頂：增加儲物空間</button>
+    </div>
+    <div class="feedback" id="q6-fb"></div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="q-card" style="animation-delay:.16s">
+  <div class="q-num"><div class="num">7</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">四合院牆上的「檻孔」有什麼功能？</div>
+    <div class="opts" id="q7">
+      <button class="opt-btn" onclick="choose('q7',this,'A')"><div class="circle">A</div>提供通風，讓室內保持涼爽</button>
+      <button class="opt-btn" onclick="choose('q7',this,'B')"><div class="circle">B</div>裝飾用途，展現家族藝術品味</button>
+      <button class="opt-btn" onclick="choose('q7',this,'C')"><div class="circle">C</div>向外觀察外面動靜，或在防禦時使用</button>
+      <button class="opt-btn" onclick="choose('q7',this,'D')"><div class="circle">D</div>讓陽光照入，節省燈火用量</button>
+    </div>
+    <div class="feedback" id="q7-fb"></div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="q-card" style="animation-delay:.18s">
+  <div class="q-num"><div class="num">8</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">傳統市街（街屋）的建築特色是？（選出「最完整」的描述）</div>
+    <div class="opts" id="q8">
+      <button class="opt-btn" onclick="choose('q8',this,'A')"><div class="circle">A</div>四面牆圍繞中庭，展現家族凝聚</button>
+      <button class="opt-btn" onclick="choose('q8',this,'B')"><div class="circle">B</div>狹長型商店住宅，左右共用牆壁；一樓店鋪、二樓住家，以木梯連接</button>
+      <button class="opt-btn" onclick="choose('q8',this,'C')"><div class="circle">C</div>架高地板、木頭竹子建造，防止洪水侵擾</button>
+      <button class="opt-btn" onclick="choose('q8',this,'D')"><div class="circle">D</div>融合西式圓柱與日式榻榻米，展現現代美感</button>
+    </div>
+    <div class="feedback" id="q8-fb"></div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="q-card" style="animation-delay:.20s">
+  <div class="q-num"><div class="num">9</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">清帝國時期，漢人移民在市街興建寺廟，以下描述哪項「正確」？</div>
+    <div class="opts" id="q9">
+      <button class="opt-btn" onclick="choose('q9',this,'A')"><div class="circle">A</div>寺廟完全由日本工匠設計建造</button>
+      <button class="opt-btn" onclick="choose('q9',this,'B')"><div class="circle">B</div>寺廟供奉從家鄉帶來的神明，雕刻彩繪由漢人工匠建造，有時甚至以西方人形象雕刻</button>
+      <button class="opt-btn" onclick="choose('q9',this,'C')"><div class="circle">C</div>寺廟只是商業建築，並非信仰場所</button>
+      <button class="opt-btn" onclick="choose('q9',this,'D')"><div class="circle">D</div>寺廟由政府強制建造，居民並不在意</button>
+    </div>
+    <div class="feedback" id="q9-fb"></div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card" style="animation-delay:.22s">
+  <div class="q-num"><div class="num">10</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">日治時期，政府在哪些地方興建西式公共建築，成為當地地標？</div>
+    <div class="opts" id="q10">
+      <button class="opt-btn" onclick="choose('q10',this,'A')"><div class="circle">A</div>只在原住民族聚落興建</button>
+      <button class="opt-btn" onclick="choose('q10',this,'B')"><div class="circle">B</div>政府機關、火車站、郵局與學校等公共場所</button>
+      <button class="opt-btn" onclick="choose('q10',this,'C')"><div class="circle">C</div>只在漢人聚落的廟宇旁興建</button>
+      <button class="opt-btn" onclick="choose('q10',this,'D')"><div class="circle">D</div>只在高山地區的軍事要地興建</button>
+    </div>
+    <div class="feedback" id="q10-fb"></div>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="q-card" style="animation-delay:.24s">
+  <div class="q-num"><div class="num">11</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">日治時期公共建築採用鋼筋、水泥、新式紅磚的主要原因是？</div>
+    <div class="opts" id="q11">
+      <button class="opt-btn" onclick="choose('q11',this,'A')"><div class="circle">A</div>這些建材在日本最便宜，可節省建設費用</button>
+      <button class="opt-btn" onclick="choose('q11',this,'B')"><div class="circle">B</div>臺灣位於地震帶、氣候炎熱多雨，需要提升耐震與防火功能</button>
+      <button class="opt-btn" onclick="choose('q11',this,'C')"><div class="circle">C</div>原住民族傳統建材不耐颱風，才改換這些材料</button>
+      <button class="opt-btn" onclick="choose('q11',this,'D')"><div class="circle">D</div>清帝國時期已規定必須使用這些建材</button>
+    </div>
+    <div class="feedback" id="q11-fb"></div>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="q-card" style="animation-delay:.26s">
+  <div class="q-num"><div class="num">12</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">臺中市的「一德洋樓」融合了哪三種建築風格？</div>
+    <div class="opts" id="q12">
+      <button class="opt-btn" onclick="choose('q12',this,'A')"><div class="circle">A</div>荷蘭式、西班牙式、美式</button>
+      <button class="opt-btn" onclick="choose('q12',this,'B')"><div class="circle">B</div>漢人三合院、日式、西式</button>
+      <button class="opt-btn" onclick="choose('q12',this,'C')"><div class="circle">C</div>原住民干欄式、清代四合院、現代玻璃帷幕</button>
+      <button class="opt-btn" onclick="choose('q12',this,'D')"><div class="circle">D</div>英式哥德、法式巴洛克、德式包浩斯</button>
+    </div>
+    <div class="feedback" id="q12-fb"></div>
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="q-card" style="animation-delay:.28s">
+  <div class="q-num"><div class="num">13</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">下列哪一棟建築位於「臺北市」？</div>
+    <div class="opts" id="q13">
+      <button class="opt-btn" onclick="choose('q13',this,'A')"><div class="circle">A</div>摘星山莊（四合院）</button>
+      <button class="opt-btn" onclick="choose('q13',this,'B')"><div class="circle">B</div>一德洋樓（融合式洋樓）</button>
+      <button class="opt-btn" onclick="choose('q13',this,'C')"><div class="circle">C</div>日新國小紅樓（紅磚建築）</button>
+      <button class="opt-btn" onclick="choose('q13',this,'D')"><div class="circle">D</div>以上皆非</button>
+    </div>
+    <div class="feedback" id="q13-fb"></div>
+  </div>
+</div>
+
+<!-- Q14 -->
+<div class="q-card" style="animation-delay:.30s">
+  <div class="q-num"><div class="num">14</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">日治時期部分建築修復後再利用的方式是？</div>
+    <div class="opts" id="q14">
+      <button class="opt-btn" onclick="choose('q14',this,'A')"><div class="circle">A</div>全部拆除改建現代大樓</button>
+      <button class="opt-btn" onclick="choose('q14',this,'B')"><div class="circle">B</div>成為展覽館或藝文空間，讓人認識當時文化與生活</button>
+      <button class="opt-btn" onclick="choose('q14',this,'C')"><div class="circle">C</div>改建成原住民族傳統聚落</button>
+      <button class="opt-btn" onclick="choose('q14',this,'D')"><div class="circle">D</div>封閉禁止民眾進入，作為政府機密場所</button>
+    </div>
+    <div class="feedback" id="q14-fb"></div>
+  </div>
+</div>
+
+<!-- Q15 -->
+<div class="q-card" style="animation-delay:.32s">
+  <div class="q-num"><div class="num">15</div><span class="type-badge">選擇題</span></div>
+  <div class="q-body">
+    <div class="q-text">臺灣各時期建築共同體現的核心精神是？</div>
+    <div class="opts" id="q15">
+      <button class="opt-btn" onclick="choose('q15',this,'A')"><div class="circle">A</div>完全照搬外來建築樣式，不加任何本地元素</button>
+      <button class="opt-btn" onclick="choose('q15',this,'B')"><div class="circle">B</div>追求豪華外觀，不考慮生活實用性</button>
+      <button class="opt-btn" onclick="choose('q15',this,'C')"><div class="circle">C</div>因地制宜、就地取材，根據自然環境與生活需求設計</button>
+      <button class="opt-btn" onclick="choose('q15',this,'D')"><div class="circle">D</div>以石材為主，強調永久保存</button>
+    </div>
+    <div class="feedback" id="q15-fb"></div>
+  </div>
+</div>
+
+<!-- 填充題 -->
+<div class="section-title">✏️ 二、填充題（共 8 題）</div>
+
+<!-- F1 -->
+<div class="q-card" style="animation-delay:.34s">
+  <div class="q-num"><div class="num">16</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">原住民族建造的干欄式住屋，採用木頭、竹子和茅草等天然材料，並將房屋架高，體現了「<span style="color:var(--forest);font-weight:700;">＿＿＿＿</span>」的生活智慧。（填四字詞語）</div>
+    <input class="fill-input" id="f1-inp" type="text" placeholder="請輸入答案" maxlength="6">
+    <button class="check-btn" id="f1-check" onclick="checkFill('f1',['因地制宜','就地取材'],'正確！干欄式住屋充分展現因地制宜、就地取材的生活智慧。')">確認答案</button>
+    <div class="feedback" id="f1-fb"></div>
+  </div>
+</div>
+
+<!-- F2 -->
+<div class="q-card" style="animation-delay:.36s">
+  <div class="q-num"><div class="num">17</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">十三行遺址出土許多<span style="color:var(--forest);font-weight:700;">＿＿洞</span>遺跡，顯示史前人類已建造干欄式住屋，以防止洪水與野獸侵擾。</div>
+    <input class="fill-input" id="f2-inp" type="text" placeholder="填入兩字" maxlength="4">
+    <button class="check-btn" id="f2-check" onclick="checkFill('f2',['柱'],'正確！柱洞遺跡是干欄式住屋存在的重要考古證據。')">確認答案</button>
+    <div class="feedback" id="f2-fb"></div>
+  </div>
+</div>
+
+<!-- F3 -->
+<div class="q-card" style="animation-delay:.38s">
+  <div class="q-num"><div class="num">18</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">臺中市的「摘星山莊」是清帝國時期典型的<span style="color:var(--forest);font-weight:700;">＿＿院</span>建築，中間有庭院，四面圍有房屋，展現漢人重視家族團結的文化。</div>
+    <input class="fill-input" id="f3-inp" type="text" placeholder="填入兩字" maxlength="4">
+    <button class="check-btn" id="f3-check" onclick="checkFill('f3',['四合'],'正確！四合院是清帝國時期漢人聚落的典型建築形式。')">確認答案</button>
+    <div class="feedback" id="f3-fb"></div>
+  </div>
+</div>
+
+<!-- F4 -->
+<div class="q-card" style="animation-delay:.40s">
+  <div class="q-num"><div class="num">19</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">清帝國時期，漢人移民在四合院牆上留有「<span style="color:var(--forest);font-weight:700;">＿＿孔</span>」，可向外觀察外面動靜，或在防禦敵人時使用，反映當時社會治安不穩定的背景。</div>
+    <input class="fill-input" id="f4-inp" type="text" placeholder="填入兩字" maxlength="4">
+    <button class="check-btn" id="f4-check" onclick="checkFill('f4',['檻'],'正確！檻孔是漢人移民在社會不穩定時期的防禦設計。')">確認答案</button>
+    <div class="feedback" id="f4-fb"></div>
+  </div>
+</div>
+
+<!-- F5 -->
+<div class="q-card" style="animation-delay:.42s">
+  <div class="q-num"><div class="num">20</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">傳統市街中的「<span style="color:var(--forest);font-weight:700;">＿＿</span>」是一種狹長型的商店住宅，左右鄰居共用牆壁，一樓作為店鋪，二樓作為住家，常見於熱鬧的商業街道。（填兩字）</div>
+    <input class="fill-input" id="f5-inp" type="text" placeholder="請輸入答案" maxlength="4">
+    <button class="check-btn" id="f5-check" onclick="checkFill('f5',['街屋'],'正確！街屋是清帝國時期漢人在市街建造的典型商住合一建築。')">確認答案</button>
+    <div class="feedback" id="f5-fb"></div>
+  </div>
+</div>
+
+<!-- F6 -->
+<div class="q-card" style="animation-delay:.44s">
+  <div class="q-num"><div class="num">21</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">日治時期，臺北市日新國小的「<span style="color:var(--forest);font-weight:700;">＿＿樓</span>」是以紅磚為主要建材的學校建築，風格樸實典雅，修復後成為歷史建築，仍持續作為校舍使用。（填一字）</div>
+    <input class="fill-input" id="f6-inp" type="text" placeholder="填入一字" maxlength="3">
+    <button class="check-btn" id="f6-check" onclick="checkFill('f6',['紅'],'正確！日新國小「紅樓」是日治時期紅磚建築的代表。')">確認答案</button>
+    <div class="feedback" id="f6-fb"></div>
+  </div>
+</div>
+
+<!-- F7 -->
+<div class="q-card" style="animation-delay:.46s">
+  <div class="q-num"><div class="num">22</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">臺中市的「一德洋樓」，一樓設計西式<span style="color:var(--forest);font-weight:700;">＿＿柱</span>與拱廊外觀；二樓使用鋼筋水泥加強耐震；部分室內為日式設計，鋪設榻榻米。（填兩字）</div>
+    <input class="fill-input" id="f7-inp" type="text" placeholder="填入兩字" maxlength="4">
+    <button class="check-btn" id="f7-check" onclick="checkFill('f7',['圓','圓形'],'正確！一德洋樓的西式圓柱是其最具代表性的建築特色之一。')">確認答案</button>
+    <div class="feedback" id="f7-fb"></div>
+  </div>
+</div>
+
+<!-- F8 -->
+<div class="q-card" style="animation-delay:.48s">
+  <div class="q-num"><div class="num">23</div><span class="type-badge">填充題</span></div>
+  <div class="q-body">
+    <div class="q-text">日治時期部分建築修復後再利用，成為「展覽館或<span style="color:var(--forest);font-weight:700;">＿＿空間</span>」，讓人認識當時的文化與生活樣貌，發揮了文化保存的功能。（填兩字）</div>
+    <input class="fill-input" id="f8-inp" type="text" placeholder="請輸入答案" maxlength="4">
+    <button class="check-btn" id="f8-check" onclick="checkFill('f8',['藝文','藝術'],'正確！日治建築活化再利用後成為藝文空間，延續了歷史文化的價值。')">確認答案</button>
+    <div class="feedback" id="f8-fb"></div>
+  </div>
+</div>
+
+<div class="submit-wrap">
+  <button class="submit-btn" onclick="submitAll()">📊 查看最終成績</button>
+</div>
+
+<div class="result-panel" id="resultPanel">
+  <div class="result-score" id="resultScore">—<span>分</span></div>
+  <div class="result-msg" id="resultMsg"></div>
+  <div class="result-bar-bg"><div class="result-bar-fill" id="resultBar" style="width:0%"></div></div>
+  <button class="retry-btn" onclick="location.reload()">🔄 重新作答</button>
+</div>
+
+</div>
+
+<script>
+const TOTAL = 23;
+const answers = {};
+
+const mcCorrect = {
+  q1:'B',q2:'B',q3:'C',q4:'B',q5:'B',
+  q6:'B',q7:'C',q8:'B',q9:'B',q10:'B',
+  q11:'B',q12:'B',q13:'C',q14:'B',q15:'C'
+};
+const mcFeedback = {
+  q1:{r:'正確！觀察各時期建築，可以了解各族群的生活智慧，也是臺灣歷史與文化變遷的重要見證。',w:'答案是 B。建築不只反映材料，更呈現各族群的文化、生活智慧與歷史變遷。'},
+  q2:{r:'正確！干欄式住屋架高的主要目的是防止洪水、野生動物及鼠類侵擾，並保持室內通風乾燥。',w:'答案是 B。架高是實際生活需求的應對，而非展示地位或貿易用途。'},
+  q3:{r:'正確！干欄式住屋就地取材，使用木頭、竹子、茅草等天然材料建造。',w:'答案是 C。干欄式是原住民族的傳統建築，以天然材料就地取材，不使用鋼筋水泥或磚石。'},
+  q4:{r:'正確！十三行遺址的柱洞遺跡，讓考古學家推測史前人已建造干欄式住屋，以防止洪水與野獸侵擾。',w:'答案是 B。柱洞遺跡是干欄式住屋存在的重要考古證據，史前人為了實際生活需求而建造。'},
+  q5:{r:'正確！四合院四面圍繞的設計，展現漢人重視家族團結的文化，家族人口增加時還可向左右擴建。',w:'答案是 B。四合院的核心文化意涵是重視家族團結，而非商業或宗教功能。'},
+  q6:{r:'正確！院子朝南是為了避開冬季北方寒冷季風；屋頂做成斜坡是為了讓雨水順利排出。',w:'答案是 B。這是漢人移民因應臺灣氣候環境的生活智慧展現。'},
+  q7:{r:'正確！檻孔是漢人移民在社會治安不穩定時期的防禦設計，可向外觀察動靜或防禦敵人。',w:'答案是 C。檻孔是防禦功能，反映清帝國時期移民社會治安不穩定的背景。'},
+  q8:{r:'正確！街屋是狹長型商店住宅，左右共用牆壁，一樓店鋪、二樓住家，以木梯連接，生活工作兼顧。',w:'答案是 B。四合院是圍繞中庭；干欄式是架高地板；融合式洋樓是日治建築，都與街屋不同。'},
+  q9:{r:'正確！寺廟供奉移民從家鄉帶來的神明，雕刻彩繪由漢人工匠建造，有時以西方人形象雕刻，展現文化交流。',w:'答案是 B。寺廟是漢人移民重要的精神信仰場所，由漢人工匠建造，展現豐富文化特色。'},
+  q10:{r:'正確！日治時期政府在政府機關、火車站、郵局與學校等公共場所興建西式建築，成為各地地標。',w:'答案是 B。日治時期公共建築廣泛出現在各類公共場所，而非只在特定族群聚落。'},
+  q11:{r:'正確！臺灣位於地震帶，氣候炎熱多雨，日治時期因此採用鋼筋水泥等建材，提升耐震與防火功能，並設計窗戶加強通風採光。',w:'答案是 B。採用新式建材是為了應對臺灣的自然環境條件，特別是地震與潮濕氣候。'},
+  q12:{r:'正確！一德洋樓融合漢人三合院、日式與西式三種建築風格，是文化交融的典型代表。',w:'答案是 B。一德洋樓融合了漢、日、西三種風格，是日治時期民間建築文化交融的最佳例證。'},
+  q13:{r:'正確！日新國小紅樓位於臺北市；摘星山莊和一德洋樓都位於臺中市。',w:'答案是 C。日新國小紅樓在臺北市；摘星山莊和一德洋樓都在臺中市。'},
+  q14:{r:'正確！部分日治時期建築修復後成為展覽館或藝文空間，讓後人得以認識當時的文化與生活。',w:'答案是 B。舊建築活化再利用成為文化場所，是保存歷史記憶的重要方式。'},
+  q15:{r:'正確！臺灣各時期建築都展現「因地制宜、就地取材」的核心精神，根據當地自然環境與生活需求設計。',w:'答案是 C。因地制宜、就地取材是貫穿臺灣各時期建築的共同核心精神。'}
+};
+
+function choose(qid, btn, val) {
+  if (answers[qid] !== undefined) return;
+  const correct = mcCorrect[qid];
+  const btns = document.querySelectorAll('#'+qid+' .opt-btn');
+  btns.forEach(b => b.disabled = true);
+  const fb = document.getElementById(qid+'-fb');
+  const isRight = val === correct;
+  if (isRight) {
+    btn.classList.add('correct');
+    btn.querySelector('.circle').textContent = '✓';
+    fb.className = 'feedback correct show';
+    fb.textContent = '✅ ' + mcFeedback[qid].r;
+    answers[qid] = true;
+  } else {
+    btn.classList.add('wrong');
+    btn.querySelector('.circle').textContent = '✗';
+    btns.forEach(b => {
+      const m = b.onclick?.toString().match(/'([A-D])'\)$/);
+      if (m && m[1] === correct) b.classList.add('correct');
+    });
+    fb.className = 'feedback wrong show';
+    fb.textContent = '❌ ' + mcFeedback[qid].w;
+    answers[qid] = false;
+  }
+  updateProgress();
+}
+
+function checkFill(fid, accepted, msg) {
+  if (answers[fid] !== undefined) return;
+  const inp = document.getElementById(fid+'-inp');
+  const val = inp.value.trim();
+  const fb = document.getElementById(fid+'-fb');
+  const isRight = accepted.some(a => val === a);
+  inp.disabled = true;
+  document.getElementById(fid+'-check').disabled = true;
+  if (isRight) {
+    inp.classList.add('correct');
+    fb.className = 'feedback correct show';
+    fb.textContent = '✅ ' + msg;
+    answers[fid] = true;
+  } else {
+    inp.classList.add('wrong');
+    fb.className = 'feedback wrong show';
+    fb.textContent = '❌ 答案是「' + accepted[0] + '」。' + msg;
+    answers[fid] = false;
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = Object.keys(answers).length;
+  document.getElementById('progBar').style.width = Math.round(done/TOTAL*100)+'%';
+  document.getElementById('progLabel').textContent = `已作答 ${done} / ${TOTAL} 題`;
+}
+
+function submitAll() {
+  const scored = Object.values(answers).filter(v=>v===true).length;
+  const pct = Math.round(scored/TOTAL*100);
+  const panel = document.getElementById('resultPanel');
+  panel.classList.add('show');
+  document.getElementById('resultScore').innerHTML = `${pct}<span>分</span>`;
+  const msgs=[[90,'🏠 建築達人！全部掌握了！'],[70,'👍 掌握得不錯，再複習看看！'],[50,'📖 需要多複習，再加油！'],[0,'💪 沒關係，重新再試一次！']];
+  const msg=msgs.find(m=>pct>=m[0]);
+  document.getElementById('resultMsg').textContent=`${scored} / ${TOTAL} 題答對 — ${msg[1]}`;
+  setTimeout(()=>{document.getElementById('resultBar').style.width=pct+'%';},100);
+  panel.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

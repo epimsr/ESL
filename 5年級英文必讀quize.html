@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>國小英文學習測驗（A 選擇 → B 填空 → C 文法）</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: #f1f5f9; color: #1e293b;
+    margin: 0; padding: 30px 20px; line-height: 1.6;
+  }
+  .container {
+    max-width: 920px; margin: 0 auto; background: white;
+    border-radius: 16px; padding: 36px 44px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+  }
+  h1 {
+    text-align: center; color: #1d4ed8; font-size: 1.75rem;
+    margin: 0 0 8px; border-bottom: 4px solid #2563eb; padding-bottom: 12px;
+  }
+  .subtitle {
+    text-align: center; color: #475569; font-size: 0.92rem; margin: 0 0 18px;
+  }
+
+  /* ====== 語速切換列 ====== */
+  .speed-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; background: white; border-radius: 999px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.10);
+    padding: 10px 22px; max-width: 480px;
+    margin: 0 auto 22px; flex-wrap: wrap;
+  }
+  .speed-label { font-size: 0.85rem; font-weight: 800; color: #475569; white-space: nowrap; }
+  .speed-btn {
+    font-size: 0.85rem; font-weight: 800;
+    border: 2px solid #e2e8f0; border-radius: 999px;
+    padding: 5px 16px; background: #f8fafc; color: #64748b;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .speed-btn:hover  { border-color: #93c5fd; background: #eff6ff; color: #1d4ed8; }
+  .speed-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+
+  /* ====== 全域進度 ====== */
+  .global-status {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 10px;
+    padding: 10px 18px; margin-bottom: 22px;
+    font-weight: 700; font-size: 0.92rem; color: #1e3a8a;
+    flex-wrap: wrap; gap: 8px;
+    position: sticky; top: 10px; z-index: 50;
+  }
+  .global-status .ok { color: #16a34a; }
+
+  /* ====== 部份大標 ====== */
+  .section {
+    margin: 30px 0;
+    border: 2px solid #e0e7ff;
+    border-radius: 14px;
+    padding: 18px 22px;
+    background: #fafbff;
+  }
+  .section h2 {
+    color: #0c4a6e;
+    background: linear-gradient(90deg, #dbeafe, transparent);
+    padding: 10px 16px;
+    border-left: 6px solid #2563eb;
+    border-radius: 6px;
+    font-size: 1.2rem; margin: 0 0 8px;
+  }
+  .section-info { color: #64748b; font-size: 0.85rem; margin: 0 0 14px 6px; }
+
+  /* ====== A / B / C 子段標題 ====== */
+  .subsection-label {
+    display: inline-block;
+    font-size: 0.95rem; font-weight: 800;
+    color: white; background: #2563eb;
+    padding: 5px 16px; border-radius: 8px;
+    margin: 22px 0 10px;
+  }
+  .subsection-label.b { background: #c2410c; }
+  .subsection-label.c { background: #0f766e; }
+  .subsection-hint {
+    display: inline-block; margin-left: 8px;
+    font-size: 0.82rem; color: #64748b; font-weight: 600;
+  }
+
+  /* ====== 題目卡片 ====== */
+  .q-card {
+    background: white; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  .q-card.correct { border-color: #16a34a; background: #f0fdf4; }
+  .q-card.wrong   { border-color: #dc2626; background: #fef2f2; }
+
+  .q-head {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px; flex-wrap: wrap;
+  }
+  .q-num {
+    font-weight: 800; color: #1d4ed8; font-size: 0.82rem;
+    background: #dbeafe; padding: 2px 9px; border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .q-type-tag {
+    font-size: 0.72rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px; flex-shrink: 0;
+  }
+  .q-type-tag.mc       { color: #7c3aed; background: #f3e8ff; }
+  .q-type-tag.fill     { color: #c2410c; background: #ffedd5; }
+  .q-type-tag.reorder  { color: #0f766e; background: #ccfbf1; }
+  .q-type-tag.grammar  { color: #4338ca; background: #e0e7ff; }
+
+  .q-text {
+    font-size: 0.98rem; color: #0f172a;
+    margin: 4px 0 8px; flex: 1 1 100%; font-weight: 600;
+  }
+  .q-text .target {
+    color: #b45309; background: #fef3c7;
+    padding: 1px 8px; border-radius: 6px; font-weight: 800;
+  }
+
+  /* ====== 選擇題選項 ====== */
+  .options {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 6px; margin-top: 4px;
+  }
+  .opt-btn {
+    background: white; border: 2px solid #cbd5e1; border-radius: 8px;
+    padding: 7px 12px; text-align: left; cursor: pointer;
+    font-size: 0.92rem; color: #1e293b; font-weight: 600;
+    transition: all 0.12s;
+    display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: #60a5fa; background: #eff6ff; }
+  .opt-btn:disabled { cursor: default; }
+  .opt-btn.selected-correct { background: #16a34a; border-color: #16a34a; color: white; }
+  .opt-btn.selected-wrong   { background: #dc2626; border-color: #dc2626; color: white; }
+  .opt-btn.show-correct     { background: #dcfce7; border-color: #16a34a; color: #166534; }
+  .opt-letter { font-weight: 800; color: #2563eb; margin-right: 4px; }
+  .opt-btn.selected-correct .opt-letter,
+  .opt-btn.selected-wrong .opt-letter { color: white; }
+  .opt-btn.show-correct .opt-letter { color: #166534; }
+  .opt-audio {
+    background: transparent; border: none; font-size: 0.88rem;
+    cursor: pointer; padding: 0 4px; flex-shrink: 0;
+    opacity: 0.65; transition: opacity 0.15s;
+  }
+  .opt-audio:hover { opacity: 1; }
+
+  /* ====== 填空題 ====== */
+  .fill-row { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+  .fill-input {
+    flex: 1; min-width: 180px;
+    padding: 8px 12px; font-size: 0.95rem; font-weight: 600;
+    border: 2px solid #cbd5e1; border-radius: 8px;
+    transition: all 0.12s; font-family: inherit;
+  }
+  .fill-input:focus { outline: none; border-color: #2563eb; background: #eff6ff; }
+  .fill-input:disabled { background: #f1f5f9; }
+  .fill-submit {
+    background: #2563eb; color: white; border: none;
+    border-radius: 8px; padding: 8px 18px;
+    font-size: 0.9rem; font-weight: 800; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .fill-submit:hover:not(:disabled) { background: #1d4ed8; }
+  .fill-submit:disabled { background: #94a3b8; cursor: default; }
+
+  /* ====== 重組題 ====== */
+  .reorder-area {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    min-height: 44px; padding: 8px 10px;
+    border: 2px dashed #cbd5e1; border-radius: 8px;
+    background: white; margin-bottom: 8px;
+  }
+  .reorder-area.answer-area { background: #eff6ff; border-color: #93c5fd; }
+  .word-chip {
+    background: #dbeafe; color: #1e3a8a;
+    border: 1.5px solid #93c5fd; border-radius: 6px;
+    padding: 5px 12px; font-size: 0.92rem; font-weight: 700;
+    cursor: pointer; transition: all 0.12s;
+    user-select: none;
+  }
+  .word-chip:hover { background: #bfdbfe; transform: translateY(-1px); }
+  .word-chip.placed { opacity: 0.35; pointer-events: none; }
+  .reorder-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .reorder-controls button {
+    background: #2563eb; color: white; border: none; border-radius: 8px;
+    padding: 6px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reorder-controls button:hover:not(:disabled) { background: #1d4ed8; }
+  .reorder-controls button:disabled { background: #94a3b8; cursor: default; }
+  .reorder-controls button.reset-btn { background: #64748b; }
+  .reorder-controls button.reset-btn:hover:not(:disabled) { background: #475569; }
+
+  /* ====== 回饋訊息 ====== */
+  .feedback {
+    margin-top: 8px; padding: 7px 12px; border-radius: 6px;
+    font-size: 0.88rem; font-weight: 700; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok  { background: #dcfce7; color: #166534; }
+  .feedback.bad { background: #fee2e2; color: #991b1b; }
+  .feedback .ans-line { font-weight: 600; color: #475569; margin-top: 2px; font-size: 0.83rem; }
+  .feedback .replay-btn {
+    margin-left: 8px;
+    background: #2563eb; color: white; border: none;
+    border-radius: 999px; padding: 2px 10px;
+    font-size: 0.78rem; font-weight: 700; cursor: pointer;
+  }
+  .feedback .replay-btn:hover { background: #1d4ed8; }
+
+  /* ====== 子段成績小條 ====== */
+  .subsection-score {
+    background: #f1f5f9; border-radius: 6px;
+    padding: 6px 12px; margin: 4px 0 12px;
+    font-size: 0.83rem; color: #475569; font-weight: 700;
+  }
+  .subsection-score .pct { color: #2563eb; }
+
+  /* ====== 部份成績大卡 ====== */
+  .section-score {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 2px solid #2563eb; border-radius: 10px;
+    padding: 12px 18px; margin-top: 16px;
+    font-weight: 800; color: #1e3a8a;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .section-score .pct { font-size: 1.3rem; color: #2563eb; }
+
+  /* ====== 控制按鈕 ====== */
+  .control-bar {
+    text-align: center; margin-top: 28px;
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+  .ctrl-btn {
+    background: #2563eb; color: white; border: none; border-radius: 999px;
+    padding: 11px 28px; font-size: 0.98rem; font-weight: 800;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .ctrl-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+  .ctrl-btn.secondary { background: white; color: #2563eb; border: 2px solid #2563eb; }
+  .ctrl-btn.secondary:hover { background: #eff6ff; }
+
+  /* ====== 最終總成績 ====== */
+  .result-box {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 2px solid #f59e0b; border-radius: 14px;
+    padding: 22px; text-align: center; margin-top: 22px; display: none;
+  }
+  .result-box.show { display: block; }
+  .result-title { font-size: 1.25rem; font-weight: 800; color: #78350f; }
+  .result-score { font-size: 2.4rem; font-weight: 800; color: #b45309; margin: 6px 0; }
+  .result-msg { font-size: 1rem; color: #78350f; }
+  .result-detail { margin-top: 10px; font-size: 0.9rem; color: #92400e; }
+  .result-meta {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+    gap: 14px; margin-top: 14px; padding: 10px 12px;
+    background: rgba(255,255,255,0.6); border-radius: 8px;
+    font-size: 0.88rem; color: #78350f; font-weight: 700;
+  }
+  .result-meta label { display: inline-flex; align-items: center; gap: 6px; }
+  .result-meta input {
+    border: 1.5px solid #f59e0b; border-radius: 6px;
+    padding: 4px 10px; font-size: 0.9rem; font-weight: 700;
+    color: #78350f; background: white; font-family: inherit;
+    width: 120px;
+  }
+  .result-meta input:focus { outline: none; border-color: #b45309; }
+  .result-actions {
+    display: flex; justify-content: center; gap: 10px;
+    margin-top: 14px; flex-wrap: wrap;
+  }
+  .result-actions button {
+    background: #b45309; color: white; border: none;
+    border-radius: 999px; padding: 8px 20px;
+    font-size: 0.92rem; font-weight: 800; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .result-actions button:hover { background: #78350f; transform: translateY(-1px); }
+  .result-actions button.secondary {
+    background: white; color: #b45309; border: 2px solid #b45309;
+  }
+  .result-actions button.secondary:hover { background: #fef3c7; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>📝 國小英文完整測驗</h1>
+  <p class="subtitle">每部份結構：<strong>A 選擇題 → B 填空題 → C 文法（8 題，含 3 題填空）</strong>。<br>A、B 順序皆打散且互不相同；作答後立即唸出正解整句，加深記憶。</p>
+
+  <div class="speed-bar">
+    <span class="speed-label">🔊 語速：</span>
+    <button class="speed-btn" onclick="setSpeed(0.25)" data-rate="0.25">慢 🐢</button>
+    <button class="speed-btn active" onclick="setSpeed(0.75)" data-rate="0.75">正常 🚶</button>
+    <button class="speed-btn" onclick="setSpeed(1.25)" data-rate="1.25">快 🐇</button>
+  </div>
+
+  <div class="global-status">
+    <span>整體進度：<span id="g-progress">0 / 0</span></span>
+    <span>已答對：<span class="ok" id="g-score">0</span> 題</span>
+  </div>
+
+  <div id="quiz-area"></div>
+
+  <div class="result-box" id="result">
+    <div class="result-title">🎉 全部測驗完成！</div>
+    <div class="result-score" id="final-score">0 / 0</div>
+    <div class="result-msg" id="result-msg"></div>
+    <div class="result-detail" id="result-detail"></div>
+    <div class="result-meta" id="result-meta">
+      <label>👤 姓名：<input type="text" id="student-name" placeholder="（可填）" maxlength="20"></label>
+      <label>📅 日期：<span id="result-date">—</span></label>
+    </div>
+    <div class="result-actions">
+      <button onclick="captureResult()">📸 儲存成績截圖</button>
+      <button class="secondary" onclick="window.print()">🖨️ 列印成績單</button>
+    </div>
+  </div>
+
+  <div class="control-bar">
+    <button class="ctrl-btn" onclick="resetQuiz()">🔄 重新測驗</button>
+    <button class="ctrl-btn secondary" onclick="window.scrollTo({top:0, behavior:'smooth'})">⬆️ 回頂端</button>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   1. TTS 引擎
+   ============================================================ */
+let _voices = [];
+let currentRate = 0.75;
+function loadVoices() { _voices = window.speechSynthesis.getVoices(); }
+loadVoices();
+window.speechSynthesis.onvoiceschanged = loadVoices;
+
+function getBestVoice() {
+  const preferred = [
+    v => v.name === 'Google US English',
+    v => v.name.includes('Samantha'),
+    v => v.lang === 'en-US' && v.localService,
+    v => v.lang === 'en-US',
+    v => v.lang.startsWith('en'),
+  ];
+  for (const fn of preferred) {
+    const found = _voices.find(fn);
+    if (found) return found;
+  }
+  return null;
+}
+function speak(text) {
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US'; utter.rate = currentRate;
+  utter.pitch = 1.0; utter.volume = 1.0;
+  const voice = getBestVoice();
+  if (voice) utter.voice = voice;
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
+}
+function setSpeed(rate) {
+  currentRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.classList.toggle('active', Math.abs(parseFloat(btn.dataset.rate) - rate) < 0.001);
+  });
+}
+
+/* ============================================================
+   2. 8 大類單字資料
+   ============================================================ */
+const wordCategories = [
+  { title: '第一部份　人物與家庭 (Family & People)', info: '家人、朋友、學生、老師等',
+    words: [
+      ['父親', 'Father'], ['母親', 'Mother'],
+      ['兄弟', 'Brother'], ['姊妹', 'Sister'],
+      ['祖父', 'Grandfather'], ['祖母', 'Grandmother'],
+      ['朋友', 'Friend'], ['學生', 'Student'],
+      ['老師', 'Teacher'], ['男孩', 'Boy'], ['女孩', 'Girl']
+    ]},
+  { title: '第二部份　身體與健康 (Body)', info: '頭、五官、四肢',
+    words: [
+      ['頭', 'Head'], ['眼睛', 'Eye'], ['耳朵', 'Ear'],
+      ['鼻子', 'Nose'], ['嘴巴', 'Mouth'], ['手', 'Hand'],
+      ['手臂', 'Arm'], ['腿', 'Leg'], ['腳', 'Foot'], ['頭髮', 'Hair']
+    ]},
+  { title: '第三部份　校園與學習 (School)', info: '文具、學科、教室',
+    words: [
+      ['書本', 'Book'], ['筆', 'Pen'], ['鉛筆', 'Pencil'],
+      ['書包', 'Bag'], ['尺', 'Ruler'], ['橡皮擦', 'Eraser'],
+      ['書桌', 'Desk'], ['椅子', 'Chair'], ['教室', 'Classroom'],
+      ['學校', 'School'], ['作業', 'Homework'],
+      ['英文', 'English'], ['數學', 'Math'], ['科學', 'Science'],
+      ['音樂', 'Music'], ['美術', 'Art']
+    ]},
+  { title: '第四部份　飲食與水果 (Food & Fruit)', info: '食物、飲料、感受、動作',
+    words: [
+      ['蘋果', 'Apple'], ['香蕉', 'Banana'], ['牛奶', 'Milk'],
+      ['水', 'Water'], ['果汁', 'Juice'], ['麵包', 'Bread'],
+      ['蛋', 'Egg'], ['米飯', 'Rice'], ['蛋糕', 'Cake'],
+      ['水果', 'Fruit'], ['蔬菜', 'Vegetable'],
+      ['飢餓的', 'Hungry'], ['口渴的', 'Thirsty'],
+      ['吃', 'Eat'], ['喝', 'Drink']
+    ]},
+  { title: '第五部份　時間與天氣 (Time & Weather)', info: '今天、星期、天氣狀態',
+    words: [
+      ['今天', 'Today'], ['昨天', 'Yesterday'], ['明天', 'Tomorrow'],
+      ['早上', 'Morning'], ['下午', 'Afternoon'], ['晚上', 'Night'],
+      ['年', 'Year'], ['月', 'Month'], ['星期', 'Week'],
+      ['星期一', 'Monday'], ['星期日', 'Sunday'],
+      ['時鐘', 'Clock'], ['晴天', 'Sunny'], ['雨天', 'Rainy'],
+      ['多雲', 'Cloudy'], ['冷', 'Cold'], ['熱', 'Hot']
+    ]},
+  { title: '第六部份　動物與自然 (Animals & Nature)', info: '動物、太陽月亮星星、植物',
+    words: [
+      ['貓', 'Cat'], ['狗', 'Dog'], ['鳥', 'Bird'], ['魚', 'Fish'],
+      ['猴子', 'Monkey'], ['兔子', 'Rabbit'], ['象', 'Elephant'],
+      ['獅子', 'Lion'], ['老虎', 'Tiger'],
+      ['太陽', 'Sun'], ['月亮', 'Moon'], ['星星', 'Star'],
+      ['樹', 'Tree'], ['花', 'Flower'], ['天空', 'Sky']
+    ]},
+  { title: '第七部份　地點與交通 (Places & Transport)', info: '地點、交通工具',
+    words: [
+      ['家', 'Home'], ['公園', 'Park'], ['動物園', 'Zoo'],
+      ['圖書館', 'Library'], ['醫院', 'Hospital'],
+      ['汽車', 'Car'], ['公車', 'Bus'], ['腳踏車', 'Bike'],
+      ['飛機', 'Plane'], ['火車', 'Train']
+    ]},
+  { title: '第八部份　常見動作與特徵 (Actions & Features)', info: '動作、形容詞',
+    words: [
+      ['跑', 'Run'], ['跳', 'Jump'], ['走路', 'Walk'],
+      ['睡覺', 'Sleep'], ['閱讀', 'Read'], ['寫', 'Write'],
+      ['唱歌', 'Sing'], ['游泳', 'Swim'],
+      ['快樂', 'Happy'], ['大', 'Big'], ['小', 'Small']
+    ]}
+];
+
+/* ============================================================
+   3. 文法題庫：分為 3 大類
+      第 1 類：句型結構（be 動詞、Can、Wh- 問句、現在進行式）
+      第 2 類：單複數變化
+      第 3 類：句子重組
+      8 個部份依序輪流分配：1→1, 2→2, 3→3, 4→1, 5→2, 6→3, 7→1, 8→2
+      每部份固定抽 5 題（題目可重複出現於不同部份）
+   ============================================================ */
+const grammarBank1_sentence = [ // 句型結構
+  { type: 'mc',   q: 'I ___ a student.（我是學生）',         opts: ['am', 'is', 'are', 'be'], ans: 'am',  full: 'I am a student.' },
+  { type: 'mc',   q: 'He ___ happy.（他很快樂）',            opts: ['am', 'is', 'are', 'do'], ans: 'is',  full: 'He is happy.' },
+  { type: 'mc',   q: 'You ___ my friend.',                    opts: ['am', 'is', 'are', 'be'], ans: 'are', full: 'You are my friend.' },
+  { type: 'mc',   q: 'They ___ teachers.',                    opts: ['is', 'am', 'are', 'be'], ans: 'are', full: 'They are teachers.' },
+  { type: 'mc',   q: 'I am ___ a teacher.（我不是老師）',      opts: ['no', 'not', "don't", "isn't"], ans: 'not', full: 'I am not a teacher.' },
+  { type: 'mc',   q: 'I am ___ now.（正在跳）',                opts: ['jump', 'jumps', 'jumping', 'jumped'], ans: 'jumping', full: 'I am jumping now.' },
+  { type: 'mc',   q: 'They are ___ lunch.',                   opts: ['eat', 'eats', 'eating', 'ate'], ans: 'eating', full: 'They are eating lunch.' },
+  { type: 'mc',   q: 'I can ___.（我會游泳）',                  opts: ['swims', 'swimming', 'swim', 'to swim'], ans: 'swim', full: 'I can swim.' },
+  { type: 'mc',   q: '___ you help me?',                       opts: ['Is', 'Do', 'Are', 'Can'], ans: 'Can', full: 'Can you help me?' },
+  { type: 'mc',   q: '___ is this?（這是什麼）',                opts: ['Who', 'Where', 'What', 'When'], ans: 'What', full: 'What is this?' },
+  { type: 'mc',   q: '___ is she?（她是誰）',                   opts: ['What', 'Who', 'Where', 'How'], ans: 'Who', full: 'Who is she?' },
+  { type: 'mc',   q: '___ is the ball?（球在哪裡）',            opts: ['What', 'Who', 'Where', 'When'], ans: 'Where', full: 'Where is the ball?' },
+  { type: 'fill', q: '請填入 be 動詞：She ___ happy.',          ans: 'is',   full: 'She is happy.' },
+  { type: 'fill', q: '請填入 be 動詞：We ___ friends.',          ans: 'are',  full: 'We are friends.' },
+  { type: 'fill', q: '請填入 be 動詞：It ___ a cat.',            ans: 'is',   full: 'It is a cat.' },
+];
+
+const grammarBank2_plural = [ // 單複數變化
+  { type: 'mc',   q: 'I have two ___.（兩隻貓）', opts: ['cat', 'cats', 'cates', 'a cat'], ans: 'cats', full: 'I have two cats.' },
+  { type: 'mc',   q: 'foot 的複數是？',           opts: ['foots', 'feets', 'feet', 'footes'], ans: 'feet', full: 'The plural of foot is feet.' },
+  { type: 'mc',   q: 'child 的複數是？',          opts: ['childs', 'childes', 'children', 'childrens'], ans: 'children', full: 'The plural of child is children.' },
+  { type: 'mc',   q: 'tooth 的複數是？',          opts: ['tooths', 'teeth', 'toothes', 'teeths'], ans: 'teeth', full: 'The plural of tooth is teeth.' },
+  { type: 'mc',   q: '___ are my books.（這些）', opts: ['This', 'That', 'These', 'Those one'], ans: 'These', full: 'These are my books.' },
+  { type: 'mc',   q: '___ is a big tree.（那）',  opts: ['These', 'Those', 'That', 'Them'], ans: 'That', full: 'That is a big tree.' },
+  { type: 'fill', q: '寫出 box 的複數：',         ans: 'boxes',    full: 'The plural of box is boxes.' },
+  { type: 'fill', q: '寫出 dog 的複數：',         ans: 'dogs',     full: 'The plural of dog is dogs.' },
+  { type: 'fill', q: '寫出 read 的 V-ing 形式：', ans: 'reading',  full: 'The V-ing form of read is reading.' },
+  { type: 'fill', q: '寫出 swim 的 V-ing 形式：', ans: 'swimming', full: 'The V-ing form of swim is swimming.' },
+  { type: 'fill', q: '寫出 jump 的 V-ing 形式：', ans: 'jumping',  full: 'The V-ing form of jump is jumping.' },
+  { type: 'fill', q: '寫出 eat 的 V-ing 形式：',  ans: 'eating',   full: 'The V-ing form of eat is eating.' },
+];
+
+const grammarBank3_reorder = [ // 句子重組 + 填空（補 3 題以上填空，確保 C 段可抽 3 題填空）
+  { type: 'reorder', q: '請排出：「我是學生。」',    words: ['I', 'am', 'a', 'student'],     ans: 'I am a student',       full: 'I am a student.' },
+  { type: 'reorder', q: '請排出：「他很快樂。」',    words: ['He', 'is', 'happy'],            ans: 'He is happy',          full: 'He is happy.' },
+  { type: 'reorder', q: '請排出：「她正在讀書。」',  words: ['She', 'is', 'reading', 'a', 'book'], ans: 'She is reading a book', full: 'She is reading a book.' },
+  { type: 'reorder', q: '請排出：「我會游泳。」',    words: ['I', 'can', 'swim'],             ans: 'I can swim',           full: 'I can swim.' },
+  { type: 'reorder', q: '請排出：「你快樂嗎？」',    words: ['Are', 'you', 'happy'],          ans: 'Are you happy',        full: 'Are you happy?' },
+  { type: 'reorder', q: '請排出：「球在哪裡？」',    words: ['Where', 'is', 'the', 'ball'],   ans: 'Where is the ball',    full: 'Where is the ball?' },
+  { type: 'reorder', q: '請排出：「他們正在吃。」',  words: ['They', 'are', 'eating'],        ans: 'They are eating',      full: 'They are eating.' },
+  { type: 'reorder', q: '請排出：「這是一本書。」',  words: ['This', 'is', 'a', 'book'],      ans: 'This is a book',       full: 'This is a book.' },
+  { type: 'reorder', q: '請排出：「他是老師嗎？」',  words: ['Is', 'he', 'a', 'teacher'],     ans: 'Is he a teacher',      full: 'Is he a teacher?' },
+  { type: 'reorder', q: '請排出：「她是誰？」',      words: ['Who', 'is', 'she'],             ans: 'Who is she',           full: 'Who is she?' },
+  // 補充填空題（句子完成型）
+  { type: 'fill', q: '完成句子：I ___ a student.（我是）',          ans: 'am',  full: 'I am a student.' },
+  { type: 'fill', q: '完成句子：They ___ eating lunch.（正在吃）',   ans: 'are', full: 'They are eating lunch.' },
+  { type: 'fill', q: '完成句子：She ___ reading a book.',            ans: 'is',  full: 'She is reading a book.' },
+  { type: 'fill', q: '完成句子：I ___ swim.（我會）',                 ans: 'can', full: 'I can swim.' },
+  { type: 'fill', q: '完成句子：___ is the ball?（在哪裡）',          ans: 'Where', full: 'Where is the ball?' },
+];
+
+// 8 部份輪流對應的文法類別（1=句型, 2=單複數, 3=重組）
+const grammarAssignment = [
+  { name: '句型結構', bank: grammarBank1_sentence }, // 第 1 部份
+  { name: '單複數變化', bank: grammarBank2_plural },  // 第 2 部份
+  { name: '句子重組', bank: grammarBank3_reorder },   // 第 3 部份
+  { name: '句型結構', bank: grammarBank1_sentence }, // 第 4 部份
+  { name: '單複數變化', bank: grammarBank2_plural },  // 第 5 部份
+  { name: '句子重組', bank: grammarBank3_reorder },   // 第 6 部份
+  { name: '句型結構', bank: grammarBank1_sentence }, // 第 7 部份
+  { name: '單複數變化', bank: grammarBank2_plural },  // 第 8 部份
+];
+
+/* ============================================================
+   4. 全域狀態
+   ============================================================ */
+let answeredMap = {};   // qid -> {correct, sectionIdx, group}  group: 'A'|'B'|'C'
+let totalQuestions = 0;
+const sectionCounts = []; // [{A: n, B: n, C: n}]
+const sectionGroupIds = []; // [{A: scoreId, B: scoreId, C: scoreId, total: scoreId}]
+
+/* ====== 工具函式 ====== */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s) {
+  return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+function normalizeAnswer(s) {
+  return String(s).trim().toLowerCase().replace(/[.,!?]+$/, '').replace(/\s+/g, ' ');
+}
+
+/* ============================================================
+   5. 確保 A 與 B 的順序不同（兩個獨立洗牌，並驗證不一樣）
+   ============================================================ */
+function shuffleDifferently(words) {
+  if (words.length <= 1) return [shuffle(words), shuffle(words)];
+  let A = shuffle(words);
+  let B = shuffle(words);
+  let attempts = 0;
+  // 比較兩序列是否相同（以中文 key 為準）
+  const sameOrder = (x, y) => x.length === y.length && x.every((v, i) => v[0] === y[i][0]);
+  while (sameOrder(A, B) && attempts < 10) {
+    B = shuffle(words);
+    attempts++;
+  }
+  // 若洗牌後仍相同（極小機率，例如僅 2 字且都洗成一致），手動互換前兩個
+  if (sameOrder(A, B) && B.length >= 2) {
+    [B[0], B[1]] = [B[1], B[0]];
+  }
+  return [A, B];
+}
+
+/* ============================================================
+   6. 主渲染流程
+   ============================================================ */
+function renderQuiz() {
+  const area = document.getElementById('quiz-area');
+  area.innerHTML = '';
+  answeredMap = {};
+  totalQuestions = 0;
+  sectionCounts.length = 0;
+  sectionGroupIds.length = 0;
+
+  wordCategories.forEach((cat, sIdx) => {
+    const section = document.createElement('div');
+    section.className = 'section';
+
+    // 標題與類別資訊
+    const h2 = document.createElement('h2');
+    h2.textContent = cat.title;
+    section.appendChild(h2);
+    const info = document.createElement('div');
+    info.className = 'section-info';
+    info.textContent = cat.info;
+    section.appendChild(info);
+
+    // ----- A & B 順序準備 -----
+    const [orderA, orderB] = shuffleDifferently(cat.words);
+
+    // ----- A. 選擇題 -----
+    const labelA = document.createElement('div');
+    labelA.innerHTML = `<span class="subsection-label">A. 選擇題</span><span class="subsection-hint">先用選擇題複習單字</span>`;
+    section.appendChild(labelA);
+
+    let countA = 0;
+    orderA.forEach(([zh, en], idx) => {
+      totalQuestions++; countA++;
+      const qid = `s${sIdx}-A${idx}`;
+      const distractorPool = cat.words.filter(w => w[1] !== en);
+      const distractors = shuffle(distractorPool).slice(0, 3).map(w => w[1]);
+      const opts = shuffle([en, ...distractors]);
+      const card = renderQuestionCard(qid, totalQuestions,
+        { type: 'mc-vocab', zh, en, opts, full: en + '. ' }, sIdx, 'A');
+      section.appendChild(card);
+    });
+
+    const subScoreA_id = `score-s${sIdx}-A`;
+    section.appendChild(makeSubsectionScoreEl(subScoreA_id, 'A. 選擇題', countA));
+
+    // ----- B. 填空題 -----
+    const labelB = document.createElement('div');
+    labelB.innerHTML = `<span class="subsection-label b">B. 填空題</span><span class="subsection-hint">用鍵盤輸入英文（不分大小寫；順序與 A 不同）</span>`;
+    section.appendChild(labelB);
+
+    let countB = 0;
+    orderB.forEach(([zh, en], idx) => {
+      totalQuestions++; countB++;
+      const qid = `s${sIdx}-B${idx}`;
+      const card = renderQuestionCard(qid, totalQuestions,
+        { type: 'fill-vocab', zh, en, full: en + '. ' }, sIdx, 'B');
+      section.appendChild(card);
+    });
+
+    const subScoreB_id = `score-s${sIdx}-B`;
+    section.appendChild(makeSubsectionScoreEl(subScoreB_id, 'B. 填空題', countB));
+
+    // ----- C. 文法題（8 題：至少 3 題填空 + 其他 5 題隨機） -----
+    const gAssign = grammarAssignment[sIdx];
+    const labelC = document.createElement('div');
+    labelC.innerHTML = `<span class="subsection-label c">C. 文法題</span><span class="subsection-hint">本部份重點：${gAssign.name}（共 8 題，含 3 題填空）</span>`;
+    section.appendChild(labelC);
+
+    let countC = 0;
+    // 先從題庫挑出所有填空題，至少抽 3 題；題庫填空題不足 3 時全用
+    const fillPool = gAssign.bank.filter(g => g.type === 'fill');
+    const otherPool = gAssign.bank.filter(g => g.type !== 'fill');
+    const minFill = Math.min(3, fillPool.length);
+    const fillPicks = shuffle(fillPool).slice(0, minFill);
+    // 剩餘 (8 - minFill) 題從其他題型隨機補（不足時從整個題庫補，允許與已選不同題目）
+    const remainNeed = 8 - minFill;
+    let remainPicks = shuffle(otherPool).slice(0, remainNeed);
+    if (remainPicks.length < remainNeed) {
+      // 其他題型不足，從填空題剩餘中再補
+      const extraFill = shuffle(fillPool.filter(g => !fillPicks.includes(g)))
+                        .slice(0, remainNeed - remainPicks.length);
+      remainPicks = remainPicks.concat(extraFill);
+    }
+    const grammarPicks = shuffle([...fillPicks, ...remainPicks]);
+    grammarPicks.forEach((g, idx) => {
+      totalQuestions++; countC++;
+      const qid = `s${sIdx}-C${idx}`;
+      const item = { ...g, type: 'g-' + g.type };
+      const card = renderQuestionCard(qid, totalQuestions, item, sIdx, 'C');
+      section.appendChild(card);
+    });
+
+    const subScoreC_id = `score-s${sIdx}-C`;
+    section.appendChild(makeSubsectionScoreEl(subScoreC_id, 'C. 文法題', countC));
+
+    sectionCounts.push({ A: countA, B: countB, C: countC });
+
+    // ----- 部份總成績卡 -----
+    const totalScoreId = `score-s${sIdx}-total`;
+    const scoreBox = document.createElement('div');
+    scoreBox.className = 'section-score';
+    scoreBox.id = totalScoreId;
+    const sectionTotal = countA + countB + countC;
+    scoreBox.innerHTML = `
+      <span>📊 本部份總成績</span>
+      <span><span id="${totalScoreId}-correct">0</span> / ${sectionTotal}</span>
+      <span class="pct" id="${totalScoreId}-pct">—</span>
+    `;
+    section.appendChild(scoreBox);
+
+    sectionGroupIds.push({ A: subScoreA_id, B: subScoreB_id, C: subScoreC_id, total: totalScoreId });
+
+    area.appendChild(section);
+  });
+
+  updateGlobalStatus();
+}
+
+function makeSubsectionScoreEl(id, label, total) {
+  const el = document.createElement('div');
+  el.className = 'subsection-score';
+  el.id = id;
+  el.innerHTML = `
+    <span>${label} 進度：<span id="${id}-progress">0/${total}</span></span>　|　
+    <span>答對：<span id="${id}-correct">0</span> 題</span>　
+    <span class="pct" id="${id}-pct"></span>
+  `;
+  return el;
+}
+
+/* ============================================================
+   7. 渲染單一題目卡
+   ============================================================ */
+function renderQuestionCard(qid, qNum, item, sIdx, group) {
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.id = `card-${qid}`;
+  card.dataset.section = sIdx;
+  card.dataset.group = group;
+
+  const head = document.createElement('div');
+  head.className = 'q-head';
+  let typeLabel = '', typeClass = '';
+  if (item.type === 'mc-vocab')        { typeLabel = '單字．選擇'; typeClass = 'mc'; }
+  else if (item.type === 'fill-vocab') { typeLabel = '單字．填空'; typeClass = 'fill'; }
+  else if (item.type === 'g-mc')       { typeLabel = '文法．選擇'; typeClass = 'grammar'; }
+  else if (item.type === 'g-fill')     { typeLabel = '文法．填空'; typeClass = 'grammar'; }
+  else if (item.type === 'g-reorder')  { typeLabel = '文法．重組'; typeClass = 'reorder'; }
+  head.innerHTML = `
+    <span class="q-num">第 ${qNum} 題</span>
+    <span class="q-type-tag ${typeClass}">${typeLabel}</span>
+  `;
+  card.appendChild(head);
+
+  if (item.type === 'mc-vocab')        renderVocabMC(card, qid, item, sIdx, group);
+  else if (item.type === 'fill-vocab') renderVocabFill(card, qid, item, sIdx, group);
+  else if (item.type === 'g-mc')       renderGrammarMC(card, qid, item, sIdx, group);
+  else if (item.type === 'g-fill')     renderGrammarFill(card, qid, item, sIdx, group);
+  else if (item.type === 'g-reorder')  renderGrammarReorder(card, qid, item, sIdx, group);
+
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  fb.id = `fb-${qid}`;
+  card.appendChild(fb);
+
+  return card;
+}
+
+/* ====== 7-1 單字選擇 ====== */
+function renderVocabMC(card, qid, item, sIdx, group) {
+  const qt = document.createElement('p');
+  qt.className = 'q-text';
+  qt.innerHTML = `中文：<span class="target">${escapeHtml(item.zh)}</span> ➜ 請選出對應的英文`;
+  card.appendChild(qt);
+
+  const optsBox = document.createElement('div');
+  optsBox.className = 'options';
+  const letters = ['A', 'B', 'C', 'D'];
+  item.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.dataset.value = opt;
+    btn.innerHTML = `
+      <span><span class="opt-letter">${letters[i]}.</span> ${escapeHtml(opt)}</span>
+      <span class="opt-audio" onclick="event.stopPropagation(); speak('${escapeAttr(opt)}')">🔊</span>
+    `;
+    btn.onclick = () => answerMC(qid, opt, item.en, btn, card, sIdx, group, item.full);
+    optsBox.appendChild(btn);
+  });
+  card.appendChild(optsBox);
+}
+
+/* ====== 7-2 單字填空 ====== */
+function renderVocabFill(card, qid, item, sIdx, group) {
+  const qt = document.createElement('p');
+  qt.className = 'q-text';
+  qt.innerHTML = `中文：<span class="target">${escapeHtml(item.zh)}</span> ➜ 請輸入英文（不分大小寫）`;
+  card.appendChild(qt);
+
+  const row = document.createElement('div');
+  row.className = 'fill-row';
+  row.innerHTML = `
+    <input type="text" class="fill-input" id="input-${qid}" placeholder="輸入英文..." autocomplete="off">
+    <button class="fill-submit" id="btn-${qid}">送出</button>
+  `;
+  card.appendChild(row);
+
+  const input = row.querySelector('.fill-input');
+  const submit = row.querySelector('.fill-submit');
+  const handler = () => answerFill(qid, input.value, item.en, card, sIdx, input, submit, group, item.full);
+  submit.onclick = handler;
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
+}
+
+/* ====== 7-3 文法選擇 ====== */
+function renderGrammarMC(card, qid, item, sIdx, group) {
+  const qt = document.createElement('p');
+  qt.className = 'q-text';
+  qt.innerHTML = escapeHtml(item.q);
+  card.appendChild(qt);
+
+  const optsBox = document.createElement('div');
+  optsBox.className = 'options';
+  const letters = ['A', 'B', 'C', 'D'];
+  const shuffled = shuffle(item.opts);
+  shuffled.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.dataset.value = opt;
+    btn.innerHTML = `<span><span class="opt-letter">${letters[i]}.</span> ${escapeHtml(opt)}</span>`;
+    btn.onclick = () => answerMC(qid, opt, item.ans, btn, card, sIdx, group, item.full);
+    optsBox.appendChild(btn);
+  });
+  card.appendChild(optsBox);
+}
+
+/* ====== 7-4 文法填空 ====== */
+function renderGrammarFill(card, qid, item, sIdx, group) {
+  const qt = document.createElement('p');
+  qt.className = 'q-text';
+  qt.innerHTML = escapeHtml(item.q);
+  card.appendChild(qt);
+
+  const row = document.createElement('div');
+  row.className = 'fill-row';
+  row.innerHTML = `
+    <input type="text" class="fill-input" id="input-${qid}" placeholder="輸入答案..." autocomplete="off">
+    <button class="fill-submit" id="btn-${qid}">送出</button>
+  `;
+  card.appendChild(row);
+
+  const input = row.querySelector('.fill-input');
+  const submit = row.querySelector('.fill-submit');
+  const handler = () => answerFill(qid, input.value, item.ans, card, sIdx, input, submit, group, item.full);
+  submit.onclick = handler;
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
+}
+
+/* ====== 7-5 文法重組 ====== */
+function renderGrammarReorder(card, qid, item, sIdx, group) {
+  const qt = document.createElement('p');
+  qt.className = 'q-text';
+  qt.innerHTML = `${escapeHtml(item.q)}（點擊單字加入答案區）`;
+  card.appendChild(qt);
+
+  const ansArea = document.createElement('div');
+  ansArea.className = 'reorder-area answer-area';
+  ansArea.id = `ans-${qid}`;
+  ansArea.innerHTML = '<span style="color:#94a3b8; font-size:0.85rem;">點選下方單字組成句子...</span>';
+  card.appendChild(ansArea);
+
+  const poolArea = document.createElement('div');
+  poolArea.className = 'reorder-area';
+  poolArea.id = `pool-${qid}`;
+  const shuffledWords = shuffle(item.words);
+  shuffledWords.forEach((w, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'word-chip';
+    chip.textContent = w;
+    chip.dataset.idx = i;
+    chip.onclick = () => moveChipToAnswer(qid, chip, ansArea);
+    poolArea.appendChild(chip);
+  });
+  card.appendChild(poolArea);
+
+  const controls = document.createElement('div');
+  controls.className = 'reorder-controls';
+  controls.innerHTML = `
+    <button id="submit-${qid}">送出答案</button>
+    <button class="reset-btn" id="reset-${qid}">清空重排</button>
+  `;
+  card.appendChild(controls);
+
+  controls.querySelector(`#submit-${qid}`).onclick = () => {
+    const chips = ansArea.querySelectorAll('.word-chip');
+    if (chips.length === 0) { alert('請先點選單字組成句子！'); return; }
+    const userAns = Array.from(chips).map(c => c.textContent).join(' ');
+    answerReorder(qid, userAns, item.ans, card, sIdx, ansArea, poolArea, controls, group, item.full);
+  };
+  controls.querySelector(`#reset-${qid}`).onclick = () => {
+    if (answeredMap[qid] !== undefined) return;
+    ansArea.innerHTML = '<span style="color:#94a3b8; font-size:0.85rem;">點選下方單字組成句子...</span>';
+    poolArea.querySelectorAll('.word-chip').forEach(c => c.classList.remove('placed'));
+  };
+}
+function moveChipToAnswer(qid, chipInPool, ansArea) {
+  if (answeredMap[qid] !== undefined) return;
+  if (chipInPool.classList.contains('placed')) return;
+  const ph = ansArea.querySelector('span:not(.word-chip)');
+  if (ph) ph.remove();
+  const newChip = document.createElement('span');
+  newChip.className = 'word-chip';
+  newChip.textContent = chipInPool.textContent;
+  newChip.onclick = () => {
+    if (answeredMap[qid] !== undefined) return;
+    chipInPool.classList.remove('placed');
+    newChip.remove();
+    if (ansArea.children.length === 0) {
+      ansArea.innerHTML = '<span style="color:#94a3b8; font-size:0.85rem;">點選下方單字組成句子...</span>';
+    }
+  };
+  ansArea.appendChild(newChip);
+  chipInPool.classList.add('placed');
+}
+
+/* ============================================================
+   8. 作答邏輯（共用）：作答後唸出整句正解
+   ============================================================ */
+function speakFullAnswer(fullText) {
+  if (!fullText) return;
+  // 預設略延遲，確保 UI 渲染完畢
+  setTimeout(() => speak(fullText), 250);
+}
+
+function buildReplayHtml(qid, fullText) {
+  if (!fullText) return '';
+  return ` <button class="replay-btn" onclick="speak('${escapeAttr(fullText)}')">🔊 重播</button>`;
+}
+
+function answerMC(qid, selected, correct, btnClicked, card, sIdx, group, fullText) {
+  if (answeredMap[qid] !== undefined) return;
+  const isRight = selected === correct;
+  answeredMap[qid] = { correct: isRight, sectionIdx: sIdx, group };
+
+  card.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.value === correct) {
+      if (b === btnClicked) b.classList.add('selected-correct');
+      else b.classList.add('show-correct');
+    } else if (b === btnClicked) {
+      b.classList.add('selected-wrong');
+    }
+  });
+
+  card.classList.add(isRight ? 'correct' : 'wrong');
+  showFeedback(qid, isRight, selected, correct, fullText);
+  speakFullAnswer(fullText);
+
+  updateGlobalStatus();
+  updateSubsectionScore(sIdx, group);
+  updateSectionTotal(sIdx);
+  checkComplete();
+}
+
+function answerFill(qid, userAns, correct, card, sIdx, inputEl, submitEl, group, fullText) {
+  if (answeredMap[qid] !== undefined) return;
+  const ua = normalizeAnswer(userAns);
+  const ca = normalizeAnswer(correct);
+  if (ua === '') { inputEl.focus(); return; }
+  const isRight = ua === ca;
+  answeredMap[qid] = { correct: isRight, sectionIdx: sIdx, group };
+
+  inputEl.disabled = true; submitEl.disabled = true;
+  inputEl.style.borderColor = isRight ? '#16a34a' : '#dc2626';
+  inputEl.style.background = isRight ? '#dcfce7' : '#fee2e2';
+
+  card.classList.add(isRight ? 'correct' : 'wrong');
+  showFeedback(qid, isRight, userAns, correct, fullText);
+  speakFullAnswer(fullText);
+
+  updateGlobalStatus();
+  updateSubsectionScore(sIdx, group);
+  updateSectionTotal(sIdx);
+  checkComplete();
+}
+
+function answerReorder(qid, userAns, correct, card, sIdx, ansArea, poolArea, controls, group, fullText) {
+  if (answeredMap[qid] !== undefined) return;
+  const ua = normalizeAnswer(userAns);
+  const ca = normalizeAnswer(correct);
+  const isRight = ua === ca;
+  answeredMap[qid] = { correct: isRight, sectionIdx: sIdx, group };
+
+  controls.querySelectorAll('button').forEach(b => b.disabled = true);
+  ansArea.querySelectorAll('.word-chip').forEach(c => c.style.pointerEvents = 'none');
+  poolArea.querySelectorAll('.word-chip').forEach(c => c.style.pointerEvents = 'none');
+
+  card.classList.add(isRight ? 'correct' : 'wrong');
+  showFeedback(qid, isRight, userAns, correct, fullText);
+  speakFullAnswer(fullText);
+
+  updateGlobalStatus();
+  updateSubsectionScore(sIdx, group);
+  updateSectionTotal(sIdx);
+  checkComplete();
+}
+
+function showFeedback(qid, isRight, userAns, correct, fullText) {
+  const fb = document.getElementById(`fb-${qid}`);
+  const replay = buildReplayHtml(qid, fullText);
+  if (isRight) {
+    fb.className = 'feedback ok show';
+    fb.innerHTML = `✅ 答對了！正解：<strong>${escapeHtml(correct)}</strong>${replay}` +
+      (fullText && fullText.trim() !== correct.trim() ? `<div class="ans-line">完整句：${escapeHtml(fullText)}</div>` : '');
+  } else {
+    fb.className = 'feedback bad show';
+    fb.innerHTML = `❌ 答錯了。${replay}<div class="ans-line">你的答案：${escapeHtml(userAns) || '(空白)'}　|　正解：<strong>${escapeHtml(correct)}</strong></div>` +
+      (fullText && fullText.trim() !== correct.trim() ? `<div class="ans-line">完整句：${escapeHtml(fullText)}</div>` : '');
+  }
+}
+
+/* ============================================================
+   9. 成績更新
+   ============================================================ */
+function updateGlobalStatus() {
+  const answered = Object.keys(answeredMap).length;
+  const correct = Object.values(answeredMap).filter(v => v.correct).length;
+  document.getElementById('g-progress').textContent = `${answered} / ${totalQuestions}`;
+  document.getElementById('g-score').textContent = correct;
+}
+
+function updateSubsectionScore(sIdx, group) {
+  const total = sectionCounts[sIdx][group];
+  const ids = sectionGroupIds[sIdx];
+  const baseId = ids[group];
+  let answered = 0, correct = 0;
+  Object.values(answeredMap).forEach(v => {
+    if (v.sectionIdx === sIdx && v.group === group) {
+      answered++;
+      if (v.correct) correct++;
+    }
+  });
+  document.getElementById(`${baseId}-progress`).textContent = `${answered}/${total}`;
+  document.getElementById(`${baseId}-correct`).textContent = correct;
+  const pctEl = document.getElementById(`${baseId}-pct`);
+  if (answered === total) {
+    const pct = Math.round(correct / total * 100);
+    pctEl.textContent = `(${pct}% ${pct === 100 ? '🏆' : pct >= 80 ? '🌟' : pct >= 60 ? '👍' : '💪'})`;
+    pctEl.style.color = pct >= 80 ? '#16a34a' : (pct >= 60 ? '#ca8a04' : '#dc2626');
+  } else {
+    pctEl.textContent = '';
+  }
+}
+
+function updateSectionTotal(sIdx) {
+  const counts = sectionCounts[sIdx];
+  const total = counts.A + counts.B + counts.C;
+  let answered = 0, correct = 0;
+  Object.values(answeredMap).forEach(v => {
+    if (v.sectionIdx === sIdx) {
+      answered++;
+      if (v.correct) correct++;
+    }
+  });
+  const baseId = sectionGroupIds[sIdx].total;
+  document.getElementById(`${baseId}-correct`).textContent = correct;
+  const pctEl = document.getElementById(`${baseId}-pct`);
+  if (answered === total) {
+    const pct = Math.round(correct / total * 100);
+    pctEl.textContent = `${pct}% ${pct === 100 ? '🏆' : pct >= 80 ? '🌟' : pct >= 60 ? '👍' : '💪'}`;
+    pctEl.style.color = pct >= 80 ? '#16a34a' : (pct >= 60 ? '#ca8a04' : '#dc2626');
+  } else {
+    pctEl.textContent = `${answered}/${total} 已作答`;
+    pctEl.style.color = '#64748b';
+  }
+}
+
+function checkComplete() {
+  if (Object.keys(answeredMap).length === totalQuestions) {
+    const correct = Object.values(answeredMap).filter(v => v.correct).length;
+    const pct = Math.round(correct / totalQuestions * 100);
+    const result = document.getElementById('result');
+    document.getElementById('final-score').textContent = `${correct} / ${totalQuestions}`;
+    document.getElementById('final-score').style.color =
+      pct >= 80 ? '#16a34a' : (pct >= 60 ? '#ca8a04' : '#dc2626');
+    let label = '';
+    if (pct === 100)      label = '🏆 滿分！太厲害了！';
+    else if (pct >= 90)   label = '🌟 非常優秀！';
+    else if (pct >= 80)   label = '👍 表現很好！';
+    else if (pct >= 60)   label = '💪 還不錯，再加油！';
+    else                  label = '📚 多複習幾次會更好！';
+    document.getElementById('result-msg').textContent = label;
+    document.getElementById('result-detail').textContent =
+      `正確率 ${pct}%　|　共 ${totalQuestions} 題，答對 ${correct} 題`;
+
+    // 填入完成日期時間
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    const dateStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    document.getElementById('result-date').textContent = dateStr;
+
+    result.classList.add('show');
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+/* ============================================================
+   10-1. 成績截圖（html2canvas）
+   ============================================================ */
+function captureResult() {
+  const target = document.getElementById('result');
+  if (!target || !target.classList.contains('show')) {
+    alert('請先完成所有題目，才能儲存成績截圖。');
+    return;
+  }
+  if (typeof html2canvas === 'undefined') {
+    alert('截圖功能需要連網載入 html2canvas，請確認網路連線。');
+    return;
+  }
+
+  // 暫時隱藏按鈕區，避免出現在截圖中
+  const actions = target.querySelector('.result-actions');
+  const prevDisplay = actions.style.display;
+  actions.style.display = 'none';
+
+  html2canvas(target, {
+    backgroundColor: '#fef3c7',
+    scale: 2,
+    useCORS: true
+  }).then(canvas => {
+    actions.style.display = prevDisplay;
+
+    // 組檔名
+    const nameInput = document.getElementById('student-name').value.trim();
+    const namePart = nameInput ? `_${nameInput}` : '';
+    const dateStr = document.getElementById('result-date').textContent.replace(/[: ]/g, '-');
+    const filename = `英文測驗成績${namePart}_${dateStr}.png`;
+
+    canvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+  }).catch(err => {
+    actions.style.display = prevDisplay;
+    alert('截圖失敗：' + err.message);
+  });
+}
+
+/* ============================================================
+   10. 重設
+   ============================================================ */
+function resetQuiz() {
+  document.getElementById('result').classList.remove('show');
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ====== 啟動 ====== */
+renderQuiz();
+</script>
+
+</body>
+</html>

@@ -2,6 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>國小英文學習測驗（A 選擇 → B 填空 → C 文法）</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
@@ -287,6 +288,235 @@
     background: white; color: #b45309; border: 2px solid #b45309;
   }
   .result-actions button.secondary:hover { background: #fef3c7; }
+
+  /* ============================================================
+     RWD：平板與手機優化
+     ============================================================ */
+
+  /* ===== 平板（768px 以下） ===== */
+  @media (max-width: 768px) {
+    body { padding: 16px 10px; }
+    .container { padding: 24px 22px; border-radius: 12px; }
+    h1 { font-size: 1.45rem; padding-bottom: 10px; }
+    .subtitle { font-size: 0.86rem; line-height: 1.55; }
+
+    .section { padding: 14px 14px; margin: 22px 0; border-radius: 12px; }
+    .section h2 { font-size: 1.08rem; padding: 8px 12px; }
+    .section-info { font-size: 0.8rem; }
+
+    .subsection-label { font-size: 0.9rem; padding: 5px 14px; }
+    .subsection-hint { display: block; margin-left: 0; margin-top: 4px; font-size: 0.78rem; }
+
+    .q-card { padding: 11px 13px; }
+    .q-text { font-size: 0.95rem; }
+
+    /* 文法重點提示在平板就強制換行，避免擠壓 */
+    .options { gap: 7px; }
+  }
+
+  /* ===== 手機（520px 以下） ===== */
+  @media (max-width: 520px) {
+    body { padding: 10px 6px; line-height: 1.55; }
+    .container {
+      padding: 16px 14px;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    /* ----- 標題區壓縮 ----- */
+    h1 {
+      font-size: 1.2rem;
+      padding-bottom: 8px;
+      border-bottom-width: 3px;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 0.78rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    /* ----- 語速切換列：縮小、可換行 ----- */
+    .speed-bar {
+      padding: 7px 12px;
+      gap: 6px;
+      margin-bottom: 14px;
+      max-width: 100%;
+    }
+    .speed-label { font-size: 0.78rem; }
+    .speed-btn { font-size: 0.78rem; padding: 4px 12px; }
+
+    /* ----- 黏性進度列：縮小 ----- */
+    .global-status {
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      top: 4px;
+      gap: 4px;
+    }
+
+    /* ----- 部份標題 ----- */
+    .section {
+      padding: 12px 10px;
+      margin: 16px 0;
+      border-radius: 10px;
+      border-width: 1.5px;
+    }
+    .section h2 {
+      font-size: 1rem;
+      padding: 7px 10px;
+      border-left-width: 4px;
+      border-radius: 4px;
+    }
+    .section-info {
+      font-size: 0.76rem;
+      margin-bottom: 10px;
+    }
+
+    /* ----- A/B/C 子段標籤 ----- */
+    .subsection-label {
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      margin: 16px 0 8px;
+    }
+    .subsection-hint {
+      display: block;
+      font-size: 0.72rem;
+      margin-left: 0;
+      margin-top: 3px;
+    }
+
+    /* ----- 題目卡 ----- */
+    .q-card {
+      padding: 10px 11px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .q-num { font-size: 0.74rem; padding: 2px 7px; }
+    .q-type-tag { font-size: 0.66rem; padding: 2px 6px; }
+    .q-text { font-size: 0.92rem; line-height: 1.55; }
+    .q-text .target { padding: 1px 6px; font-size: 0.95rem; }
+
+    /* ----- 選擇題：手機改單欄，按鈕加大方便點 ----- */
+    .options {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .opt-btn {
+      padding: 10px 12px;
+      font-size: 0.92rem;
+      min-height: 42px;
+    }
+    .opt-letter { font-size: 0.95rem; }
+    .opt-audio { font-size: 1rem; padding: 0 6px; }
+
+    /* ----- 填空題：輸入框與按鈕加大 ----- */
+    .fill-row {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .fill-input {
+      width: 100%;
+      min-width: 0;
+      padding: 10px 12px;
+      font-size: 1rem;
+      min-height: 42px;
+    }
+    .fill-submit {
+      width: 100%;
+      padding: 10px;
+      font-size: 0.95rem;
+      min-height: 42px;
+    }
+
+    /* ----- 重組題：chip 加大方便點 ----- */
+    .reorder-area {
+      padding: 7px 8px;
+      gap: 5px;
+      min-height: 40px;
+    }
+    .word-chip {
+      padding: 7px 12px;
+      font-size: 0.9rem;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .reorder-controls button {
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      min-height: 38px;
+    }
+
+    /* ----- 回饋訊息 ----- */
+    .feedback {
+      font-size: 0.82rem;
+      padding: 7px 10px;
+    }
+    .feedback .ans-line { font-size: 0.78rem; }
+    .feedback .replay-btn {
+      font-size: 0.74rem;
+      padding: 3px 10px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    /* ----- 子段成績條 ----- */
+    .subsection-score {
+      font-size: 0.78rem;
+      padding: 6px 10px;
+    }
+
+    /* ----- 部份成績卡 ----- */
+    .section-score {
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .section-score .pct { font-size: 1.1rem; }
+
+    /* ----- 控制按鈕 ----- */
+    .control-bar { gap: 8px; margin-top: 22px; }
+    .ctrl-btn {
+      padding: 10px 22px;
+      font-size: 0.92rem;
+      min-height: 42px;
+    }
+
+    /* ----- 最終結果卡 ----- */
+    .result-box { padding: 16px 14px; border-radius: 12px; }
+    .result-title { font-size: 1.05rem; }
+    .result-score { font-size: 1.85rem; }
+    .result-msg { font-size: 0.9rem; }
+    .result-detail { font-size: 0.82rem; }
+    .result-meta {
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px;
+      font-size: 0.82rem;
+    }
+    .result-meta input { width: 100%; }
+    .result-meta label { width: 100%; justify-content: flex-start; }
+    .result-actions { gap: 8px; flex-direction: column; }
+    .result-actions button {
+      width: 100%;
+      padding: 10px;
+      font-size: 0.9rem;
+      min-height: 42px;
+    }
+  }
+
+  /* ===== 超小螢幕（360px 以下，舊機型） ===== */
+  @media (max-width: 360px) {
+    .container { padding: 12px 10px; }
+    h1 { font-size: 1.1rem; }
+    .subtitle { font-size: 0.74rem; }
+    .q-text { font-size: 0.88rem; }
+    .opt-btn { font-size: 0.88rem; }
+  }
 </style>
 </head>
 <body>

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>國小五年級前必修英文單字與文法總整理</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    margin: 0;
+    padding: 30px 20px;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: 40px 50px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+  }
+  h1 {
+    text-align: center;
+    color: #1d4ed8;
+    font-size: 1.8rem;
+    margin: 0 0 12px;
+    border-bottom: 4px solid #2563eb;
+    padding-bottom: 14px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #475569;
+    font-size: 0.95rem;
+    margin: 0 0 24px;
+  }
+
+  /* ====== 語速切換列 ====== */
+  .speed-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: white;
+    border-radius: 999px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.10);
+    padding: 10px 22px;
+    max-width: 480px;
+    margin: 0 auto 28px;
+    flex-wrap: wrap;
+  }
+  .speed-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #475569;
+    white-space: nowrap;
+  }
+  .speed-btn {
+    font-size: 0.85rem;
+    font-weight: 800;
+    border: 2px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 5px 16px;
+    background: #f8fafc;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .speed-btn:hover  { border-color: #93c5fd; background: #eff6ff; color: #1d4ed8; }
+  .speed-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+
+  h2 {
+    color: #0c4a6e;
+    background: linear-gradient(90deg, #dbeafe, transparent);
+    padding: 10px 16px;
+    border-left: 6px solid #2563eb;
+    border-radius: 6px;
+    font-size: 1.35rem;
+    margin: 36px 0 18px;
+  }
+  h3 {
+    color: #1e40af;
+    font-size: 1.1rem;
+    margin: 22px 0 10px;
+    padding-left: 10px;
+    border-left: 4px solid #60a5fa;
+  }
+
+  /* ====== 單字卡（含 emoji 圖片） ====== */
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 12px;
+    margin: 14px 0 14px;
+  }
+  .word-card {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.15s;
+  }
+  .word-card:hover {
+    border-color: #60a5fa;
+    background: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+  }
+  .word-emoji {
+    font-size: 2.4rem;
+    line-height: 1;
+    margin-bottom: 6px;
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  }
+  .word-en {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1px;
+  }
+  .word-zh {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  .play-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .play-btn:hover { background: #1d4ed8; transform: scale(1.05); }
+  .play-btn:active { transform: scale(0.95); }
+  .play-btn.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+  }
+
+  /* ====== 類別下方例句區 ====== */
+  .category-examples {
+    background: #f0fdf4;
+    border-left: 4px solid #16a34a;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 6px 0 28px;
+  }
+  .category-examples-title {
+    font-weight: 800;
+    color: #166534;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+  .cat-ex-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .cat-ex-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 5px 0;
+    border-bottom: 1px dashed #bbf7d0;
+  }
+  .cat-ex-list li:last-child { border-bottom: none; }
+  .cat-ex-text { flex: 1; }
+  .cat-ex-en { font-weight: 700; color: #166534; }
+  .cat-ex-zh { color: #475569; font-size: 0.85rem; margin-left: 6px; }
+
+  /* ====== 文法區塊 ====== */
+  .grammar-box {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 14px 0;
+  }
+  .grammar-box p { margin: 6px 0; }
+  .grammar-box strong { color: #b45309; }
+
+  .example-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+  .example-list li {
+    background: #f0fdf4;
+    border: 1.5px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 8px 14px;
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .example-text { flex: 1; }
+  .example-en { font-weight: 700; color: #166534; }
+  .example-zh { color: #475569; font-size: 0.88rem; margin-left: 8px; }
+
+  .sent-btn {
+    background: #16a34a;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .sent-btn:hover { background: #15803d; }
+  .sent-btn.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+
+  /* ====== Be 動詞結構：每行一條 ====== */
+  .struct-box {
+    background: #eff6ff;
+    border: 1.5px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin: 10px 0;
+    font-family: "SF Mono", Consolas, monospace;
+    color: #1e3a8a;
+    font-size: 0.95rem;
+  }
+  .struct-box .line {
+    padding: 4px 0;
+    border-bottom: 1px dashed #bfdbfe;
+  }
+  .struct-box .line:last-child { border-bottom: none; }
+
+  .tip-box {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+  }
+  .tip-box p { margin: 6px 0; }
+
+  /* ============================================================
+     RWD：平板與手機優化
+     ============================================================ */
+
+  /* ===== 平板（768px 以下） ===== */
+  @media (max-width: 768px) {
+    body { padding: 16px 10px; }
+    .container { padding: 24px 22px; border-radius: 12px; }
+    h1 { font-size: 1.45rem; padding-bottom: 10px; }
+    .subtitle { font-size: 0.86rem; line-height: 1.55; }
+
+    h2 { font-size: 1.15rem; padding: 8px 12px; }
+    h3 { font-size: 1rem; }
+
+    /* 平板上單字卡略小一點，一排可放更多 */
+    .word-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .word-emoji { font-size: 2.1rem; }
+
+    /* 文法區塊 */
+    .grammar-box, .struct-box, .tip-box { padding: 12px 16px; }
+  }
+
+  /* ===== 手機（520px 以下） ===== */
+  @media (max-width: 520px) {
+    body { padding: 10px 6px; line-height: 1.55; }
+    .container {
+      padding: 16px 14px;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    /* ----- 標題區 ----- */
+    h1 {
+      font-size: 1.2rem;
+      padding-bottom: 8px;
+      border-bottom-width: 3px;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 0.78rem;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    /* ----- 語速切換列 ----- */
+    .speed-bar {
+      padding: 7px 12px;
+      gap: 6px;
+      margin-bottom: 16px;
+      max-width: 100%;
+    }
+    .speed-label { font-size: 0.78rem; }
+    .speed-btn { font-size: 0.78rem; padding: 4px 12px; }
+
+    /* ----- 大標 H2 / H3 ----- */
+    h2 {
+      font-size: 1.05rem;
+      padding: 8px 12px;
+      border-left-width: 5px;
+      margin: 24px 0 12px;
+    }
+    h3 {
+      font-size: 0.95rem;
+      margin: 18px 0 8px;
+      padding-left: 8px;
+      border-left-width: 3px;
+    }
+
+    /* ----- 單字卡：手機改為 2 欄 ----- */
+    .word-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 12px 0 12px;
+    }
+    .word-card {
+      padding: 10px 6px 8px;
+      border-radius: 10px;
+    }
+    .word-emoji {
+      font-size: 1.9rem;
+      margin-bottom: 4px;
+    }
+    .word-en {
+      font-size: 0.9rem;
+    }
+    .word-zh {
+      font-size: 0.74rem;
+      margin-bottom: 6px;
+    }
+    .play-btn {
+      padding: 4px 12px;
+      font-size: 0.74rem;
+      min-height: 30px;
+    }
+
+    /* ----- 類別例句區 ----- */
+    .category-examples {
+      padding: 10px 12px;
+      margin: 6px 0 22px;
+    }
+    .category-examples-title { font-size: 0.8rem; }
+    .cat-ex-list li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 6px 0;
+    }
+    .cat-ex-en { font-size: 0.88rem; }
+    .cat-ex-zh {
+      font-size: 0.78rem;
+      margin-left: 0;
+      display: block;
+    }
+    .sent-btn {
+      padding: 5px 12px;
+      font-size: 0.74rem;
+      align-self: flex-end;
+      min-height: 30px;
+    }
+
+    /* ----- 文法區塊 ----- */
+    .grammar-box, .tip-box {
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+    }
+    .grammar-box p, .tip-box p { margin: 5px 0; }
+
+    .struct-box {
+      padding: 10px 14px;
+      font-size: 0.88rem;
+    }
+    .struct-box .line { padding: 3px 0; }
+
+    /* ----- 文法例句 ----- */
+    .example-list li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 8px 12px;
+    }
+    .example-en { font-size: 0.9rem; }
+    .example-zh {
+      font-size: 0.8rem;
+      margin-left: 0;
+      display: block;
+    }
+  }
+
+  /* ===== 超小螢幕（360px 以下） ===== */
+  @media (max-width: 360px) {
+    .container { padding: 12px 10px; }
+    h1 { font-size: 1.1rem; }
+    .subtitle { font-size: 0.74rem; }
+    .word-emoji { font-size: 1.7rem; }
+    .word-en { font-size: 0.85rem; }
+    .word-zh { font-size: 0.7rem; }
+  }
+
+  /* ====== 列印 ====== */
+  @media print {
+    body { background: white; padding: 0; }
+    .container { box-shadow: none; padding: 20px; max-width: 100%; }
+    .speed-bar, .play-btn, .sent-btn { display: none !important; }
+    .word-card { break-inside: avoid; }
+    .category-examples { break-inside: avoid; }
+    h2, h3 { break-after: avoid; }
+    h2 { background: none; border-left: 4px solid #000; }
+    .word-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>📘 國小五年級前必修英文單字與文法總整理</h1>
+  <p class="subtitle">本份整理涵蓋國小 1–4 年級核心教學大綱，包含 100 個基礎生活單字與重點文法結構。<br>建議在進入五年級前熟練掌握，順利銜接更進階課程。</p>
+
+  <div class="speed-bar">
+    <span class="speed-label">🔊 語速：</span>
+    <button class="speed-btn" onclick="setSpeed(0.25)" data-rate="0.25">慢 🐢</button>
+    <button class="speed-btn active" onclick="setSpeed(0.75)" data-rate="0.75">正常 🚶</button>
+    <button class="speed-btn" onclick="setSpeed(1.25)" data-rate="1.25">快 🐇</button>
+  </div>
+
+  <h2>一、核心單字 100 字（依類別分類）</h2>
+
+  <h3>1. 人物與家庭 Family &amp; People</h3>
+  <div class="word-grid" id="g1"></div>
+  <div class="category-examples">
+    <div class="category-examples-title">📖 類別例句</div>
+    <ul class="cat-ex-list" id="cat-ex-1"></ul>
+  </div>
+
+  <h3>2. 身體與健康 Body</h3>
+  <div class="word-grid" id="g2"></div>
+  <div class="category-examples">
+    <div class="category-examples-title">📖 類別例句</div>
+    <ul class="cat-ex-list" id="cat-ex-2"></ul>
+  </div>
+
+  <h3>3. 校園與學習 School</h3>
+  <div class="word-grid" id="g3"></div>
+  <div class="category-examples">
+    <div class="category-examples-title">📖 類別例句</div>
+    <ul class="cat-ex-list" id="cat-ex-3"></ul>
+  </div>
+
+  <h3>4. 飲食與水果 Food &amp; Fruit</h3>
+  <div class="word-grid" id="g4"></div>
+  <div class="category-examples">
+    <div class="category-examples-title">📖 類別例句</div>
+    <ul class="cat-ex-list" id="cat-ex-4"></ul>
+  </div>
+
+  <h3>5. 時間與天氣 Time &amp; Weather</h3>
+  <div class="word-grid" id="g5"></div>
+  <div class="category-examples">
+    <div class="category-examples-title">📖 類別例句（4 句）</div>
+    <ul class="cat-ex-list" id="cat-ex-5"></ul>
+  </div>
+
+  <h3>6. 動物與自然 Animals &amp; Nature</h3>
+  <div class="word-grid" id="g6"></div>
+  <div class="category-examples">
+    <div class="category-examples-title">📖 類別例句</div>
+    <ul class="cat-ex-list" id="cat-ex-6"></ul>
+  </div>
+
+  <h3>7. 地點與交通 Places &amp; Transport</h3>
+  <div class="word-grid" id="g7"></div>
+  <div class="category-examples">
+    <div class="category-examples-title">📖 類別例句</div>
+    <ul class="cat-ex-list" id="cat-ex-7"></ul>
+  </div>
+
+  <h3>8. 常見動作與特徵 Actions &amp; Features</h3>
+  <div class="word-grid" id="g8"></div>
+  <div class="category-examples">
+    <div class="category-examples-title">📖 類別例句</div>
+    <ul class="cat-ex-list" id="cat-ex-8"></ul>
+  </div>
+
+  <h2>二、重點文法結構 Essential Grammar</h2>
+  <p style="color:#475569;">以下是小學階段最容易混淆的地基，建議透過例句反覆練習。</p>
+
+  <h3>1. Be 動詞的現在式</h3>
+  <div class="struct-box">
+    <div class="line">I + <strong>am</strong></div>
+    <div class="line">You / We / They + <strong>are</strong></div>
+    <div class="line">He / She / It + <strong>is</strong></div>
+  </div>
+  <div class="grammar-box">
+    <p><strong>否定：</strong>直接在 be 動詞後加 not。</p>
+  </div>
+  <ul class="example-list" id="ex1"></ul>
+
+  <h3>2. 單複數與數量表示</h3>
+  <div class="grammar-box">
+    <p><strong>規則複數：</strong>直接加 s（cats）或 es（boxes）。</p>
+    <p><strong>常用不規則：</strong>child → children，foot → feet，tooth → teeth。</p>
+    <p><strong>指示代名詞：</strong>This / That（單數），These / Those（複數）。</p>
+  </div>
+  <ul class="example-list" id="ex2"></ul>
+
+  <h3>3. 現在進行式（V-ing）</h3>
+  <div class="struct-box">
+    <div class="line">主詞 + be 動詞 + V-ing</div>
+  </div>
+  <ul class="example-list" id="ex3"></ul>
+
+  <h3>4. 助動詞 Can 的用法</h3>
+  <div class="struct-box">
+    <div class="line">Can + 原型動詞　（表能力）</div>
+  </div>
+  <ul class="example-list" id="ex4"></ul>
+
+  <h3>5. 基礎疑問句式</h3>
+  <div class="grammar-box">
+    <p><strong>Yes/No 問句：</strong>以 be 動詞或助動詞開頭。</p>
+    <p><strong>Wh- 問句：</strong>What（物）、Who（人）、Where（地）。</p>
+  </div>
+  <ul class="example-list" id="ex5"></ul>
+
+  <h2>三、學習建議</h2>
+  <div class="tip-box">
+    <p>📻 <strong>每日聽讀 15 分鐘：</strong>利用英文繪本或動畫，建立語感比死背公式更重要。</p>
+    <p>🖼️ <strong>圖像記憶法：</strong>看到圖片時直接聯想英文單字，減少大腦翻譯成中文的時間。</p>
+    <p>🗣️ <strong>大聲朗讀：</strong>每個單字都點擊發音按鈕，跟著唸出聲音，效果最好！</p>
+  </div>
+
+</div>
+
+<script>
+  let _voices = [];
+  let currentRate = 0.75;
+
+  function loadVoices() { _voices = window.speechSynthesis.getVoices(); }
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+
+  function getBestVoice() {
+    const preferred = [
+      v => v.name === 'Google US English',
+      v => v.name.includes('Samantha'),
+      v => v.lang === 'en-US' && v.localService,
+      v => v.lang === 'en-US',
+      v => v.lang.startsWith('en'),
+    ];
+    for (const fn of preferred) {
+      const found = _voices.find(fn);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  function speak(text) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang   = 'en-US';
+    utter.rate   = currentRate;
+    utter.pitch  = 1.0;
+    utter.volume = 1.0;
+    const voice = getBestVoice();
+    if (voice) utter.voice = voice;
+    setTimeout(() => window.speechSynthesis.speak(utter), 50);
+  }
+
+  function setSpeed(rate) {
+    currentRate = rate;
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.classList.toggle('active', Math.abs(parseFloat(btn.dataset.rate) - rate) < 0.001);
+    });
+  }
+
+  function playWord(btn, word) {
+    speak(word);
+    btn.classList.add('playing');
+    setTimeout(() => btn.classList.remove('playing'), 1000);
+  }
+
+  function playSent(btn, sentence) {
+    speak(sentence);
+    btn.classList.add('playing');
+    const dur = Math.max(1200, sentence.split(' ').length * 420);
+    setTimeout(() => btn.classList.remove('playing'), dur);
+  }
+
+  const wordGroups = {
+    g1: [
+      ['👨', 'Father', '父親'], ['👩', 'Mother', '母親'],
+      ['👦', 'Brother', '兄弟'], ['👧', 'Sister', '姊妹'],
+      ['👴', 'Grandfather', '祖父'], ['👵', 'Grandmother', '祖母'],
+      ['🤝', 'Friend', '朋友'], ['🎒', 'Student', '學生'],
+      ['👩‍🏫', 'Teacher', '老師'], ['🧒', 'Boy', '男孩'], ['👧', 'Girl', '女孩']
+    ],
+    g2: [
+      ['🗣️', 'Head', '頭'], ['👁️', 'Eye', '眼睛'], ['👂', 'Ear', '耳朵'],
+      ['👃', 'Nose', '鼻子'], ['👄', 'Mouth', '嘴巴'], ['✋', 'Hand', '手'],
+      ['💪', 'Arm', '手臂'], ['🦵', 'Leg', '腿'], ['🦶', 'Foot', '腳'], ['💇', 'Hair', '頭髮']
+    ],
+    g3: [
+      ['📖', 'Book', '書本'], ['🖊️', 'Pen', '筆'], ['✏️', 'Pencil', '鉛筆'],
+      ['🎒', 'Bag', '書包'], ['📏', 'Ruler', '尺'], ['🧽', 'Eraser', '橡皮擦'],
+      ['🪑', 'Desk', '書桌'], ['💺', 'Chair', '椅子'], ['🏫', 'Classroom', '教室'],
+      ['🏫', 'School', '學校'], ['📝', 'Homework', '作業'],
+      ['🔤', 'English', '英文'], ['🔢', 'Math', '數學'], ['🔬', 'Science', '科學'],
+      ['🎵', 'Music', '音樂'], ['🎨', 'Art', '美術']
+    ],
+    g4: [
+      ['🍎', 'Apple', '蘋果'], ['🍌', 'Banana', '香蕉'], ['🥛', 'Milk', '牛奶'],
+      ['💧', 'Water', '水'], ['🧃', 'Juice', '果汁'], ['🍞', 'Bread', '麵包'],
+      ['🥚', 'Egg', '蛋'], ['🍚', 'Rice', '米飯'], ['🎂', 'Cake', '蛋糕'],
+      ['🍇', 'Fruit', '水果'], ['🥦', 'Vegetable', '蔬菜'],
+      ['😋', 'Hungry', '飢餓的'], ['🥵', 'Thirsty', '口渴的'],
+      ['🍴', 'Eat', '吃'], ['🥤', 'Drink', '喝']
+    ],
+    g5: [
+      ['📅', 'Today', '今天'], ['⏪', 'Yesterday', '昨天'], ['⏩', 'Tomorrow', '明天'],
+      ['🌅', 'Morning', '早上'], ['🌞', 'Afternoon', '下午'], ['🌙', 'Night', '晚上'],
+      ['📆', 'Year', '年'], ['🗓️', 'Month', '月'], ['📅', 'Week', '星期'],
+      ['1️⃣', 'Monday', '星期一'], ['7️⃣', 'Sunday', '星期日'],
+      ['🕐', 'Clock', '時鐘'], ['☀️', 'Sunny', '晴天'], ['🌧️', 'Rainy', '雨天'],
+      ['☁️', 'Cloudy', '多雲'], ['🥶', 'Cold', '冷'], ['🥵', 'Hot', '熱']
+    ],
+    g6: [
+      ['🐱', 'Cat', '貓'], ['🐶', 'Dog', '狗'], ['🐦', 'Bird', '鳥'], ['🐟', 'Fish', '魚'],
+      ['🐵', 'Monkey', '猴子'], ['🐰', 'Rabbit', '兔子'], ['🐘', 'Elephant', '象'],
+      ['🦁', 'Lion', '獅子'], ['🐯', 'Tiger', '老虎'],
+      ['☀️', 'Sun', '太陽'], ['🌙', 'Moon', '月亮'], ['⭐', 'Star', '星星'],
+      ['🌳', 'Tree', '樹'], ['🌸', 'Flower', '花'], ['🌌', 'Sky', '天空']
+    ],
+    g7: [
+      ['🏠', 'Home', '家'], ['🏞️', 'Park', '公園'], ['🦓', 'Zoo', '動物園'],
+      ['📚', 'Library', '圖書館'], ['🏥', 'Hospital', '醫院'],
+      ['🚗', 'Car', '汽車'], ['🚌', 'Bus', '公車'], ['🚲', 'Bike', '腳踏車'],
+      ['✈️', 'Plane', '飛機'], ['🚆', 'Train', '火車']
+    ],
+    g8: [
+      ['🏃', 'Run', '跑'], ['🦘', 'Jump', '跳'], ['🚶', 'Walk', '走路'],
+      ['😴', 'Sleep', '睡覺'], ['📖', 'Read', '閱讀'], ['✍️', 'Write', '寫'],
+      ['🎤', 'Sing', '唱歌'], ['🏊', 'Swim', '游泳'],
+      ['😊', 'Happy', '快樂'], ['🐘', 'Big', '大'], ['🐭', 'Small', '小']
+    ]
+  };
+
+  function renderWords() {
+    Object.keys(wordGroups).forEach(id => {
+      const container = document.getElementById(id);
+      wordGroups[id].forEach(([emoji, en, zh]) => {
+        const card = document.createElement('div');
+        card.className = 'word-card';
+        card.innerHTML = `
+          <div class="word-emoji">${emoji}</div>
+          <div class="word-en">${en}</div>
+          <div class="word-zh">${zh}</div>
+          <button class="play-btn" onclick="playWord(this, '${en.replace(/'/g, "\\'")}')">🔊 發音</button>
+        `;
+        container.appendChild(card);
+      });
+    });
+  }
+
+  const categoryExamples = {
+    'cat-ex-1': [
+      ['My father is a teacher.', '我的爸爸是老師。'],
+      ['She is my sister.', '她是我的姊妹。']
+    ],
+    'cat-ex-2': [
+      ['My foot hurts.', '我的腳痛。'],
+      ['Open your mouth, please.', '請打開你的嘴巴。']
+    ],
+    'cat-ex-3': [
+      ['I have an English book.', '我有一本英文書。'],
+      ['The classroom is big.', '教室很大。']
+    ],
+    'cat-ex-4': [
+      ['I am hungry. I want bread.', '我餓了，我想吃麵包。'],
+      ['She likes apples and milk.', '她喜歡蘋果和牛奶。']
+    ],
+    'cat-ex-5': [
+      ['It is sunny today.', '今天是晴天。'],
+      ['Tomorrow is Monday.', '明天是星期一。'],
+      ['I go to school in the morning.', '我早上去上學。'],
+      ['It is cold at night.', '晚上很冷。']
+    ],
+    'cat-ex-6': [
+      ['I see a cat on the tree.', '我看到一隻貓在樹上。'],
+      ['The sun is in the sky.', '太陽在天空中。']
+    ],
+    'cat-ex-7': [
+      ['I go to the park by bike.', '我騎腳踏車去公園。'],
+      ['My home is near the school.', '我家在學校附近。']
+    ],
+    'cat-ex-8': [
+      ['I can swim very well.', '我會游得很好。'],
+      ['The boy is happy.', '那個男孩很快樂。']
+    ]
+  };
+
+  function renderCategoryExamples() {
+    Object.keys(categoryExamples).forEach(id => {
+      const ul = document.getElementById(id);
+      categoryExamples[id].forEach(([en, zh]) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="cat-ex-text">
+            <span class="cat-ex-en">${en}</span>
+            <span class="cat-ex-zh">${zh}</span>
+          </div>
+          <button class="sent-btn" onclick="playSent(this, '${en.replace(/'/g, "\\'")}')">🔊 唸句子</button>
+        `;
+        ul.appendChild(li);
+      });
+    });
+  }
+
+  const examples = {
+    ex1: [
+      ['I am a student.', '我是學生。'],
+      ['You are my friend.', '你是我的朋友。'],
+      ['He is happy.', '他很快樂。'],
+      ['I am not a teacher.', '我不是老師。']
+    ],
+    ex2: [
+      ['I have two cats.', '我有兩隻貓。'],
+      ['These are my books.', '這些是我的書。'],
+      ['That is a big tree.', '那是一棵大樹。']
+    ],
+    ex3: [
+      ['I am jumping.', '我正在跳。'],
+      ['They are eating.', '他們正在吃。'],
+      ['She is reading a book.', '她正在讀書。']
+    ],
+    ex4: [
+      ['I can swim.', '我會游泳。'],
+      ['Can you help me?', '你可以幫我嗎？'],
+      ['He can sing very well.', '他唱歌唱得很好。']
+    ],
+    ex5: [
+      ['Are you happy?', '你快樂嗎？'],
+      ['Is he a teacher?', '他是老師嗎？'],
+      ['What is this?', '這是什麼？'],
+      ['Who is she?', '她是誰？'],
+      ['Where is the ball?', '球在哪裡？']
+    ]
+  };
+
+  function renderExamples() {
+    Object.keys(examples).forEach(id => {
+      const ul = document.getElementById(id);
+      examples[id].forEach(([en, zh]) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="example-text">
+            <span class="example-en">${en}</span>
+            <span class="example-zh">${zh}</span>
+          </div>
+          <button class="sent-btn" onclick="playSent(this, '${en.replace(/'/g, "\\'")}')">🔊 唸句子</button>
+        `;
+        ul.appendChild(li);
+      });
+    });
+  }
+
+  renderWords();
+  renderCategoryExamples();
+  renderExamples();
+</script>
+
+</body>
+</html>

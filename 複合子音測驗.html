@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phonics 3 W03 測驗（A/B/C 三版整合）</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: #f1f5f9; color: #1e293b;
+    margin: 0; padding: 0; line-height: 1.6;
+  }
+
+  /* ===== 頂部固定列 ===== */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 2px solid #2563eb;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 12px 20px 10px;
+  }
+  .top-title {
+    text-align: center;
+    color: #1d4ed8;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0 0 8px;
+  }
+  .top-subtitle {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.78rem;
+    margin: 0 0 10px;
+  }
+  .version-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .version-tab {
+    background: #f1f5f9;
+    color: #475569;
+    border: 2px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 7px 18px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .version-tab:hover { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+  .version-tab.active {
+    background: #2563eb; color: white; border-color: #2563eb;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  }
+  .version-tab .tab-label { font-size: 0.95rem; }
+  .version-tab .tab-meta {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-left: 4px;
+  }
+
+  /* ===== 主容器 ===== */
+  .container {
+    max-width: 920px; margin: 0 auto;
+    padding: 24px 30px;
+  }
+
+  /* ===== 語速切換列 ===== */
+  .speed-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; background: white; border-radius: 999px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.10);
+    padding: 8px 18px; max-width: 460px;
+    margin: 0 auto 18px; flex-wrap: wrap;
+  }
+  .speed-label { font-size: 0.82rem; font-weight: 800; color: #475569; }
+  .speed-btn {
+    font-size: 0.82rem; font-weight: 800;
+    border: 2px solid #e2e8f0; border-radius: 999px;
+    padding: 4px 14px; background: #f8fafc; color: #64748b;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .speed-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+
+  /* ===== 版本介紹卡 ===== */
+  .version-intro {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-left: 5px solid #2563eb;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+  }
+  .version-intro h2 {
+    color: #1d4ed8; font-size: 1.05rem;
+    margin: 0 0 6px;
+  }
+  .version-intro p {
+    margin: 4px 0; font-size: 0.88rem; color: #475569;
+  }
+
+  /* ===== 全域進度 ===== */
+  .global-status {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border: 1.5px solid #bfdbfe; border-radius: 10px;
+    padding: 8px 14px; margin-bottom: 18px;
+    font-weight: 700; font-size: 0.88rem; color: #1e3a8a;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .global-status .ok { color: #16a34a; }
+
+  /* ===== 題目卡片 ===== */
+  .q-card {
+    background: white; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 10px;
+  }
+  .q-card.correct { border-color: #16a34a; background: #f0fdf4; }
+  .q-card.wrong   { border-color: #dc2626; background: #fef2f2; }
+
+  .q-head {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px; flex-wrap: wrap;
+  }
+  .q-num {
+    font-weight: 800; color: #1d4ed8; font-size: 0.78rem;
+    background: #dbeafe; padding: 2px 9px; border-radius: 999px;
+  }
+  .q-type-tag {
+    font-size: 0.7rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px;
+  }
+  .q-type-tag.listen   { color: #0f766e; background: #ccfbf1; }
+  .q-type-tag.minimal  { color: #b91c1c; background: #fee2e2; }
+  .q-type-tag.classify { color: #7c3aed; background: #f3e8ff; }
+  .q-type-tag.spell    { color: #c2410c; background: #ffedd5; }
+  .q-type-tag.find     { color: #0369a1; background: #e0f2fe; }
+  .q-type-tag.yrule    { color: #b45309; background: #fef3c7; }
+
+  .q-text {
+    font-size: 0.95rem; color: #0f172a;
+    margin: 4px 0 8px; flex: 1 1 100%; font-weight: 600;
+  }
+  .q-text .target {
+    color: #b45309; background: #fef3c7;
+    padding: 1px 7px; border-radius: 5px; font-weight: 800;
+  }
+  .q-text .blend-letters { color: #2563eb; font-weight: 900; }
+
+  .listen-btn {
+    background: #0f766e; color: white;
+    border: none; border-radius: 999px;
+    padding: 8px 22px; font-size: 0.95rem; font-weight: 800;
+    cursor: pointer; transition: all 0.15s;
+    margin: 4px 0; min-height: 42px;
+  }
+  .listen-btn:hover { background: #0d5b54; }
+  .listen-btn.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+  }
+
+  .options {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 6px; margin-top: 4px;
+  }
+  .opt-btn {
+    background: white; border: 2px solid #cbd5e1; border-radius: 8px;
+    padding: 9px 12px; text-align: left; cursor: pointer;
+    font-size: 0.92rem; color: #1e293b; font-weight: 600;
+    transition: all 0.12s;
+    display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: #60a5fa; background: #eff6ff; }
+  .opt-btn:disabled { cursor: default; }
+  .opt-btn.selected-correct { background: #16a34a; border-color: #16a34a; color: white; }
+  .opt-btn.selected-wrong   { background: #dc2626; border-color: #dc2626; color: white; }
+  .opt-btn.show-correct     { background: #dcfce7; border-color: #16a34a; color: #166534; }
+  .opt-letter { font-weight: 800; color: #2563eb; margin-right: 4px; }
+  .opt-btn.selected-correct .opt-letter,
+  .opt-btn.selected-wrong .opt-letter { color: white; }
+  .opt-btn.show-correct .opt-letter { color: #166534; }
+  .opt-btn .blend-letters { color: #2563eb; font-weight: 900; }
+  .opt-btn.selected-correct .blend-letters,
+  .opt-btn.selected-wrong .blend-letters { color: #fef3c7; }
+  .opt-audio {
+    background: transparent; border: none; font-size: 0.86rem;
+    cursor: pointer; padding: 0 4px;
+    opacity: 0.65; transition: opacity 0.15s;
+  }
+  .opt-audio:hover { opacity: 1; }
+
+  .fill-row { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+  .fill-input {
+    flex: 1; min-width: 180px;
+    padding: 8px 12px; font-size: 0.95rem; font-weight: 600;
+    border: 2px solid #cbd5e1; border-radius: 8px;
+    font-family: inherit;
+  }
+  .fill-input:focus { outline: none; border-color: #2563eb; background: #eff6ff; }
+  .fill-input:disabled { background: #f1f5f9; }
+  .fill-submit {
+    background: #2563eb; color: white; border: none;
+    border-radius: 8px; padding: 8px 18px;
+    font-size: 0.9rem; font-weight: 800; cursor: pointer;
+  }
+  .fill-submit:hover:not(:disabled) { background: #1d4ed8; }
+  .fill-submit:disabled { background: #94a3b8; cursor: default; }
+
+  .feedback {
+    margin-top: 8px; padding: 7px 12px; border-radius: 6px;
+    font-size: 0.86rem; font-weight: 700; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok  { background: #dcfce7; color: #166534; }
+  .feedback.bad { background: #fee2e2; color: #991b1b; }
+  .feedback .ans-line { font-weight: 600; color: #475569; margin-top: 2px; font-size: 0.82rem; }
+  .feedback .replay-btn {
+    margin-left: 8px;
+    background: #2563eb; color: white; border: none;
+    border-radius: 999px; padding: 2px 10px;
+    font-size: 0.76rem; font-weight: 700; cursor: pointer;
+  }
+
+  /* ===== 章節分隔（B 版用） ===== */
+  .section {
+    margin: 22px 0;
+    border: 2px solid #e0e7ff;
+    border-radius: 12px;
+    padding: 14px 18px;
+    background: #fafbff;
+  }
+  .section h3 {
+    color: #0c4a6e;
+    background: linear-gradient(90deg, #dbeafe, transparent);
+    padding: 8px 14px;
+    border-left: 5px solid #2563eb;
+    border-radius: 5px;
+    font-size: 1.05rem; margin: 0 0 12px;
+  }
+  .section-score {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 2px solid #2563eb; border-radius: 8px;
+    padding: 10px 14px; margin-top: 14px;
+    font-weight: 800; color: #1e3a8a;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 6px; font-size: 0.88rem;
+  }
+  .section-score .pct { font-size: 1.15rem; color: #2563eb; }
+
+  /* ===== 結果卡 ===== */
+  .result-box {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 2px solid #f59e0b; border-radius: 14px;
+    padding: 20px; text-align: center; margin-top: 22px; display: none;
+  }
+  .result-box.show { display: block; }
+  .result-title { font-size: 1.15rem; font-weight: 800; color: #78350f; }
+  .result-score { font-size: 2.2rem; font-weight: 800; color: #b45309; margin: 6px 0; }
+  .result-msg { font-size: 0.95rem; color: #78350f; }
+  .result-detail { margin-top: 8px; font-size: 0.86rem; color: #92400e; }
+
+  /* 診斷分析（A 版專屬） */
+  .diagnosis-box {
+    margin-top: 16px;
+    padding: 14px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    text-align: left;
+  }
+  .diagnosis-box h4 {
+    color: #b45309; margin: 0 0 8px;
+    font-size: 1rem;
+  }
+  .diag-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 10px; margin: 4px 0;
+    border-radius: 6px;
+    font-size: 0.86rem;
+  }
+  .diag-row.good   { background: #dcfce7; color: #166534; }
+  .diag-row.medium { background: #fef3c7; color: #92400e; }
+  .diag-row.poor   { background: #fee2e2; color: #991b1b; }
+  .diag-bar-wrap {
+    flex: 0 0 100px; height: 8px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px; overflow: hidden;
+    margin: 0 8px;
+  }
+  .diag-bar { height: 100%; background: currentColor; }
+
+  .result-meta {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+    gap: 12px; margin-top: 12px; padding: 10px;
+    background: rgba(255,255,255,0.6); border-radius: 8px;
+    font-size: 0.85rem; color: #78350f; font-weight: 700;
+  }
+  .result-meta input {
+    border: 1.5px solid #f59e0b; border-radius: 6px;
+    padding: 4px 10px; font-size: 0.88rem; font-weight: 700;
+    color: #78350f; background: white; width: 120px;
+  }
+  .result-actions {
+    display: flex; justify-content: center; gap: 10px;
+    margin-top: 12px; flex-wrap: wrap;
+  }
+  .result-actions button {
+    background: #b45309; color: white; border: none;
+    border-radius: 999px; padding: 8px 18px;
+    font-size: 0.9rem; font-weight: 800; cursor: pointer;
+  }
+  .result-actions button.secondary {
+    background: white; color: #b45309; border: 2px solid #b45309;
+  }
+
+  /* ===== 控制按鈕 ===== */
+  .control-bar {
+    text-align: center; margin: 22px 0;
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  }
+  .ctrl-btn {
+    background: #2563eb; color: white; border: none; border-radius: 999px;
+    padding: 10px 24px; font-size: 0.92rem; font-weight: 800;
+    cursor: pointer;
+  }
+  .ctrl-btn:hover { background: #1d4ed8; }
+  .ctrl-btn.secondary { background: white; color: #2563eb; border: 2px solid #2563eb; }
+
+  /* ===== 版本面板 ===== */
+  .version-panel { display: none; }
+  .version-panel.active { display: block; }
+
+  /* ============================================================
+     RWD
+     ============================================================ */
+  @media (max-width: 768px) {
+    .container { padding: 18px 16px; }
+    .top-bar { padding: 10px 14px 8px; }
+    .top-title { font-size: 1.05rem; }
+  }
+  @media (max-width: 520px) {
+    body { line-height: 1.55; }
+    .top-bar { padding: 9px 10px 8px; }
+    .top-title { font-size: 0.96rem; margin-bottom: 6px; }
+    .top-subtitle { font-size: 0.7rem; margin-bottom: 8px; }
+    .version-tab { padding: 6px 12px; font-size: 0.78rem; }
+    .version-tab .tab-label { font-size: 0.84rem; }
+    .version-tab .tab-meta { display: none; }
+
+    .container { padding: 14px 10px; }
+    .speed-bar { padding: 7px 12px; gap: 6px; max-width: 100%; }
+    .speed-label, .speed-btn { font-size: 0.76rem; }
+    .speed-btn { padding: 4px 12px; }
+
+    .version-intro { padding: 12px 14px; }
+    .version-intro h2 { font-size: 0.96rem; }
+    .version-intro p { font-size: 0.82rem; }
+
+    .global-status { padding: 8px 12px; font-size: 0.8rem; }
+    .section { padding: 12px 12px; }
+    .section h3 { font-size: 0.96rem; padding: 7px 10px; }
+
+    .q-card { padding: 10px 11px; }
+    .q-num { font-size: 0.72rem; }
+    .q-type-tag { font-size: 0.66rem; padding: 2px 6px; }
+    .q-text { font-size: 0.9rem; }
+
+    .options { grid-template-columns: 1fr; gap: 6px; }
+    .opt-btn { padding: 10px 12px; font-size: 0.9rem; min-height: 42px; }
+    .fill-row { flex-direction: column; gap: 6px; }
+    .fill-input, .fill-submit { width: 100%; min-width: 0; min-height: 42px; }
+    .fill-input { padding: 10px 12px; font-size: 1rem; }
+    .fill-submit { padding: 10px; font-size: 0.95rem; }
+
+    .feedback { font-size: 0.8rem; padding: 6px 10px; }
+    .section-score { padding: 9px 12px; font-size: 0.82rem; flex-direction: column; align-items: flex-start; gap: 4px; }
+    .section-score .pct { font-size: 1.05rem; }
+
+    .result-box { padding: 14px 12px; }
+    .result-title { font-size: 1rem; }
+    .result-score { font-size: 1.7rem; }
+    .result-meta { flex-direction: column; gap: 6px; padding: 9px; font-size: 0.8rem; }
+    .result-meta input { width: 100%; }
+    .result-actions { gap: 6px; flex-direction: column; }
+    .result-actions button { width: 100%; padding: 10px; min-height: 42px; }
+
+    .ctrl-btn { padding: 9px 20px; font-size: 0.88rem; min-height: 42px; }
+  }
+  @media (max-width: 360px) {
+    .top-title { font-size: 0.88rem; }
+    .container { padding: 11px 8px; }
+    .q-text { font-size: 0.86rem; }
+    .opt-btn { font-size: 0.86rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== 頂部固定列 ========== -->
+<div class="top-bar">
+  <div class="top-title">🔤 複合子音（Consonant Blends）測驗</div>
+  <div class="top-subtitle">Giraffe Phonics 3｜小托福 W03｜選擇下方版本開始</div>
+  <div class="version-tabs">
+    <button class="version-tab active" data-version="A" onclick="switchVersion('A')">
+      <span class="tab-label">🩺 A. 診斷型</span><span class="tab-meta">25 題</span>
+    </button>
+    <button class="version-tab" data-version="B" onclick="switchVersion('B')">
+      <span class="tab-label">📚 B. 完整版</span><span class="tab-meta">50 題</span>
+    </button>
+    <button class="version-tab" data-version="C" onclick="switchVersion('C')">
+      <span class="tab-label">⚡ C. 每日小測</span><span class="tab-meta">8 題</span>
+    </button>
+  </div>
+</div>
+
+<!-- ========== 主容器 ========== -->
+<div class="container">
+
+  <div class="speed-bar">
+    <span class="speed-label">🔊 語速：</span>
+    <button class="speed-btn" onclick="setSpeed(0.5)" data-rate="0.5">慢 🐢</button>
+    <button class="speed-btn active" onclick="setSpeed(1.0)" data-rate="1.0">正常 🚶</button>
+    <button class="speed-btn" onclick="setSpeed(1.5)" data-rate="1.5">快 🐇</button>
+  </div>
+
+  <!-- ===== 版本 A：診斷型 ===== -->
+  <div class="version-panel active" id="panel-A">
+    <div class="version-intro">
+      <h2>🩺 A. 診斷型測驗（25 題）</h2>
+      <p>混合 5 種題型，重點放在「最容易出錯的能力面向」。</p>
+      <p><strong>完成後會列出各能力面向的得分分析</strong>，老師可一眼看出學生哪部分需要加強。</p>
+    </div>
+    <div class="global-status">
+      <span>進度：<span id="A-progress">0 / 25</span></span>
+      <span>已答對：<span class="ok" id="A-score">0</span> 題</span>
+    </div>
+    <div id="A-quiz"></div>
+    <div class="result-box" id="A-result">
+      <div class="result-title">🎉 A 卷完成！</div>
+      <div class="result-score" id="A-final-score">0 / 25</div>
+      <div class="result-msg" id="A-result-msg"></div>
+      <div class="result-detail" id="A-result-detail"></div>
+      <div class="diagnosis-box" id="A-diagnosis">
+        <h4>📊 能力面向診斷分析</h4>
+        <div id="A-diag-rows"></div>
+      </div>
+      <div class="result-meta">
+        <label>👤 姓名：<input type="text" id="A-name" placeholder="（可填）" maxlength="20"></label>
+        <label>📅 日期：<span id="A-date">—</span></label>
+      </div>
+      <div class="result-actions">
+        <button onclick="captureResult('A')">📸 儲存截圖</button>
+        <button class="secondary" onclick="resetVersion('A')">🔄 重新測驗</button>
+      </div>
+    </div>
+    <div class="control-bar">
+      <button class="ctrl-btn" onclick="resetVersion('A')">🔄 重新測驗</button>
+      <button class="ctrl-btn secondary" onclick="window.scrollTo({top:0, behavior:'smooth'})">⬆️ 回頂端</button>
+    </div>
+  </div>
+
+  <!-- ===== 版本 B：完整版 ===== -->
+  <div class="version-panel" id="panel-B">
+    <div class="version-intro">
+      <h2>📚 B. 完整版總測驗（約 50 題）</h2>
+      <p>依教材八個章節各出 5–7 題，涵蓋 L-blends、R-blends、tr/dr、S-blends、三子音群、Y Rule。</p>
+      <p>每章節獨立計分，全部完成後顯示總成績。適合單元結束的整體驗收。</p>
+    </div>
+    <div class="global-status">
+      <span>進度：<span id="B-progress">0 / 0</span></span>
+      <span>已答對：<span class="ok" id="B-score">0</span> 題</span>
+    </div>
+    <div id="B-quiz"></div>
+    <div class="result-box" id="B-result">
+      <div class="result-title">🎉 B 卷完成！</div>
+      <div class="result-score" id="B-final-score">0 / 0</div>
+      <div class="result-msg" id="B-result-msg"></div>
+      <div class="result-detail" id="B-result-detail"></div>
+      <div class="result-meta">
+        <label>👤 姓名：<input type="text" id="B-name" placeholder="（可填）" maxlength="20"></label>
+        <label>📅 日期：<span id="B-date">—</span></label>
+      </div>
+      <div class="result-actions">
+        <button onclick="captureResult('B')">📸 儲存截圖</button>
+        <button class="secondary" onclick="resetVersion('B')">🔄 重新測驗</button>
+      </div>
+    </div>
+    <div class="control-bar">
+      <button class="ctrl-btn" onclick="resetVersion('B')">🔄 重新測驗</button>
+      <button class="ctrl-btn secondary" onclick="window.scrollTo({top:0, behavior:'smooth'})">⬆️ 回頂端</button>
+    </div>
+  </div>
+
+  <!-- ===== 版本 C：每日小測 ===== -->
+  <div class="version-panel" id="panel-C">
+    <div class="version-intro">
+      <h2>⚡ C. 每日小測（8 題）</h2>
+      <p>從最容易錯的題型隨機抽 8 題，每天 5 分鐘可完成，適合課後快速檢測。</p>
+      <p>每次重做都會抽不一樣的題目組合。</p>
+    </div>
+    <div class="global-status">
+      <span>進度：<span id="C-progress">0 / 8</span></span>
+      <span>已答對：<span class="ok" id="C-score">0</span> 題</span>
+    </div>
+    <div id="C-quiz"></div>
+    <div class="result-box" id="C-result">
+      <div class="result-title">🎉 今日小測完成！</div>
+      <div class="result-score" id="C-final-score">0 / 8</div>
+      <div class="result-msg" id="C-result-msg"></div>
+      <div class="result-detail" id="C-result-detail"></div>
+      <div class="result-meta">
+        <label>👤 姓名：<input type="text" id="C-name" placeholder="（可填）" maxlength="20"></label>
+        <label>📅 日期：<span id="C-date">—</span></label>
+      </div>
+      <div class="result-actions">
+        <button onclick="captureResult('C')">📸 儲存截圖</button>
+        <button class="secondary" onclick="resetVersion('C')">🔄 換一套題目</button>
+      </div>
+    </div>
+    <div class="control-bar">
+      <button class="ctrl-btn" onclick="resetVersion('C')">🔄 換一套題目</button>
+      <button class="ctrl-btn secondary" onclick="window.scrollTo({top:0, behavior:'smooth'})">⬆️ 回頂端</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   1. TTS 引擎
+   ============================================================ */
+let _voices = [];
+let currentRate = 1.0;
+function loadVoices() { _voices = window.speechSynthesis.getVoices(); }
+loadVoices();
+window.speechSynthesis.onvoiceschanged = loadVoices;
+function getBestVoice() {
+  const preferred = [
+    v => v.name === 'Google US English',
+    v => v.name.includes('Samantha'),
+    v => v.lang === 'en-US' && v.localService,
+    v => v.lang === 'en-US',
+    v => v.lang.startsWith('en'),
+  ];
+  for (const fn of preferred) {
+    const found = _voices.find(fn);
+    if (found) return found;
+  }
+  return null;
+}
+function speak(text) {
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US'; utter.rate = currentRate;
+  utter.pitch = 1.0; utter.volume = 1.0;
+  const v = getBestVoice();
+  if (v) utter.voice = v;
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
+}
+function setSpeed(rate) {
+  currentRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.classList.toggle('active', Math.abs(parseFloat(btn.dataset.rate) - rate) < 0.001);
+  });
+}
+
+/* ============================================================
+   2. 共用題庫
+   ============================================================ */
+// 單字庫（依複合子音分類）
+const wordsByBlend = {
+  'pl': ['plane','play'], 'bl': ['black','blow'],
+  'cl': ['clap','clean'], 'gl': ['glue','globe'],
+  'fl': ['fly','flea'],   'sl': ['slide','sleep'],
+  'pr': ['press','print'],'br': ['brick','bridge'],
+  'cr': ['crab','cry'],   'gr': ['gray','green'],
+  'fr': ['frog','fresh','free'],
+  'tr': ['tree','truck','train'],
+  'dr': ['dream','dress','drop'],
+  'sc': ['scan'], 'sk': ['skip','skate'],
+  'sm': ['smile','smell'], 'sn': ['snack','snow'],
+  'sp': ['speak','spot','spin'],
+  'st': ['stop','stamp','stand'],
+  'spl': ['splash','split','splotch'],
+  'spr': ['spray','spring','sprig'],
+  'scr': ['scratch','scream','scrub'],
+  'str': ['strap','string','stretch'],
+};
+
+// blend 分類（用於選項干擾）
+const blendCategories = {
+  L: ['pl','bl','cl','gl','fl','sl'],
+  R: ['pr','br','cr','gr','fr'],
+  TRDR: ['tr','dr'],
+  S: ['sc','sk','sm','sn','sp','st'],
+  TRIPLE: ['spl','spr','scr','str'],
+};
+
+// Minimal pairs（最小對比，用於診斷易錯點）
+const minimalPairs = [
+  { right: 'black',  wrong: 'back',   blendLen: 2, note: '是否吃掉中間 l' },
+  { right: 'clap',   wrong: 'lap',    blendLen: 2, note: '是否吃掉開頭 c' },
+  { right: 'stop',   wrong: 'top',    blendLen: 2, note: '是否吃掉開頭 s' },
+  { right: 'string', wrong: 'sting',  blendLen: 3, note: '三子音群 r 是否唸出' },
+  { right: 'string', wrong: 'sting',  blendLen: 3, note: '同上' },
+  { right: 'play',   wrong: 'pay',    blendLen: 2, note: '是否吃掉 l' },
+  { right: 'spring', wrong: 'sting',  blendLen: 3, note: '三子音群 spr 完整度' },
+  { right: 'sleep',  wrong: 'sheep',  blendLen: 2, note: 'Blend vs Digraph' },
+  { right: 'green',  wrong: 'geen',   blendLen: 2, note: '是否吃掉 r' },
+  { right: 'tree',   wrong: 'tea',    blendLen: 2, note: 'tr 變音是否認出' },
+];
+
+// Y Rule
+const yRule1Words = ['cry','shy','spy'];
+const yRule2Words = ['lady','duty','caddy','bunny'];
+
+/* ============================================================
+   3. 工具函式
+   ============================================================ */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function escapeAttr(s) { return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function normalizeAns(s) {
+  return String(s).trim().toLowerCase().replace(/[.,!?]+$/, '').replace(/\s+/g, '');
+}
+function highlightBlend(word, blendLen) {
+  return `<span class="blend-letters">${word.slice(0, blendLen)}</span>${word.slice(blendLen)}`;
+}
+function getBlend(word) {
+  // 找出單字開頭是哪個 blend
+  for (const triple of blendCategories.TRIPLE) {
+    if (word.startsWith(triple)) return { blend: triple, len: 3 };
+  }
+  for (const cat of ['L','R','TRDR','S']) {
+    for (const b of blendCategories[cat]) {
+      if (word.startsWith(b)) return { blend: b, len: 2 };
+    }
+  }
+  return { blend: word.slice(0,1), len: 1 };
+}
+
+/* ============================================================
+   4. 題型生成器（5 種能力面向）
+   ============================================================ */
+
+// 題型 1：聽音辨識 blend（能力面向 = 聽覺辨識）
+function makeListenBlendQ(word) {
+  const b = getBlend(word);
+  const allBlends = [...blendCategories.L, ...blendCategories.R,
+                     ...blendCategories.TRDR, ...blendCategories.S,
+                     ...blendCategories.TRIPLE];
+  const distractors = shuffle(allBlends.filter(x => x !== b.blend)).slice(0, 3);
+  return {
+    skill: '聽覺辨識',
+    type: 'listen',
+    typeLabel: '聽音辨子音群',
+    word,
+    question: `🔊 點按鈕聽單字，選出開頭的子音群：`,
+    listen: word,
+    options: shuffle([b.blend, ...distractors]),
+    answer: b.blend,
+    full: word + '.',
+  };
+}
+
+// 題型 2：Minimal pairs 對比（能力面向 = 應用辨識）
+function makeMinimalPairQ(pair) {
+  return {
+    skill: '應用辨識',
+    type: 'minimal',
+    typeLabel: '最小對比',
+    word: pair.right,
+    question: `🔊 點按鈕聽單字，從下列兩個易混淆字中選出聽到的：`,
+    listen: pair.right,
+    options: shuffle([pair.right, pair.wrong]),
+    answer: pair.right,
+    blendLen: pair.blendLen,
+    full: pair.right + '.',
+  };
+}
+
+// 題型 3：分類題（能力面向 = 視覺辨識）
+function makeClassifyQ(word) {
+  const b = getBlend(word);
+  let category = '';
+  if (blendCategories.L.includes(b.blend)) category = 'L-blends（以 L 結尾）';
+  else if (blendCategories.R.includes(b.blend)) category = 'R-blends 標準型';
+  else if (blendCategories.TRDR.includes(b.blend)) category = 'tr/dr 特殊型（變音）';
+  else if (blendCategories.S.includes(b.blend)) category = 'S-blends（以 S 開頭）';
+  else if (blendCategories.TRIPLE.includes(b.blend)) category = '三子音群';
+  const allCats = ['L-blends（以 L 結尾）', 'R-blends 標準型', 'tr/dr 特殊型（變音）',
+                   'S-blends（以 S 開頭）', '三子音群'];
+  const distractors = shuffle(allCats.filter(c => c !== category)).slice(0, 3);
+  return {
+    skill: '視覺辨識',
+    type: 'classify',
+    typeLabel: '分類題',
+    word,
+    question: `單字 <span class="target">${highlightBlend(word, b.len)}</span> 屬於哪一類複合子音？`,
+    options: shuffle([category, ...distractors]),
+    answer: category,
+    full: word + '.',
+  };
+}
+
+// 題型 4：拼字填空（能力面向 = 拼字能力）
+function makeSpellQ(word) {
+  const b = getBlend(word);
+  const tail = word.slice(b.len);
+  return {
+    skill: '拼字能力',
+    type: 'spell',
+    typeLabel: '聽寫填空',
+    word,
+    question: `🔊 點按鈕聽單字，把開頭的子音群填上：___ ${tail}`,
+    listen: word,
+    answer: b.blend,
+    full: word + '.',
+  };
+}
+
+// 題型 5：找出錯誤拼字（能力面向 = 視覺辨識）
+function makeFindErrorQ(word) {
+  const b = getBlend(word);
+  // 干擾選項：拿掉複合子音中的某個字母
+  const wrongs = [];
+  for (let i = 0; i < b.len; i++) {
+    wrongs.push(word.slice(0, i) + word.slice(i + 1));
+  }
+  // 再加一個換字母
+  wrongs.push(word.replace(b.blend[0], b.blend[0] === 's' ? 'z' : 's'));
+  const distractors = shuffle([...new Set(wrongs)]).slice(0, 3);
+  return {
+    skill: '視覺辨識',
+    type: 'find',
+    typeLabel: '找出正確拼字',
+    word,
+    question: `下列哪一個是「${word}」的正確拼字？`,
+    options: shuffle([word, ...distractors]),
+    answer: word,
+    full: word + '.',
+  };
+}
+
+// 題型 6：Y Rule
+function makeYRuleQ(word, ruleType) {
+  const desc = ruleType === 1 ? 'Y Rule I（單音節 → 長 i 音 /aɪ/）'
+                              : 'Y Rule II（多音節 → 短 i 音 /i/）';
+  const wrong = ruleType === 1 ? 'Y Rule II（多音節 → 短 i 音 /i/）'
+                                : 'Y Rule I（單音節 → 長 i 音 /aɪ/）';
+  return {
+    skill: 'Y Rule',
+    type: 'yrule',
+    typeLabel: 'Y Rule 辨識',
+    word,
+    question: `🔊 聽單字 <span class="target">${word}</span>，它屬於哪個 Y Rule？`,
+    listen: word,
+    options: shuffle([desc, wrong]),
+    answer: desc,
+    full: word + '.',
+  };
+}
+
+/* ============================================================
+   5. 各版本的題目組合
+   ============================================================ */
+
+// 從 wordsByBlend 取出所有單字
+function allWords() {
+  const arr = [];
+  Object.values(wordsByBlend).forEach(ws => arr.push(...ws));
+  return arr;
+}
+
+// 版本 A：診斷型（25 題，5 種能力面向各 5 題）
+function buildVersionA() {
+  const words = allWords();
+  const questions = [];
+
+  // 1. 聽覺辨識（5 題）— 涵蓋各類 blend
+  const sample1 = shuffle(words).slice(0, 5);
+  sample1.forEach(w => questions.push(makeListenBlendQ(w)));
+
+  // 2. 應用辨識（5 題）— Minimal pairs
+  const sample2 = shuffle(minimalPairs).slice(0, 5);
+  sample2.forEach(p => questions.push(makeMinimalPairQ(p)));
+
+  // 3. 視覺辨識（5 題）— 3 題分類 + 2 題找正確拼字
+  const sample3a = shuffle(words).slice(0, 3);
+  sample3a.forEach(w => questions.push(makeClassifyQ(w)));
+  const sample3b = shuffle(words).slice(0, 2);
+  sample3b.forEach(w => questions.push(makeFindErrorQ(w)));
+
+  // 4. 拼字能力（5 題）— 聽寫填空
+  const sample4 = shuffle(words).slice(0, 5);
+  sample4.forEach(w => questions.push(makeSpellQ(w)));
+
+  // 5. Y Rule（5 題）
+  const yQs = [];
+  shuffle(yRule1Words).slice(0, 2).forEach(w => yQs.push(makeYRuleQ(w, 1)));
+  shuffle(yRule2Words).slice(0, 3).forEach(w => yQs.push(makeYRuleQ(w, 2)));
+  questions.push(...yQs);
+
+  // 全部洗牌（讓題型穿插）
+  return shuffle(questions);
+}
+
+// 版本 B：完整版（依章節，每章 5-7 題）
+function buildVersionB() {
+  const sections = [
+    { title: '一、L-blends', blends: blendCategories.L, count: 6 },
+    { title: '二、R-blends 標準型', blends: blendCategories.R, count: 5 },
+    { title: '三、特殊型 tr / dr', blends: blendCategories.TRDR, count: 6 },
+    { title: '四、S-blends', blends: blendCategories.S, count: 7 },
+    { title: '五、三子音群', blends: blendCategories.TRIPLE, count: 7 },
+    { title: '六、混合題（聽音辨識 + 應用）', special: 'mix', count: 7 },
+    { title: '七、Y Rule', special: 'yrule', count: 5 },
+    { title: '八、易混淆對比', special: 'minimal', count: 7 },
+  ];
+
+  const result = [];
+  sections.forEach(sec => {
+    const sectionQs = [];
+    if (sec.blends) {
+      // 從這些 blends 取單字，輪流出聽音辨識/分類/拼字
+      const wordPool = [];
+      sec.blends.forEach(b => (wordsByBlend[b] || []).forEach(w => wordPool.push(w)));
+      const picks = shuffle(wordPool).slice(0, sec.count);
+      picks.forEach((w, i) => {
+        const types = ['listen', 'classify', 'spell'];
+        const t = types[i % 3];
+        if (t === 'listen') sectionQs.push(makeListenBlendQ(w));
+        else if (t === 'classify') sectionQs.push(makeClassifyQ(w));
+        else sectionQs.push(makeSpellQ(w));
+      });
+    } else if (sec.special === 'mix') {
+      const picks = shuffle(allWords()).slice(0, sec.count);
+      picks.forEach((w, i) => {
+        if (i % 2 === 0) sectionQs.push(makeListenBlendQ(w));
+        else sectionQs.push(makeFindErrorQ(w));
+      });
+    } else if (sec.special === 'yrule') {
+      shuffle(yRule1Words).slice(0, 2).forEach(w => sectionQs.push(makeYRuleQ(w, 1)));
+      shuffle(yRule2Words).slice(0, 3).forEach(w => sectionQs.push(makeYRuleQ(w, 2)));
+    } else if (sec.special === 'minimal') {
+      shuffle(minimalPairs).slice(0, sec.count).forEach(p =>
+        sectionQs.push(makeMinimalPairQ(p)));
+    }
+    result.push({ title: sec.title, questions: sectionQs });
+  });
+  return result;
+}
+
+// 版本 C：每日小測（8 題，重點題型）
+function buildVersionC() {
+  const questions = [];
+  // 3 題 minimal pairs（最容易錯）
+  shuffle(minimalPairs).slice(0, 3).forEach(p => questions.push(makeMinimalPairQ(p)));
+  // 2 題聽音辨子音群
+  shuffle(allWords()).slice(0, 2).forEach(w => questions.push(makeListenBlendQ(w)));
+  // 2 題拼字填空
+  shuffle(allWords()).slice(0, 2).forEach(w => questions.push(makeSpellQ(w)));
+  // 1 題 Y Rule
+  const yWord = Math.random() < 0.5
+    ? shuffle(yRule1Words)[0] : shuffle(yRule2Words)[0];
+  const ruleType = yRule1Words.includes(yWord) ? 1 : 2;
+  questions.push(makeYRuleQ(yWord, ruleType));
+  return shuffle(questions);
+}
+
+/* ============================================================
+   6. 全域作答狀態（依版本分開）
+   ============================================================ */
+const versionState = {
+  A: { answered: {}, total: 0, questions: [] },
+  B: { answered: {}, total: 0, sections: [] },
+  C: { answered: {}, total: 0, questions: [] },
+};
+
+/* ============================================================
+   7. 渲染：題目卡（共用）
+   ============================================================ */
+function renderQuestion(version, qid, qNum, q) {
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.id = `${version}-card-${qid}`;
+
+  const head = document.createElement('div');
+  head.className = 'q-head';
+  head.innerHTML = `
+    <span class="q-num">第 ${qNum} 題</span>
+    <span class="q-type-tag ${q.type}">${q.typeLabel}</span>
+  `;
+  card.appendChild(head);
+
+  const qt = document.createElement('p');
+  qt.className = 'q-text';
+  qt.innerHTML = q.question;
+  card.appendChild(qt);
+
+  // 如果有 listen 欄位，加聽單字按鈕
+  if (q.listen) {
+    const playRow = document.createElement('div');
+    playRow.style.textAlign = 'center';
+    playRow.style.margin = '6px 0';
+    const lb = document.createElement('button');
+    lb.className = 'listen-btn';
+    lb.innerHTML = '🔊 點我聽';
+    lb.onclick = () => {
+      speak(q.listen);
+      lb.classList.add('playing');
+      setTimeout(() => lb.classList.remove('playing'), 1200);
+    };
+    playRow.appendChild(lb);
+    card.appendChild(playRow);
+  }
+
+  // 拼字題（spell）：顯示輸入框
+  if (q.type === 'spell') {
+    const row = document.createElement('div');
+    row.className = 'fill-row';
+    row.innerHTML = `
+      <input type="text" class="fill-input" id="${version}-input-${qid}" placeholder="輸入子音群..." autocomplete="off">
+      <button class="fill-submit" id="${version}-btn-${qid}">送出</button>
+    `;
+    card.appendChild(row);
+    const input = row.querySelector('.fill-input');
+    const submit = row.querySelector('.fill-submit');
+    const handler = () => answerFill(version, qid, input.value, q, card, input, submit);
+    submit.onclick = handler;
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
+  } else if (q.options) {
+    // 一般選擇題
+    const opts = document.createElement('div');
+    opts.className = 'options';
+    const letters = ['A','B','C','D'];
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.dataset.value = opt;
+      // 對於分類題、Y Rule 題，選項是長文字
+      // 對於 minimal、find 題，選項是單字本身
+      let displayText = opt;
+      if (q.type === 'minimal' || q.type === 'find') {
+        // 試圖標藍 blend
+        const b = getBlend(opt);
+        if (b.len >= 2) displayText = highlightBlend(opt, b.len);
+      } else if (q.type === 'listen') {
+        // 選項是 blend 字母，標藍
+        displayText = `<span class="blend-letters">${opt}</span>`;
+      }
+      btn.innerHTML = `<span><span class="opt-letter">${letters[i]}.</span> ${displayText}</span>`;
+      // 對於聽音題與最小對比題，加單字試聽
+      if (q.type === 'listen' || q.type === 'classify' || q.type === 'find') {
+        // 不在選項加聽（避免太多按鈕）
+      }
+      btn.onclick = () => answerMC(version, qid, opt, q, btn, card);
+      opts.appendChild(btn);
+    });
+    card.appendChild(opts);
+  }
+
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  fb.id = `${version}-fb-${qid}`;
+  card.appendChild(fb);
+
+  return card;
+}
+
+/* ============================================================
+   8. 作答邏輯
+   ============================================================ */
+function answerMC(version, qid, selected, q, btnClicked, card) {
+  if (versionState[version].answered[qid] !== undefined) return;
+  const isRight = selected === q.answer;
+  versionState[version].answered[qid] = { correct: isRight, skill: q.skill, sectionIdx: q.sectionIdx };
+
+  card.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.value === q.answer) {
+      if (b === btnClicked) b.classList.add('selected-correct');
+      else b.classList.add('show-correct');
+    } else if (b === btnClicked) {
+      b.classList.add('selected-wrong');
+    }
+  });
+
+  card.classList.add(isRight ? 'correct' : 'wrong');
+  showFeedback(version, qid, isRight, selected, q.answer, q.full);
+  speakFullAnswer(q.full);
+
+  updateProgress(version);
+  if (version === 'B') updateSectionScore(q.sectionIdx);
+  checkComplete(version);
+}
+
+function answerFill(version, qid, userAns, q, card, inputEl, submitEl) {
+  if (versionState[version].answered[qid] !== undefined) return;
+  const ua = normalizeAns(userAns);
+  const ca = normalizeAns(q.answer);
+  if (ua === '') { inputEl.focus(); return; }
+  const isRight = ua === ca;
+  versionState[version].answered[qid] = { correct: isRight, skill: q.skill, sectionIdx: q.sectionIdx };
+
+  inputEl.disabled = true; submitEl.disabled = true;
+  inputEl.style.borderColor = isRight ? '#16a34a' : '#dc2626';
+  inputEl.style.background = isRight ? '#dcfce7' : '#fee2e2';
+
+  card.classList.add(isRight ? 'correct' : 'wrong');
+  showFeedback(version, qid, isRight, userAns, q.answer, q.full);
+  speakFullAnswer(q.full);
+
+  updateProgress(version);
+  if (version === 'B') updateSectionScore(q.sectionIdx);
+  checkComplete(version);
+}
+
+function speakFullAnswer(fullText) {
+  if (!fullText) return;
+  setTimeout(() => speak(fullText), 250);
+}
+
+function showFeedback(version, qid, isRight, userAns, correct, fullText) {
+  const fb = document.getElementById(`${version}-fb-${qid}`);
+  const replay = fullText ? ` <button class="replay-btn" onclick="speak('${escapeAttr(fullText)}')">🔊 重播</button>` : '';
+  if (isRight) {
+    fb.className = 'feedback ok show';
+    fb.innerHTML = `✅ 答對了！正解：<strong>${escapeHtml(correct)}</strong>${replay}`;
+  } else {
+    fb.className = 'feedback bad show';
+    fb.innerHTML = `❌ 答錯了。${replay}<div class="ans-line">你的答案：${escapeHtml(userAns) || '(空白)'}　|　正解：<strong>${escapeHtml(correct)}</strong></div>`;
+  }
+}
+
+/* ============================================================
+   9. 進度與完成判斷
+   ============================================================ */
+function updateProgress(version) {
+  const st = versionState[version];
+  const answered = Object.keys(st.answered).length;
+  const correct = Object.values(st.answered).filter(v => v.correct).length;
+  const totalEl = document.getElementById(`${version}-progress`);
+  const scoreEl = document.getElementById(`${version}-score`);
+  if (totalEl) totalEl.textContent = `${answered} / ${st.total}`;
+  if (scoreEl) scoreEl.textContent = correct;
+}
+
+function updateSectionScore(sIdx) {
+  // B 版專用
+  const st = versionState.B;
+  if (!st.sections[sIdx]) return;
+  const total = st.sections[sIdx].count;
+  let answered = 0, correct = 0;
+  Object.values(st.answered).forEach(v => {
+    if (v.sectionIdx === sIdx) {
+      answered++;
+      if (v.correct) correct++;
+    }
+  });
+  const baseId = `B-secscore-${sIdx}`;
+  const correctEl = document.getElementById(`${baseId}-correct`);
+  const pctEl = document.getElementById(`${baseId}-pct`);
+  if (correctEl) correctEl.textContent = correct;
+  if (pctEl) {
+    if (answered === total) {
+      const pct = Math.round(correct / total * 100);
+      pctEl.textContent = `${pct}% ${pct === 100 ? '🏆' : pct >= 80 ? '🌟' : pct >= 60 ? '👍' : '💪'}`;
+      pctEl.style.color = pct >= 80 ? '#16a34a' : (pct >= 60 ? '#ca8a04' : '#dc2626');
+    } else {
+      pctEl.textContent = `${answered}/${total} 已作答`;
+      pctEl.style.color = '#64748b';
+    }
+  }
+}
+
+function checkComplete(version) {
+  const st = versionState[version];
+  if (Object.keys(st.answered).length === st.total) {
+    const correct = Object.values(st.answered).filter(v => v.correct).length;
+    const pct = Math.round(correct / st.total * 100);
+
+    document.getElementById(`${version}-final-score`).textContent = `${correct} / ${st.total}`;
+    document.getElementById(`${version}-final-score`).style.color =
+      pct >= 80 ? '#16a34a' : (pct >= 60 ? '#ca8a04' : '#dc2626');
+
+    let label = '';
+    if (pct === 100)      label = '🏆 滿分！太厲害了！';
+    else if (pct >= 90)   label = '🌟 非常優秀！';
+    else if (pct >= 80)   label = '👍 表現很好！';
+    else if (pct >= 60)   label = '💪 還不錯，再加油！';
+    else                  label = '📚 多複習幾次會更好！';
+    document.getElementById(`${version}-result-msg`).textContent = label;
+    document.getElementById(`${version}-result-detail`).textContent =
+      `正確率 ${pct}%　|　共 ${st.total} 題，答對 ${correct} 題`;
+
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById(`${version}-date`).textContent =
+      `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+    // A 版：產生診斷分析
+    if (version === 'A') renderDiagnosis();
+
+    document.getElementById(`${version}-result`).classList.add('show');
+    document.getElementById(`${version}-result`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+/* ============================================================
+   10. A 版的診斷分析
+   ============================================================ */
+function renderDiagnosis() {
+  const skillStats = {};
+  Object.values(versionState.A.answered).forEach(v => {
+    if (!skillStats[v.skill]) skillStats[v.skill] = { total: 0, correct: 0 };
+    skillStats[v.skill].total++;
+    if (v.correct) skillStats[v.skill].correct++;
+  });
+
+  const container = document.getElementById('A-diag-rows');
+  container.innerHTML = '';
+  const order = ['聽覺辨識', '應用辨識', '視覺辨識', '拼字能力', 'Y Rule'];
+  order.forEach(skill => {
+    if (!skillStats[skill]) return;
+    const s = skillStats[skill];
+    const pct = Math.round(s.correct / s.total * 100);
+    let cls = 'good', advice = '';
+    if (pct >= 80) { cls = 'good'; advice = '✅ 表現優秀，已掌握'; }
+    else if (pct >= 60) { cls = 'medium'; advice = '⚠️ 還可加強'; }
+    else { cls = 'poor'; advice = '🔴 建議重點加強'; }
+
+    const row = document.createElement('div');
+    row.className = `diag-row ${cls}`;
+    row.innerHTML = `
+      <strong style="flex: 0 0 80px;">${skill}</strong>
+      <span style="flex: 0 0 50px;">${s.correct}/${s.total}</span>
+      <span class="diag-bar-wrap"><span class="diag-bar" style="width:${pct}%"></span></span>
+      <span style="flex: 0 0 36px; text-align:right;">${pct}%</span>
+      <span style="flex: 1 1 100%; font-size: 0.78rem; margin-top: 3px;">${advice}</span>
+    `;
+    container.appendChild(row);
+  });
+}
+
+/* ============================================================
+   11. 渲染各版本
+   ============================================================ */
+function renderVersionA() {
+  const area = document.getElementById('A-quiz');
+  area.innerHTML = '';
+  const questions = buildVersionA();
+  versionState.A = { answered: {}, total: questions.length, questions };
+  questions.forEach((q, idx) => {
+    const qid = `q${idx}`;
+    area.appendChild(renderQuestion('A', qid, idx + 1, q));
+  });
+  document.getElementById('A-result').classList.remove('show');
+  updateProgress('A');
+}
+
+function renderVersionB() {
+  const area = document.getElementById('B-quiz');
+  area.innerHTML = '';
+  const sections = buildVersionB();
+  let totalQ = 0;
+  const sectionList = [];
+  sections.forEach((sec, sIdx) => {
+    sec.questions.forEach(q => q.sectionIdx = sIdx);
+    sectionList.push({ title: sec.title, count: sec.questions.length });
+    totalQ += sec.questions.length;
+  });
+  versionState.B = { answered: {}, total: totalQ, sections: sectionList };
+
+  let qNum = 0;
+  sections.forEach((sec, sIdx) => {
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'section';
+
+    const h3 = document.createElement('h3');
+    h3.textContent = sec.title;
+    sectionEl.appendChild(h3);
+
+    sec.questions.forEach((q, idx) => {
+      qNum++;
+      const qid = `s${sIdx}-q${idx}`;
+      sectionEl.appendChild(renderQuestion('B', qid, qNum, q));
+    });
+
+    // 章節成績
+    const scoreId = `B-secscore-${sIdx}`;
+    const scoreBox = document.createElement('div');
+    scoreBox.className = 'section-score';
+    scoreBox.id = scoreId;
+    scoreBox.innerHTML = `
+      <span>📊 本章成績</span>
+      <span><span id="${scoreId}-correct">0</span> / ${sec.questions.length}</span>
+      <span class="pct" id="${scoreId}-pct">—</span>
+    `;
+    sectionEl.appendChild(scoreBox);
+    area.appendChild(sectionEl);
+  });
+
+  document.getElementById('B-result').classList.remove('show');
+  document.getElementById('B-progress').textContent = `0 / ${totalQ}`;
+}
+
+function renderVersionC() {
+  const area = document.getElementById('C-quiz');
+  area.innerHTML = '';
+  const questions = buildVersionC();
+  versionState.C = { answered: {}, total: questions.length, questions };
+  questions.forEach((q, idx) => {
+    const qid = `q${idx}`;
+    area.appendChild(renderQuestion('C', qid, idx + 1, q));
+  });
+  document.getElementById('C-result').classList.remove('show');
+  updateProgress('C');
+}
+
+/* ============================================================
+   12. 版本切換
+   ============================================================ */
+function switchVersion(v) {
+  document.querySelectorAll('.version-tab').forEach(b =>
+    b.classList.toggle('active', b.dataset.version === v));
+  document.querySelectorAll('.version-panel').forEach(p =>
+    p.classList.toggle('active', p.id === `panel-${v}`));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetVersion(v) {
+  if (v === 'A') renderVersionA();
+  else if (v === 'B') renderVersionB();
+  else if (v === 'C') renderVersionC();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   13. 截圖
+   ============================================================ */
+function captureResult(v) {
+  const target = document.getElementById(`${v}-result`);
+  if (!target.classList.contains('show')) {
+    alert('請先完成所有題目！');
+    return;
+  }
+  if (typeof html2canvas === 'undefined') {
+    alert('截圖功能需連網載入 html2canvas');
+    return;
+  }
+  const actions = target.querySelector('.result-actions');
+  const prev = actions.style.display;
+  actions.style.display = 'none';
+  html2canvas(target, { backgroundColor: '#fef3c7', scale: 2, useCORS: true })
+    .then(canvas => {
+      actions.style.display = prev;
+      const name = document.getElementById(`${v}-name`).value.trim();
+      const namePart = name ? `_${name}` : '';
+      const dateStr = document.getElementById(`${v}-date`).textContent.replace(/[: ]/g, '-');
+      const filename = `Phonics3_W03_${v}卷${namePart}_${dateStr}.png`;
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+    }).catch(err => { actions.style.display = prev; alert('截圖失敗：' + err.message); });
+}
+
+/* ============================================================
+   14. 啟動
+   ============================================================ */
+renderVersionA();
+renderVersionB();
+renderVersionC();
+</script>
+
+</body>
+</html>

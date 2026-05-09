@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>複合子音（Consonant Blends）的發音與辨識</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: #f1f5f9; color: #1e293b;
+    margin: 0; padding: 30px 20px; line-height: 1.7;
+  }
+  .container {
+    max-width: 1000px; margin: 0 auto; background: white;
+    border-radius: 16px; padding: 40px 50px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+  }
+
+  /* ===== 標題 ===== */
+  h1 {
+    text-align: center; color: #1d4ed8; font-size: 1.75rem;
+    margin: 0 0 6px; padding-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center; color: #475569; font-size: 1rem;
+    margin: 0 0 8px; font-weight: 600;
+  }
+  .header-line {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #2563eb, transparent);
+    margin: 0 0 24px; border-radius: 2px;
+  }
+
+  /* ===== 語速切換列 ===== */
+  .speed-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; background: white; border-radius: 999px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.10);
+    padding: 10px 22px; max-width: 480px;
+    margin: 0 auto 24px; flex-wrap: wrap;
+  }
+  .speed-label { font-size: 0.85rem; font-weight: 800; color: #475569; white-space: nowrap; }
+  .speed-btn {
+    font-size: 0.85rem; font-weight: 800;
+    border: 2px solid #e2e8f0; border-radius: 999px;
+    padding: 5px 16px; background: #f8fafc; color: #64748b;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .speed-btn:hover  { border-color: #93c5fd; background: #eff6ff; color: #1d4ed8; }
+  .speed-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+
+  /* ===== 章節標題 ===== */
+  h2 {
+    color: #0c4a6e;
+    background: linear-gradient(90deg, #dbeafe, transparent);
+    padding: 12px 18px;
+    border-left: 6px solid #2563eb;
+    border-radius: 6px;
+    font-size: 1.3rem;
+    margin: 36px 0 14px;
+  }
+  h3 {
+    color: #1e40af;
+    font-size: 1.1rem;
+    margin: 24px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid #60a5fa;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .blend-tag {
+    background: #2563eb; color: white;
+    padding: 3px 14px; border-radius: 999px;
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.95rem; font-weight: 800; letter-spacing: 1px;
+  }
+  .blend-tag.special { background: #dc2626; }
+
+  /* ===== 概念說明區塊 ===== */
+  .concept-box {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-left: 5px solid #f59e0b;
+    border-radius: 10px;
+    padding: 18px 22px; margin: 18px 0;
+    color: #78350f;
+  }
+  .concept-box .concept-title {
+    font-weight: 800; color: #b45309;
+    font-size: 1.05rem; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .concept-box p { margin: 8px 0; }
+
+  /* ===== 內文中的小型藍色標籤 ===== */
+  .inline-blend {
+    color: #2563eb; font-weight: 800;
+    background: #eff6ff;
+    padding: 1px 6px; border-radius: 4px;
+    font-family: "SF Mono", Consolas, monospace;
+  }
+
+  /* ===== 混淆對照表 ===== */
+  .compare-row {
+    display: flex; align-items: center;
+    gap: 12px; padding: 10px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row.header {
+    background: #2563eb; color: white;
+    font-weight: 800; font-size: 0.95rem;
+    border-radius: 10px 10px 0 0;
+  }
+  .compare-row.header > div { color: white; }
+  .compare-table-wrap {
+    background: white;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    margin: 14px 0 18px;
+    overflow: hidden;
+  }
+  .col-type { flex: 0 0 130px; font-weight: 700; }
+  .col-feature { flex: 1 1 220px; font-size: 0.9rem; }
+  .col-example {
+    flex: 0 0 200px;
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .col-example .word-text {
+    font-size: 1.05rem; font-weight: 700;
+  }
+  .col-example .word-text .blend-letters { color: #2563eb; font-weight: 900; }
+  .col-example .digraph-letters {
+    color: #7c3aed; font-weight: 900;
+    background: #f3e8ff;
+    padding: 1px 5px; border-radius: 4px;
+  }
+  .compact-play {
+    background: #2563eb; color: white;
+    border: none; border-radius: 999px;
+    width: 30px; height: 30px;
+    font-size: 0.78rem; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.15s; flex-shrink: 0;
+  }
+  .compact-play:hover { background: #1d4ed8; transform: scale(1.08); }
+  .compact-play.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+
+  /* ===== 單字卡（直立式：圖 + 字 + 音標 + 按鈕） ===== */
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin: 12px 0 18px;
+  }
+  .word-card {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.15s;
+  }
+  .word-card:hover {
+    border-color: #60a5fa;
+    background: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+  }
+  .word-emoji {
+    font-size: 2.3rem;
+    line-height: 1;
+    margin-bottom: 5px;
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  }
+  .word-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
+  }
+  /* 複合子音標藍色 */
+  .word-text .blend-letters { color: #2563eb; font-weight: 900; }
+
+  /* 音標 */
+  .word-ipa {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin-bottom: 7px;
+    font-family: "Doulos SIL", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+  }
+  /* 音標中：藍色子音 / 紅色母音 */
+  .word-ipa .ipa-blend { color: #2563eb; font-weight: 800; }
+  .word-ipa .ipa-vowel { color: #dc2626; font-weight: 800; }
+
+  .play-btn {
+    background: #2563eb;
+    color: white; border: none;
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.78rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+    min-height: 30px;
+  }
+  .play-btn:hover { background: #1d4ed8; transform: scale(1.05); }
+  .play-btn:active { transform: scale(0.95); }
+  .play-btn.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+  }
+
+  /* ===== 特別警告框（tr/dr 用） ===== */
+  .alert-box {
+    background: #fef2f2;
+    border: 2px solid #fca5a5;
+    border-radius: 12px;
+    padding: 16px 22px;
+    margin: 16px 0;
+  }
+  .alert-box .alert-title {
+    color: #b91c1c;
+    font-weight: 800;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .alert-box p { margin: 6px 0; color: #7f1d1d; }
+  .alert-box strong { color: #991b1b; }
+  .alert-box .pron-demo {
+    display: inline-block;
+    background: white;
+    border-left: 3px solid #dc2626;
+    padding: 6px 12px;
+    margin: 8px 0;
+    border-radius: 4px;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+  .alert-box .pron-demo .ipa {
+    color: #2563eb; font-weight: 800;
+    font-family: "Doulos SIL", monospace;
+  }
+
+  /* ===== 錯誤對照 ===== */
+  .error-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border: 1.5px solid #fecaca;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    flex-wrap: wrap;
+  }
+  .error-wrong {
+    color: #dc2626; font-weight: 700;
+    text-decoration: line-through;
+    text-decoration-color: #dc2626;
+    text-decoration-thickness: 2px;
+  }
+  .error-arrow { color: #64748b; font-weight: 700; }
+  .error-right { color: #16a34a; font-weight: 800; }
+  .error-right .blend-letters { color: #2563eb; }
+  .error-note { color: #475569; font-size: 0.85rem; margin-left: auto; }
+  .error-row .compact-play { background: #16a34a; }
+  .error-row .compact-play:hover { background: #15803d; }
+
+  /* ===== Y Rule 區塊 ===== */
+  .y-rule-card {
+    background: #fef2f2;
+    border: 2px solid #fecaca;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .y-rule-card.rule2 { background: #fef3c7; border-color: #fde68a; }
+  .y-rule-card .rule-title {
+    font-weight: 800; color: #b91c1c;
+    font-size: 1.05rem; margin-bottom: 6px;
+  }
+  .y-rule-card.rule2 .rule-title { color: #b45309; }
+  .y-rule-card .rule-desc {
+    color: #475569; font-size: 0.92rem; margin-bottom: 10px;
+  }
+  .y-rule-card .y-letter {
+    color: #dc2626; font-weight: 900;
+    background: #fff;
+    padding: 1px 5px; border-radius: 4px;
+  }
+
+  /* ===== 口訣卡 ===== */
+  .mnemonic {
+    background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+    border-radius: 12px;
+    padding: 18px 24px;
+    text-align: center;
+    margin: 22px 0;
+    color: #4c1d95;
+    font-size: 1.05rem; font-weight: 700;
+    line-height: 1.8;
+    box-shadow: 0 3px 10px rgba(76, 29, 149, 0.15);
+  }
+  .mnemonic .quote-icon { font-size: 1.5rem; display: block; margin-bottom: 4px; }
+
+  /* ===== 列印 ===== */
+  @media print {
+    body { background: white; padding: 0; }
+    .container { box-shadow: none; padding: 20px; max-width: 100%; }
+    .speed-bar, .play-btn, .compact-play { display: none !important; }
+    .word-card, .error-row, .y-rule-card, .alert-box { break-inside: avoid; }
+    h2, h3 { break-after: avoid; }
+    .word-text .blend-letters { color: #000; text-decoration: underline; }
+  }
+
+  /* ============================================================
+     RWD：平板與手機
+     ============================================================ */
+  @media (max-width: 768px) {
+    body { padding: 16px 10px; }
+    .container { padding: 28px 26px; border-radius: 12px; }
+    h1 { font-size: 1.45rem; }
+    .subtitle { font-size: 0.92rem; }
+    h2 { font-size: 1.15rem; padding: 10px 14px; }
+    h3 { font-size: 1rem; }
+    .word-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .word-emoji { font-size: 2.1rem; }
+  }
+  @media (max-width: 520px) {
+    body { padding: 10px 6px; line-height: 1.6; }
+    .container { padding: 18px 14px; border-radius: 10px; }
+    h1 { font-size: 1.15rem; padding-bottom: 6px; }
+    .subtitle { font-size: 0.82rem; line-height: 1.5; }
+    .header-line { margin-bottom: 18px; }
+    .speed-bar { padding: 7px 12px; gap: 6px; max-width: 100%; }
+    .speed-label, .speed-btn { font-size: 0.78rem; }
+    .speed-btn { padding: 4px 12px; }
+
+    h2 { font-size: 1.02rem; padding: 8px 12px; border-left-width: 5px; margin: 24px 0 10px; }
+    h3 { font-size: 0.92rem; gap: 8px; padding-left: 8px; margin: 18px 0 8px; }
+    .blend-tag { font-size: 0.85rem; padding: 2px 11px; }
+
+    .concept-box { padding: 14px 16px; }
+    .concept-box .concept-title { font-size: 0.96rem; }
+    .concept-box p { font-size: 0.88rem; }
+
+    /* 混淆對照：手機改成卡片堆疊 */
+    .compare-row { padding: 9px 12px; gap: 8px; flex-direction: column; align-items: flex-start; }
+    .compare-row.header { display: none; }
+    .col-type { flex: 1 1 100%; font-size: 0.9rem; color: #2563eb; }
+    .col-feature { flex: 1 1 100%; font-size: 0.84rem; }
+    .col-example { flex: 1 1 100%; }
+
+    /* 單字卡：手機 2 欄 */
+    .word-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .word-card { padding: 9px 6px 8px; }
+    .word-emoji { font-size: 1.85rem; margin-bottom: 4px; }
+    .word-text { font-size: 1rem; }
+    .word-ipa { font-size: 0.74rem; margin-bottom: 6px; }
+    .play-btn { padding: 4px 12px; font-size: 0.74rem; min-height: 30px; }
+
+    .alert-box { padding: 13px 16px; }
+    .alert-box .alert-title { font-size: 0.96rem; }
+    .alert-box .pron-demo { font-size: 0.84rem; padding: 6px 10px; }
+
+    .error-row { padding: 9px 12px; gap: 8px; font-size: 0.88rem; }
+    .error-note { font-size: 0.78rem; flex-basis: 100%; margin-left: 0; }
+
+    .y-rule-card { padding: 13px 16px; }
+    .y-rule-card .rule-title { font-size: 0.98rem; }
+    .y-rule-card .rule-desc { font-size: 0.85rem; }
+    .mnemonic { padding: 14px 18px; font-size: 0.95rem; }
+  }
+  @media (max-width: 360px) {
+    .container { padding: 14px 11px; }
+    h1 { font-size: 1.05rem; }
+    .word-emoji { font-size: 1.65rem; }
+    .word-text { font-size: 0.94rem; }
+    .word-ipa { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>🔤 複合子音（Consonant Blends）的發音與辨識</h1>
+  <p class="subtitle">Giraffe Phonics 3｜小托福 W03</p>
+  <div class="header-line"></div>
+
+  <div class="speed-bar">
+    <span class="speed-label">🔊 語速：</span>
+    <button class="speed-btn" onclick="setSpeed(0.5)" data-rate="0.5">慢 🐢</button>
+    <button class="speed-btn active" onclick="setSpeed(1.0)" data-rate="1.0">正常 🚶</button>
+    <button class="speed-btn" onclick="setSpeed(1.5)" data-rate="1.5">快 🐇</button>
+  </div>
+
+  <!-- ============================================================
+       一、什麼是「複合子音」
+       ============================================================ -->
+  <h2>一、什麼是「複合子音」？</h2>
+
+  <div class="concept-box">
+    <div class="concept-title">📖 定義</div>
+    <p><strong>複合子音（Consonant Blends，又稱子音群、子音連音）</strong>是指兩個或三個子音字母<strong>連在一起發音</strong>，但每個子音的音都還聽得出來，<strong>沒有結合成新的音</strong>。</p>
+    <p>例如 <span class="inline-blend">pl</span>ane 中的「pl」，要先發 /p/，再快速接 /l/，兩個音都聽得到。</p>
+    <p>單字旁的<span style="color:#2563eb; font-weight:800;">藍色</span>是複合子音，音標中的<span style="color:#dc2626; font-weight:800;">紅色</span>是母音。</p>
+  </div>
+
+  <h3>⚠️ 容易混淆：複合子音 vs. 子音雙拼</h3>
+  <p>請點 🔊 比對兩種類型的差異：</p>
+
+  <div class="compare-table-wrap">
+    <div class="compare-row header">
+      <div class="col-type">類型</div>
+      <div class="col-feature">特色</div>
+      <div class="col-example">例子</div>
+    </div>
+    <div class="compare-row">
+      <div class="col-type"><strong>複合子音</strong><br><span style="color:#64748b; font-size:0.82rem; font-weight:600;">Blend</span></div>
+      <div class="col-feature">每個子音都發音，只是連得快</div>
+      <div class="col-example">
+        <span class="word-text"><span class="blend-letters">bl</span>ack</span>
+        <button class="compact-play" onclick="playCompact(this, 'black')">🔊</button>
+      </div>
+    </div>
+    <div class="compare-row">
+      <div class="col-type"><strong>子音雙拼</strong><br><span style="color:#64748b; font-size:0.82rem; font-weight:600;">Digraph</span></div>
+      <div class="col-feature">兩個字母合成一個全新的音</div>
+      <div class="col-example">
+        <span class="word-text"><span class="digraph-letters">sh</span>ip</span>
+        <button class="compact-play" onclick="playCompact(this, 'ship')">🔊</button>
+      </div>
+    </div>
+    <div class="compare-row">
+      <div class="col-type"><strong>複合子音</strong><br><span style="color:#64748b; font-size:0.82rem; font-weight:600;">Blend</span></div>
+      <div class="col-feature">/s/ + /l/ 兩個音都聽得出來</div>
+      <div class="col-example">
+        <span class="word-text"><span class="blend-letters">sl</span>eep</span>
+        <button class="compact-play" onclick="playCompact(this, 'sleep')">🔊</button>
+      </div>
+    </div>
+    <div class="compare-row">
+      <div class="col-type"><strong>子音雙拼</strong><br><span style="color:#64748b; font-size:0.82rem; font-weight:600;">Digraph</span></div>
+      <div class="col-feature">/tʃ/ 是新的音，不是 /t/+/h/</div>
+      <div class="col-example">
+        <span class="word-text"><span class="digraph-letters">ch</span>air</span>
+        <button class="compact-play" onclick="playCompact(this, 'chair')">🔊</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       二、L-blends
+       ============================================================ -->
+  <h2>二、L-blends（以 L 結尾的雙子音）</h2>
+  <p>第二個字母都是 <strong>L</strong>，唸的時候舌尖要快速碰上排牙齒後方。</p>
+
+  <h3><span class="blend-tag">pl</span></h3>
+  <div class="word-grid" id="g-pl"></div>
+
+  <h3><span class="blend-tag">bl</span></h3>
+  <div class="word-grid" id="g-bl"></div>
+
+  <h3><span class="blend-tag">cl</span></h3>
+  <div class="word-grid" id="g-cl"></div>
+
+  <h3><span class="blend-tag">gl</span></h3>
+  <div class="word-grid" id="g-gl"></div>
+
+  <h3><span class="blend-tag">fl</span></h3>
+  <div class="word-grid" id="g-fl"></div>
+
+  <h3><span class="blend-tag">sl</span></h3>
+  <div class="word-grid" id="g-sl"></div>
+
+  <!-- ============================================================
+       三、R-blends（標準型）
+       ============================================================ -->
+  <h2>三、R-blends（以 R 結尾的雙子音）</h2>
+  <p>第二個字母都是 <strong>R</strong>，舌頭往後捲、不要碰到上顎。</p>
+
+  <h3><span class="blend-tag">pr</span></h3>
+  <div class="word-grid" id="g-pr"></div>
+
+  <h3><span class="blend-tag">br</span></h3>
+  <div class="word-grid" id="g-br"></div>
+
+  <h3><span class="blend-tag">cr</span></h3>
+  <div class="word-grid" id="g-cr"></div>
+
+  <h3><span class="blend-tag">gr</span></h3>
+  <div class="word-grid" id="g-gr"></div>
+
+  <h3><span class="blend-tag">fr</span></h3>
+  <div class="word-grid" id="g-fr"></div>
+
+  <!-- ============================================================
+       四、特殊的 R-blends：tr / dr
+       ============================================================ -->
+  <h2>四、特殊的 R-blends：<span style="color:#dc2626;">tr / dr</span> 發音變了！</h2>
+
+  <div class="alert-box">
+    <div class="alert-title">⚠️ 為什麼 tr 和 dr 要特別說明？</div>
+    <p>tr 和 dr 雖然字面上是「t/d + r」的組合，但實際發音時，<strong>因為舌頭要往後捲做 r 的動作，t 和 d 也跟著變音</strong>，產生了像「ㄑㄩ」、「ㄐㄩ」的聲音。這是英文母語者自然發音的特色，學生最容易把它唸成「特乳」、「德乳」而不像。</p>
+
+    <div class="pron-demo">
+      <strong style="color:#dc2626;">tr</strong> 實際聽起來接近 <span class="ipa">/tʃr/</span>（類似中文「<strong>去</strong>」，無聲）<br>
+      例如 <strong>tree</strong> 聽起來像「去衣」，不是「特衣」
+    </div>
+
+    <div class="pron-demo">
+      <strong style="color:#dc2626;">dr</strong> 實際聽起來接近 <span class="ipa">/dʒr/</span>（類似中文「<strong>居</strong>」，有聲）<br>
+      例如 <strong>dream</strong> 聽起來像「居ㄖㄧㄣ母」，不是「德因母」
+    </div>
+
+    <p><strong>💡 教學建議：</strong>請學生聽 🔊 多次，並對比 <strong>tee（茶）vs tree（樹）</strong> 的差別，感受 t 在 tr 中如何被「染色」。這個現象稱為「<strong>塞擦音化（affrication）</strong>」——舌頭為了準備發 r 的捲舌動作，先在硬顎附近形成塞擦，自然產生 ch / j 的音色。</p>
+  </div>
+
+  <h3><span class="blend-tag special">tr</span><span style="color:#dc2626; font-size:0.9rem;">→ 發 /tʃr/，類似「去」</span></h3>
+  <div class="word-grid" id="g-tr"></div>
+
+  <h3><span class="blend-tag special">dr</span><span style="color:#dc2626; font-size:0.9rem;">→ 發 /dʒr/，類似「居」（有聲）</span></h3>
+  <div class="word-grid" id="g-dr"></div>
+
+  <!-- ============================================================
+       五、S-blends
+       ============================================================ -->
+  <h2>五、S-blends（以 S 開頭的雙子音）</h2>
+  <p>第一個字母都是 <strong>S</strong>，先發出蛇一般的 /s/ 嘶嘶聲，再快速接後面的子音。</p>
+
+  <h3><span class="blend-tag">sc</span></h3>
+  <div class="word-grid" id="g-sc"></div>
+
+  <h3><span class="blend-tag">sk</span></h3>
+  <div class="word-grid" id="g-sk"></div>
+
+  <h3><span class="blend-tag">sm</span></h3>
+  <div class="word-grid" id="g-sm"></div>
+
+  <h3><span class="blend-tag">sn</span></h3>
+  <div class="word-grid" id="g-sn"></div>
+
+  <h3><span class="blend-tag">sp</span></h3>
+  <div class="word-grid" id="g-sp"></div>
+
+  <h3><span class="blend-tag">st</span></h3>
+  <div class="word-grid" id="g-st"></div>
+
+  <!-- ============================================================
+       六、進階：三子音群
+       ============================================================ -->
+  <h2>六、進階：三子音群（Three-letter Blends）</h2>
+
+  <div class="concept-box">
+    <div class="concept-title">🌟 Phonics 3 的進階重點</div>
+    <p>三個子音連在一起，三個音都要唸出來。常見的有 <span class="inline-blend">spl</span>、<span class="inline-blend">spr</span>、<span class="inline-blend">scr</span>、<span class="inline-blend">str</span>，多半以 <strong>s</strong> 開頭。</p>
+    <p>練習時請慢慢拆：例如 <span class="inline-blend">spl</span>ash → <strong>s-p-l-ash</strong>，先把三個子音唸清楚，再加上後面的母音。</p>
+  </div>
+
+  <h3><span class="blend-tag">spl</span></h3>
+  <div class="word-grid" id="g-spl"></div>
+
+  <h3><span class="blend-tag">spr</span></h3>
+  <div class="word-grid" id="g-spr"></div>
+
+  <h3><span class="blend-tag">scr</span></h3>
+  <div class="word-grid" id="g-scr"></div>
+
+  <h3><span class="blend-tag">str</span></h3>
+  <div class="word-grid" id="g-str"></div>
+
+  <!-- ============================================================
+       七、常見錯誤
+       ============================================================ -->
+  <h2>七、常見錯誤對照</h2>
+  <p>初學者很容易把複合子音的第二個字母「漏掉」，變成只有單一子音。請對比下列正誤：</p>
+
+  <div id="error-list"></div>
+
+  <!-- ============================================================
+       八、補充：Y Rule
+       ============================================================ -->
+  <h2>八、補充：Y Rule（Y 字母的發音規則）</h2>
+
+  <div class="concept-box">
+    <div class="concept-title">💡 為什麼要學 Y Rule？</div>
+    <p>同樣是字尾的 y，發音卻完全不同！這是因為「音節數」決定 y 在單字裡的角色。</p>
+    <p><strong>音節（syllable）</strong>就是唸一個字時，下巴自然動的次數。手放下巴試試看：cry（下巴動 1 次）、lady（下巴動 2 次）。</p>
+  </div>
+
+  <div class="y-rule-card">
+    <div class="rule-title">Y Rule I — 單音節字尾的 <span class="y-letter">y</span> → 發長 i 音 /aɪ/</div>
+    <div class="rule-desc">下巴只動 1 次的單字，字尾的 y 是這個字裡<strong>唯一的母音</strong>，要發成像「ㄞ」的長音（與字母 i 的長音相同）。</div>
+    <div class="word-grid" id="g-y1"></div>
+  </div>
+
+  <div class="y-rule-card rule2">
+    <div class="rule-title">Y Rule II — 多音節字尾的 <span class="y-letter">y</span> → 發短 i 音 /i/</div>
+    <div class="rule-desc">下巴動 2 次以上的單字，前面已經有母音當主角，字尾的 y 只是配角，發成短促的「ㄧ」音。</div>
+    <div class="word-grid" id="g-y2"></div>
+  </div>
+
+  <div class="mnemonic">
+    <span class="quote-icon">💡</span>
+    一個字短短的（單音節），y 要喊大聲（/aɪ/）；<br>
+    字長有兩段（多音節），y 就輕輕說（/i/）。
+  </div>
+
+  <!-- ============================================================
+       九、總結
+       ============================================================ -->
+  <h2>九、本單元總結</h2>
+
+  <div class="concept-box">
+    <div class="concept-title">📌 學習目標確認</div>
+    <p>學完本單元後，你應該能做到：</p>
+    <p>✅ 認識 19 組複合子音（pl、bl、cl、gl、fl、sl、pr、br、cr、gr、tr、dr、fr、sc、sk、sm、sn、sp、st，及進階 spl、spr、scr、str）</p>
+    <p>✅ 唸單字時不會吃掉中間的子音（black 不會變成 back，string 不會變成 sting）</p>
+    <p>✅ <strong>知道 tr / dr 是特殊的 R-blends，發音會變化</strong>（tree 不是「特衣」、dream 不是「德因母」）</p>
+    <p>✅ 看到陌生單字能拆出複合子音再拼讀（例如看到 splash，能拆成 spl + ash）</p>
+    <p>✅ 知道 y 在單音節字尾發 /aɪ/，多音節字尾發 /i/</p>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   1. TTS 引擎
+   ============================================================ */
+let _voices = [];
+let currentRate = 1.0;
+function loadVoices() { _voices = window.speechSynthesis.getVoices(); }
+loadVoices();
+window.speechSynthesis.onvoiceschanged = loadVoices;
+function getBestVoice() {
+  const preferred = [
+    v => v.name === 'Google US English',
+    v => v.name.includes('Samantha'),
+    v => v.lang === 'en-US' && v.localService,
+    v => v.lang === 'en-US',
+    v => v.lang.startsWith('en'),
+  ];
+  for (const fn of preferred) {
+    const found = _voices.find(fn);
+    if (found) return found;
+  }
+  return null;
+}
+function speak(text) {
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US'; utter.rate = currentRate;
+  utter.pitch = 1.0; utter.volume = 1.0;
+  const v = getBestVoice();
+  if (v) utter.voice = v;
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
+}
+function setSpeed(rate) {
+  currentRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.classList.toggle('active', Math.abs(parseFloat(btn.dataset.rate) - rate) < 0.001);
+  });
+}
+function playWord(btn, word) {
+  speak(word);
+  btn.classList.add('playing');
+  setTimeout(() => btn.classList.remove('playing'), 1200);
+}
+function playCompact(btn, word) {
+  speak(word);
+  btn.classList.add('playing');
+  setTimeout(() => btn.classList.remove('playing'), 1000);
+}
+
+/* ============================================================
+   2. 單字資料
+      格式：[單字, emoji, 音標, 複合子音長度]
+   ============================================================ */
+const blendData = {
+  // L-blends
+  'pl':  { len: 2, words: [
+    ['plane', '✈️', '/pleɪn/'],
+    ['play',  '🎮', '/pleɪ/'],
+  ]},
+  'bl':  { len: 2, words: [
+    ['black', '⬛', '/blæk/'],
+    ['blow',  '💨', '/bloʊ/'],
+  ]},
+  'cl':  { len: 2, words: [
+    ['clap',  '👏', '/klæp/'],
+    ['clean', '🧼', '/kliːn/'],
+  ]},
+  'gl':  { len: 2, words: [
+    ['glue',  '🧴', '/ɡluː/'],
+    ['globe', '🌍', '/ɡloʊb/'],
+  ]},
+  'fl':  { len: 2, words: [
+    ['fly',   '🪰', '/flaɪ/'],
+    ['flea',  '🐛', '/fliː/'],
+  ]},
+  'sl':  { len: 2, words: [
+    ['slide', '🛝', '/slaɪd/'],
+    ['sleep', '😴', '/sliːp/'],
+  ]},
+  // R-blends 標準型
+  'pr':  { len: 2, words: [
+    ['press', '🔘', '/prɛs/'],
+    ['print', '🖨️', '/prɪnt/'],
+  ]},
+  'br':  { len: 2, words: [
+    ['brick', '🧱', '/brɪk/'],
+    ['bridge','🌉', '/brɪdʒ/'],
+  ]},
+  'cr':  { len: 2, words: [
+    ['crab',  '🦀', '/kræb/'],
+    ['cry',   '😭', '/kraɪ/'],
+  ]},
+  'gr':  { len: 2, words: [
+    ['gray',  '🎨', '/ɡreɪ/'],
+    ['green', '🟢', '/ɡriːn/'],
+  ]},
+  'fr':  { len: 2, words: [
+    ['frog',  '🐸', '/frɑːɡ/'],
+    ['fresh', '🥬', '/frɛʃ/'],
+    ['free',  '🗽', '/friː/'],
+  ]},
+  // R-blends 特殊型（tr/dr）
+  'tr':  { len: 2, words: [
+    ['tree',  '🌳', '/triː/'],
+    ['truck', '🚚', '/trʌk/'],
+    ['train', '🚆', '/treɪn/'],
+  ]},
+  'dr':  { len: 2, words: [
+    ['dream', '💭', '/driːm/'],
+    ['dress', '👗', '/drɛs/'],
+    ['drop',  '💧', '/drɑːp/'],
+  ]},
+  // S-blends
+  'sc':  { len: 2, words: [
+    ['scan',  '📷', '/skæn/'],
+    ['scup',  '🐟', '/skʌp/'],
+  ]},
+  'sk':  { len: 2, words: [
+    ['skip',  '🤸', '/skɪp/'],
+    ['skate', '⛸️', '/skeɪt/'],
+  ]},
+  'sm':  { len: 2, words: [
+    ['smile', '😊', '/smaɪl/'],
+    ['smell', '👃', '/smɛl/'],
+  ]},
+  'sn':  { len: 2, words: [
+    ['snack', '🍪', '/snæk/'],
+    ['snow',  '❄️', '/snoʊ/'],
+  ]},
+  'sp':  { len: 2, words: [
+    ['speak', '🗣️', '/spiːk/'],
+    ['spot',  '🐶', '/spɑːt/'],
+    ['spin',  '🌀', '/spɪn/'],
+  ]},
+  'st':  { len: 2, words: [
+    ['stop',  '🛑', '/stɑːp/'],
+    ['stamp', '📮', '/stæmp/'],
+    ['stand', '🧍', '/stænd/'],
+  ]},
+  // 三子音群
+  'spl': { len: 3, words: [
+    ['splash',  '💦', '/splæʃ/'],
+    ['split',   '🪓', '/splɪt/'],
+    ['splotch', '👕', '/splɑːtʃ/'],
+  ]},
+  'spr': { len: 3, words: [
+    ['spray',  '💨', '/spreɪ/'],
+    ['spring', '🌷', '/sprɪŋ/'],
+    ['sprig',  '🌿', '/sprɪɡ/'],
+  ]},
+  'scr': { len: 3, words: [
+    ['scratch','😣', '/skrætʃ/'],
+    ['scream', '😱', '/skriːm/'],
+    ['scrub',  '🧽', '/skrʌb/'],
+  ]},
+  'str': { len: 3, words: [
+    ['strap',  '👜', '/stræp/'],
+    ['string', '🧵', '/strɪŋ/'],
+    ['stretch','🤸', '/strɛtʃ/'],
+  ]},
+};
+
+const yRule1Data = [
+  ['cry', '😭', '/kraɪ/'],
+  ['shy', '🙈', '/ʃaɪ/'],
+  ['spy', '🕵️', '/spaɪ/'],
+];
+const yRule2Data = [
+  ['lady',  '👩', '/ˈleɪdi/'],
+  ['duty',  '🎖️', '/ˈduːti/'],
+  ['caddy', '🎒', '/ˈkædi/'],
+  ['bunny', '🐰', '/ˈbʌni/'],
+];
+
+/* ============================================================
+   3. 自動標藍：英文單字的複合子音
+   ============================================================ */
+function highlightBlend(word, blendLen) {
+  const head = word.slice(0, blendLen);
+  const rest = word.slice(blendLen);
+  return `<span class="blend-letters">${head}</span>${rest}`;
+}
+
+/* ============================================================
+   4. 自動上色：音標
+      規則：
+      - 開頭的子音（直到第一個母音前）標藍色（複合子音的音）
+      - 母音字元標紅色（包含長音 ː）
+      - 結尾子音保持原色
+   ============================================================ */
+const IPA_VOWELS = ['eɪ', 'aɪ', 'oʊ', 'aʊ', 'ɔɪ',
+                    'iː', 'uː', 'ɑː', 'ɔː', 'ɜː', 'eə', 'ɪə', 'ʊə',
+                    'i', 'ɪ', 'e', 'ɛ', 'æ', 'ʌ', 'ə', 'ɒ', 'ɔ', 'ʊ', 'u', 'a', 'o'];
+
+function isIpaVowelStart(ipa, i) {
+  // 嘗試比對最長母音優先（雙母音優先）
+  for (const v of IPA_VOWELS) {
+    if (ipa.substr(i, v.length) === v) {
+      // 但要確認後面沒有跟著母音延續字元（已含 ː 的就不再加）
+      let len = v.length;
+      // 如果單字元母音後面接 ː，視為長音（合併）
+      if (v.length === 1 && ipa[i + 1] === 'ː') len = 2;
+      return { len };
+    }
+  }
+  return null;
+}
+
+function highlightIPA(ipa) {
+  // 去掉前後斜線標記，保留主體
+  // 結構：/ ... /，我們處理中間
+  if (!ipa) return '';
+  const open = ipa.startsWith('/') ? '/' : '';
+  const close = ipa.endsWith('/') ? '/' : '';
+  let body = ipa.replace(/^\/|\/$/g, '');
+
+  let result = '';
+  let i = 0;
+  let foundFirstVowel = false;
+  let leadingConsonants = '';
+  let leadingHtml = '';
+
+  // 第一階段：抓出開頭的子音群（直到第一個母音）
+  while (i < body.length) {
+    const vowelHit = isIpaVowelStart(body, i);
+    if (vowelHit) break;
+    // 跳過重音符號 ˈ ˌ
+    if (body[i] === 'ˈ' || body[i] === 'ˌ') {
+      leadingHtml += body[i];
+      i++;
+      continue;
+    }
+    leadingConsonants += body[i];
+    i++;
+  }
+  if (leadingConsonants) {
+    leadingHtml += `<span class="ipa-blend">${leadingConsonants}</span>`;
+  }
+  result += leadingHtml;
+
+  // 第二階段：剩餘的字串，遇到母音標紅
+  while (i < body.length) {
+    const vowelHit = isIpaVowelStart(body, i);
+    if (vowelHit) {
+      result += `<span class="ipa-vowel">${body.substr(i, vowelHit.len)}</span>`;
+      i += vowelHit.len;
+    } else {
+      result += body[i];
+      i++;
+    }
+  }
+
+  return open + result + close;
+}
+
+/* ============================================================
+   5. 渲染單字格子
+   ============================================================ */
+function renderWordGrid(containerId, items, blendLen) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  items.forEach(([word, emoji, ipa]) => {
+    const card = document.createElement('div');
+    card.className = 'word-card';
+    card.innerHTML = `
+      <div class="word-emoji">${emoji}</div>
+      <div class="word-text">${highlightBlend(word, blendLen)}</div>
+      <div class="word-ipa">${highlightIPA(ipa)}</div>
+      <button class="play-btn" onclick="playWord(this, '${word}')">🔊 發音</button>
+    `;
+    container.appendChild(card);
+  });
+}
+
+/* ============================================================
+   6. Y Rule 單字（標 y 紅色）
+   ============================================================ */
+function renderYRuleGrid(containerId, items) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  items.forEach(([word, emoji, ipa]) => {
+    const idx = word.lastIndexOf('y');
+    let html = word;
+    if (idx >= 0) {
+      html = word.slice(0, idx) +
+             `<span style="color:#dc2626; font-weight:900;">${word[idx]}</span>` +
+             word.slice(idx + 1);
+    }
+    const card = document.createElement('div');
+    card.className = 'word-card';
+    card.innerHTML = `
+      <div class="word-emoji">${emoji}</div>
+      <div class="word-text">${html}</div>
+      <div class="word-ipa">${highlightIPA(ipa)}</div>
+      <button class="play-btn" onclick="playWord(this, '${word}')">🔊 發音</button>
+    `;
+    container.appendChild(card);
+  });
+}
+
+/* ============================================================
+   7. 錯誤對照
+   ============================================================ */
+const errorPairs = [
+  { wrong: 'back',   right: 'black',   blendLen: 2, note: '少了 l 的音' },
+  { wrong: 'lap',    right: 'clap',    blendLen: 2, note: '少了 c 的音' },
+  { wrong: 'top',    right: 'stop',    blendLen: 2, note: '少了 s 的音' },
+  { wrong: 'sting',  right: 'string',  blendLen: 3, note: '少了 r 的音' },
+  { wrong: 'pay',    right: 'play',    blendLen: 2, note: '少了 l 的音' },
+  { wrong: 'ring',   right: 'spring',  blendLen: 3, note: '少了 sp 的音' },
+];
+
+function renderErrorList() {
+  const container = document.getElementById('error-list');
+  errorPairs.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'error-row';
+    row.innerHTML = `
+      <span class="error-wrong">${p.wrong}</span>
+      <span class="error-arrow">➜</span>
+      <span class="error-right">${highlightBlend(p.right, p.blendLen)}</span>
+      <button class="compact-play" onclick="playCompact(this, '${p.right}')">🔊</button>
+      <span class="error-note">${p.note}</span>
+    `;
+    container.appendChild(row);
+  });
+}
+
+/* ============================================================
+   8. 啟動
+   ============================================================ */
+Object.keys(blendData).forEach(blend => {
+  const data = blendData[blend];
+  renderWordGrid(`g-${blend}`, data.words, data.len);
+});
+renderYRuleGrid('g-y1', yRule1Data);
+renderYRuleGrid('g-y2', yRule2Data);
+renderErrorList();
+</script>
+
+</body>
+</html>

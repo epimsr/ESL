@@ -198,6 +198,14 @@
   .word-ipa .ipa-blend { color: #2563eb; font-weight: 800; }
   .word-ipa .ipa-vowel { color: #dc2626; font-weight: 800; }
 
+  /* 中文翻譯 */
+  .word-zh {
+    font-size: 0.82rem;
+    color: #475569;
+    margin-bottom: 7px;
+    font-weight: 600;
+  }
+
   .play-btn {
     background: #2563eb;
     color: white; border: none;
@@ -363,6 +371,7 @@
     .word-emoji { font-size: 1.85rem; margin-bottom: 4px; }
     .word-text { font-size: 1rem; }
     .word-ipa { font-size: 0.74rem; margin-bottom: 6px; }
+    .word-zh { font-size: 0.74rem; margin-bottom: 6px; }
     .play-btn { padding: 4px 12px; font-size: 0.74rem; min-height: 30px; }
 
     .alert-box { padding: 13px 16px; }
@@ -383,6 +392,7 @@
     .word-emoji { font-size: 1.65rem; }
     .word-text { font-size: 0.94rem; }
     .word-ipa { font-size: 0.7rem; }
+    .word-zh { font-size: 0.7rem; }
   }
 </style>
 </head>
@@ -680,127 +690,127 @@ function playCompact(btn, word) {
 
 /* ============================================================
    2. 單字資料
-      格式：[單字, emoji, 音標, 複合子音長度]
+      格式：[單字, emoji, 音標, 中文翻譯, 複合子音長度]
    ============================================================ */
 const blendData = {
   // L-blends
   'pl':  { len: 2, words: [
-    ['plane', '✈️', '/pleɪn/'],
-    ['play',  '🎮', '/pleɪ/'],
+    ['plane', '✈️', '/pleɪn/', '飛機'],
+    ['play',  '🎮', '/pleɪ/',  '玩；遊戲'],
   ]},
   'bl':  { len: 2, words: [
-    ['black', '⬛', '/blæk/'],
-    ['blow',  '💨', '/bloʊ/'],
+    ['black', '⬛', '/blæk/',  '黑色'],
+    ['blow',  '💨', '/bloʊ/',  '吹'],
   ]},
   'cl':  { len: 2, words: [
-    ['clap',  '👏', '/klæp/'],
-    ['clean', '🧼', '/kliːn/'],
+    ['clap',  '👏', '/klæp/',  '拍手'],
+    ['clean', '🧼', '/kliːn/', '乾淨；清潔'],
   ]},
   'gl':  { len: 2, words: [
-    ['glue',  '🧴', '/ɡluː/'],
-    ['globe', '🌍', '/ɡloʊb/'],
+    ['glue',  '🧴', '/ɡluː/',  '膠水'],
+    ['globe', '🌍', '/ɡloʊb/', '地球儀'],
   ]},
   'fl':  { len: 2, words: [
-    ['fly',   '🪰', '/flaɪ/'],
-    ['flea',  '🐛', '/fliː/'],
+    ['fly',   '🪰', '/flaɪ/',  '蒼蠅；飛'],
+    ['flea',  '🐛', '/fliː/',  '跳蚤'],
   ]},
   'sl':  { len: 2, words: [
-    ['slide', '🛝', '/slaɪd/'],
-    ['sleep', '😴', '/sliːp/'],
+    ['slide', '🛝', '/slaɪd/', '溜滑梯；滑'],
+    ['sleep', '😴', '/sliːp/', '睡覺'],
   ]},
   // R-blends 標準型
   'pr':  { len: 2, words: [
-    ['press', '🔘', '/prɛs/'],
-    ['print', '🖨️', '/prɪnt/'],
+    ['press', '🔘', '/prɛs/',  '按壓'],
+    ['print', '🖨️', '/prɪnt/', '列印'],
   ]},
   'br':  { len: 2, words: [
-    ['brick', '🧱', '/brɪk/'],
-    ['bridge','🌉', '/brɪdʒ/'],
+    ['brick', '🧱', '/brɪk/',  '磚塊'],
+    ['bridge','🌉', '/brɪdʒ/', '橋'],
   ]},
   'cr':  { len: 2, words: [
-    ['crab',  '🦀', '/kræb/'],
-    ['cry',   '😭', '/kraɪ/'],
+    ['crab',  '🦀', '/kræb/',  '螃蟹'],
+    ['cry',   '😭', '/kraɪ/',  '哭'],
   ]},
   'gr':  { len: 2, words: [
-    ['gray',  '🎨', '/ɡreɪ/'],
-    ['green', '🟢', '/ɡriːn/'],
+    ['gray',  '🎨', '/ɡreɪ/',  '灰色'],
+    ['green', '🟢', '/ɡriːn/', '綠色'],
   ]},
   'fr':  { len: 2, words: [
-    ['frog',  '🐸', '/frɑːɡ/'],
-    ['fresh', '🥬', '/frɛʃ/'],
-    ['free',  '🗽', '/friː/'],
+    ['frog',  '🐸', '/frɑːɡ/', '青蛙'],
+    ['fresh', '🥬', '/frɛʃ/',  '新鮮的'],
+    ['free',  '🗽', '/friː/',  '自由的；免費的'],
   ]},
   // R-blends 特殊型（tr/dr）
   'tr':  { len: 2, words: [
-    ['tree',  '🌳', '/triː/'],
-    ['truck', '🚚', '/trʌk/'],
-    ['train', '🚆', '/treɪn/'],
+    ['tree',  '🌳', '/triː/',  '樹'],
+    ['truck', '🚚', '/trʌk/',  '卡車'],
+    ['train', '🚆', '/treɪn/', '火車'],
   ]},
   'dr':  { len: 2, words: [
-    ['dream', '💭', '/driːm/'],
-    ['dress', '👗', '/drɛs/'],
-    ['drop',  '💧', '/drɑːp/'],
+    ['dream', '💭', '/driːm/', '夢；做夢'],
+    ['dress', '👗', '/drɛs/',  '洋裝'],
+    ['drop',  '💧', '/drɑːp/', '滴；掉落'],
   ]},
   // S-blends
   'sc':  { len: 2, words: [
-    ['scan',  '📷', '/skæn/'],
-    ['scup',  '🐟', '/skʌp/'],
+    ['scan',  '📷', '/skæn/',  '掃描'],
+    ['scup',  '🐟', '/skʌp/',  '鯛魚'],
   ]},
   'sk':  { len: 2, words: [
-    ['skip',  '🤸', '/skɪp/'],
-    ['skate', '⛸️', '/skeɪt/'],
+    ['skip',  '🤸', '/skɪp/',  '跳過；蹦跳'],
+    ['skate', '⛸️', '/skeɪt/', '溜冰'],
   ]},
   'sm':  { len: 2, words: [
-    ['smile', '😊', '/smaɪl/'],
-    ['smell', '👃', '/smɛl/'],
+    ['smile', '😊', '/smaɪl/', '微笑'],
+    ['smell', '👃', '/smɛl/',  '聞；氣味'],
   ]},
   'sn':  { len: 2, words: [
-    ['snack', '🍪', '/snæk/'],
-    ['snow',  '❄️', '/snoʊ/'],
+    ['snack', '🍪', '/snæk/',  '點心；零食'],
+    ['snow',  '❄️', '/snoʊ/',  '雪'],
   ]},
   'sp':  { len: 2, words: [
-    ['speak', '🗣️', '/spiːk/'],
-    ['spot',  '🐶', '/spɑːt/'],
-    ['spin',  '🌀', '/spɪn/'],
+    ['speak', '🗣️', '/spiːk/', '說話'],
+    ['spot',  '🐶', '/spɑːt/', '斑點'],
+    ['spin',  '🌀', '/spɪn/',  '旋轉'],
   ]},
   'st':  { len: 2, words: [
-    ['stop',  '🛑', '/stɑːp/'],
-    ['stamp', '📮', '/stæmp/'],
-    ['stand', '🧍', '/stænd/'],
+    ['stop',  '🛑', '/stɑːp/', '停止'],
+    ['stamp', '📮', '/stæmp/', '郵票；蓋章'],
+    ['stand', '🧍', '/stænd/', '站立'],
   ]},
   // 三子音群
   'spl': { len: 3, words: [
-    ['splash',  '💦', '/splæʃ/'],
-    ['split',   '🪓', '/splɪt/'],
-    ['splotch', '👕', '/splɑːtʃ/'],
+    ['splash',  '💦', '/splæʃ/',   '濺起水花'],
+    ['split',   '🪓', '/splɪt/',   '劈開；分開'],
+    ['splotch', '👕', '/splɑːtʃ/', '污漬'],
   ]},
   'spr': { len: 3, words: [
-    ['spray',  '💨', '/spreɪ/'],
-    ['spring', '🌷', '/sprɪŋ/'],
-    ['sprig',  '🌿', '/sprɪɡ/'],
+    ['spray',  '💨', '/spreɪ/',  '噴灑'],
+    ['spring', '🌷', '/sprɪŋ/',  '春天；彈簧'],
+    ['sprig',  '🌿', '/sprɪɡ/',  '小樹枝'],
   ]},
   'scr': { len: 3, words: [
-    ['scratch','😣', '/skrætʃ/'],
-    ['scream', '😱', '/skriːm/'],
-    ['scrub',  '🧽', '/skrʌb/'],
+    ['scratch','😣', '/skrætʃ/', '抓癢；刮'],
+    ['scream', '😱', '/skriːm/', '尖叫'],
+    ['scrub',  '🧽', '/skrʌb/',  '刷洗'],
   ]},
   'str': { len: 3, words: [
-    ['strap',  '👜', '/stræp/'],
-    ['string', '🧵', '/strɪŋ/'],
-    ['stretch','🤸', '/strɛtʃ/'],
+    ['strap',  '👜', '/stræp/',  '帶子；繫帶'],
+    ['string', '🧵', '/strɪŋ/',  '線；繩子'],
+    ['stretch','🤸', '/strɛtʃ/', '伸展'],
   ]},
 };
 
 const yRule1Data = [
-  ['cry', '😭', '/kraɪ/'],
-  ['shy', '🙈', '/ʃaɪ/'],
-  ['spy', '🕵️', '/spaɪ/'],
+  ['cry', '😭', '/kraɪ/', '哭'],
+  ['shy', '🙈', '/ʃaɪ/',  '害羞的'],
+  ['spy', '🕵️', '/spaɪ/', '間諜'],
 ];
 const yRule2Data = [
-  ['lady',  '👩', '/ˈleɪdi/'],
-  ['duty',  '🎖️', '/ˈduːti/'],
-  ['caddy', '🎒', '/ˈkædi/'],
-  ['bunny', '🐰', '/ˈbʌni/'],
+  ['lady',  '👩', '/ˈleɪdi/', '女士'],
+  ['duty',  '🎖️', '/ˈduːti/', '責任；職責'],
+  ['caddy', '🎒', '/ˈkædi/',  '球僮；小盒子'],
+  ['bunny', '🐰', '/ˈbʌni/',  '小兔子'],
 ];
 
 /* ============================================================
@@ -890,13 +900,14 @@ function highlightIPA(ipa) {
 function renderWordGrid(containerId, items, blendLen) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  items.forEach(([word, emoji, ipa]) => {
+  items.forEach(([word, emoji, ipa, zh]) => {
     const card = document.createElement('div');
     card.className = 'word-card';
     card.innerHTML = `
       <div class="word-emoji">${emoji}</div>
       <div class="word-text">${highlightBlend(word, blendLen)}</div>
       <div class="word-ipa">${highlightIPA(ipa)}</div>
+      <div class="word-zh">${zh}</div>
       <button class="play-btn" onclick="playWord(this, '${word}')">🔊 發音</button>
     `;
     container.appendChild(card);
@@ -909,7 +920,7 @@ function renderWordGrid(containerId, items, blendLen) {
 function renderYRuleGrid(containerId, items) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  items.forEach(([word, emoji, ipa]) => {
+  items.forEach(([word, emoji, ipa, zh]) => {
     const idx = word.lastIndexOf('y');
     let html = word;
     if (idx >= 0) {
@@ -923,6 +934,7 @@ function renderYRuleGrid(containerId, items) {
       <div class="word-emoji">${emoji}</div>
       <div class="word-text">${html}</div>
       <div class="word-ipa">${highlightIPA(ipa)}</div>
+      <div class="word-zh">${zh}</div>
       <button class="play-btn" onclick="playWord(this, '${word}')">🔊 發音</button>
     `;
     container.appendChild(card);

@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>長頸鹿 Action Book 3 — 測驗</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: #f1f5f9; color: #1e293b;
+    margin: 0; padding: 0; line-height: 1.6;
+  }
+
+  /* ===== 頂部固定列 ===== */
+  .top-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: white;
+    border-bottom: 2px solid #2563eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 6px 16px 7px;
+  }
+  .top-title {
+    text-align: center; color: #1d4ed8;
+    font-size: 0.98rem; font-weight: 800; margin: 0 0 5px;
+    line-height: 1.3;
+  }
+  .top-controls {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px 12px; flex-wrap: wrap;
+  }
+  .week-tabs { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+  .week-tab {
+    background: #f1f5f9; color: #475569;
+    border: 2px solid #e2e8f0; border-radius: 999px;
+    padding: 3px 11px; font-size: 0.78rem; font-weight: 800;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    line-height: 1.4;
+  }
+  .week-tab:hover { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+  .week-tab.active {
+    background: #2563eb; color: white; border-color: #2563eb;
+  }
+  .week-tab .week-meta { font-size: 0.65rem; opacity: 0.85; margin-left: 3px; }
+
+  .speed-bar {
+    display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+    padding-left: 8px; border-left: 1.5px solid #e2e8f0;
+  }
+  .speed-label { font-size: 0.72rem; font-weight: 800; color: #475569; white-space: nowrap; }
+  .speed-btn {
+    font-size: 0.72rem; font-weight: 800;
+    border: 1.5px solid #e2e8f0; border-radius: 999px;
+    padding: 3px 10px; background: #f8fafc; color: #64748b;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    line-height: 1.4;
+  }
+  .speed-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+
+  /* ===== 容器 ===== */
+  .container { max-width: 920px; margin: 0 auto; padding: 22px 28px; }
+
+  /* ===== 週次介紹 ===== */
+  .week-intro {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-left: 5px solid #2563eb;
+    border-radius: 10px;
+    padding: 14px 18px; margin-bottom: 18px;
+  }
+  .week-intro h2 { color: #1d4ed8; font-size: 1.1rem; margin: 0 0 4px; }
+  .week-intro p { margin: 4px 0; font-size: 0.88rem; color: #475569; }
+
+  /* ===== 進度 ===== */
+  .global-status {
+    display: flex; justify-content: space-between; align-items: center;
+    background: white; border: 1.5px solid #bfdbfe; border-radius: 10px;
+    padding: 8px 14px; margin-bottom: 18px;
+    font-weight: 700; font-size: 0.88rem; color: #1e3a8a;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .global-status .ok { color: #16a34a; }
+
+  /* ===== 子段標籤 ===== */
+  .subsection-label {
+    display: inline-block;
+    font-size: 0.92rem; font-weight: 800;
+    color: white; background: #2563eb;
+    padding: 4px 14px; border-radius: 8px;
+    margin: 22px 0 10px;
+  }
+  .subsection-label.sentences { background: #0f766e; }
+
+  /* ===== 題目卡 ===== */
+  .q-card {
+    background: white; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 10px;
+  }
+  .q-card.correct { border-color: #16a34a; background: #f0fdf4; }
+  .q-card.wrong   { border-color: #dc2626; background: #fef2f2; }
+
+  .q-head {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px; flex-wrap: wrap;
+  }
+  .q-num {
+    font-weight: 800; color: #1d4ed8; font-size: 0.78rem;
+    background: #dbeafe; padding: 2px 9px; border-radius: 999px;
+  }
+  .q-type-tag {
+    font-size: 0.7rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px;
+  }
+  .q-type-tag.spell    { color: #c2410c; background: #ffedd5; }
+  .q-type-tag.mc       { color: #7c3aed; background: #f3e8ff; }
+  .q-type-tag.fill     { color: #b45309; background: #fef3c7; }
+  .q-type-tag.reorder  { color: #0f766e; background: #ccfbf1; }
+  .q-type-tag.sent-mc  { color: #1d4ed8; background: #dbeafe; }
+
+  .q-text {
+    font-size: 0.95rem; color: #0f172a;
+    margin: 4px 0 8px; flex: 1 1 100%; font-weight: 600;
+  }
+  .q-text .target {
+    color: #b45309; background: #fef3c7;
+    padding: 1px 7px; border-radius: 5px; font-weight: 800;
+  }
+
+  /* 聽單字按鈕（中央大型） */
+  .listen-btn {
+    background: #0f766e; color: white;
+    border: none; border-radius: 999px;
+    padding: 9px 24px; font-size: 1rem; font-weight: 800;
+    cursor: pointer; transition: all 0.15s;
+    margin: 4px 0; min-height: 44px;
+  }
+  .listen-btn:hover { background: #0d5b54; }
+  .listen-btn.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+  }
+  .listen-row { text-align: center; margin: 8px 0; }
+
+  /* ===== 部分填字題 ===== */
+  .partial-row {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 2px; margin: 8px 0;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: "SF Mono", Consolas, "Roboto Mono", monospace;
+  }
+  .letter-given {
+    font-size: 1.4rem; font-weight: 700;
+    color: #0f172a; padding: 0 1px;
+    letter-spacing: 0.5px;
+  }
+  .letter-blank {
+    width: 32px; height: 38px;
+    text-align: center;
+    font-size: 1.2rem; font-weight: 800;
+    color: #2563eb;
+    border: none; border-bottom: 3px solid #2563eb;
+    background: white;
+    border-radius: 4px 4px 0 0;
+    font-family: inherit;
+    margin: 0 2px;
+  }
+  .letter-blank:focus {
+    outline: none; background: #eff6ff;
+    border-bottom-color: #1d4ed8;
+  }
+  .letter-blank:disabled { background: #f1f5f9; cursor: default; }
+  .letter-blank.right { color: #16a34a; border-bottom-color: #16a34a; background: #dcfce7; }
+  .letter-blank.wrong { color: #dc2626; border-bottom-color: #dc2626; background: #fee2e2; }
+  .partial-submit {
+    background: #2563eb; color: white; border: none;
+    border-radius: 8px; padding: 8px 18px;
+    font-size: 0.9rem; font-weight: 800; cursor: pointer;
+    margin-top: 8px; min-height: 38px;
+  }
+  .partial-submit:hover:not(:disabled) { background: #1d4ed8; }
+  .partial-submit:disabled { background: #94a3b8; cursor: default; }
+
+  /* ===== 選擇題 ===== */
+  .options {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 6px; margin-top: 4px;
+  }
+  .opt-btn {
+    background: white; border: 2px solid #cbd5e1; border-radius: 8px;
+    padding: 9px 12px; text-align: left; cursor: pointer;
+    font-size: 0.92rem; color: #1e293b; font-weight: 600;
+    transition: all 0.12s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: #60a5fa; background: #eff6ff; }
+  .opt-btn:disabled { cursor: default; }
+  .opt-btn.selected-correct { background: #16a34a; border-color: #16a34a; color: white; }
+  .opt-btn.selected-wrong   { background: #dc2626; border-color: #dc2626; color: white; }
+  .opt-btn.show-correct     { background: #dcfce7; border-color: #16a34a; color: #166534; }
+  .opt-letter { font-weight: 800; color: #2563eb; flex-shrink: 0; }
+  .opt-btn.selected-correct .opt-letter,
+  .opt-btn.selected-wrong .opt-letter { color: white; }
+  .opt-btn.show-correct .opt-letter { color: #166534; }
+
+  /* ===== 填空題 ===== */
+  .fill-row { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+  .fill-input {
+    flex: 1; min-width: 180px;
+    padding: 8px 12px; font-size: 0.95rem; font-weight: 600;
+    border: 2px solid #cbd5e1; border-radius: 8px;
+    font-family: inherit;
+  }
+  .fill-input:focus { outline: none; border-color: #2563eb; background: #eff6ff; }
+  .fill-input:disabled { background: #f1f5f9; }
+  .fill-submit {
+    background: #2563eb; color: white; border: none;
+    border-radius: 8px; padding: 8px 18px;
+    font-size: 0.9rem; font-weight: 800; cursor: pointer;
+  }
+  .fill-submit:hover:not(:disabled) { background: #1d4ed8; }
+  .fill-submit:disabled { background: #94a3b8; cursor: default; }
+
+  /* ===== 重組題 ===== */
+  .reorder-area {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    min-height: 44px; padding: 8px 10px;
+    border: 2px dashed #cbd5e1; border-radius: 8px;
+    background: white; margin-bottom: 8px;
+  }
+  .reorder-area.answer-area { background: #eff6ff; border-color: #93c5fd; }
+  .word-chip {
+    background: #dbeafe; color: #1e3a8a;
+    border: 1.5px solid #93c5fd; border-radius: 6px;
+    padding: 5px 12px; font-size: 0.92rem; font-weight: 700;
+    cursor: pointer; transition: all 0.12s;
+    user-select: none; min-height: 36px;
+    display: inline-flex; align-items: center;
+  }
+  .word-chip:hover { background: #bfdbfe; transform: translateY(-1px); }
+  .word-chip.placed { opacity: 0.35; pointer-events: none; }
+  .reorder-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .reorder-controls button {
+    background: #2563eb; color: white; border: none; border-radius: 8px;
+    padding: 6px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer;
+    min-height: 36px;
+  }
+  .reorder-controls button:hover:not(:disabled) { background: #1d4ed8; }
+  .reorder-controls button:disabled { background: #94a3b8; cursor: default; }
+  .reorder-controls button.reset-btn { background: #64748b; }
+  .reorder-controls button.reset-btn:hover:not(:disabled) { background: #475569; }
+  .placeholder-text { color: #94a3b8; font-size: 0.85rem; }
+
+  /* ===== 回饋 ===== */
+  .feedback {
+    margin-top: 8px; padding: 7px 12px; border-radius: 6px;
+    font-size: 0.86rem; font-weight: 700; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok  { background: #dcfce7; color: #166534; }
+  .feedback.bad { background: #fee2e2; color: #991b1b; }
+  .feedback .ans-line { font-weight: 600; color: #475569; margin-top: 2px; font-size: 0.82rem; }
+  .feedback .replay-btn {
+    margin-left: 8px;
+    background: #2563eb; color: white; border: none;
+    border-radius: 999px; padding: 2px 10px;
+    font-size: 0.76rem; font-weight: 700; cursor: pointer;
+  }
+
+  /* ===== 週次成績 ===== */
+  .week-score {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 2px solid #2563eb; border-radius: 10px;
+    padding: 12px 18px; margin-top: 18px;
+    font-weight: 800; color: #1e3a8a;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .week-score .pct { font-size: 1.3rem; color: #2563eb; }
+
+  /* ===== 控制 ===== */
+  .control-bar {
+    text-align: center; margin: 22px 0;
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  }
+  .ctrl-btn {
+    background: #2563eb; color: white; border: none; border-radius: 999px;
+    padding: 10px 24px; font-size: 0.92rem; font-weight: 800;
+    cursor: pointer;
+  }
+  .ctrl-btn:hover { background: #1d4ed8; }
+  .ctrl-btn.secondary { background: white; color: #2563eb; border: 2px solid #2563eb; }
+
+  /* ===== 週次面板 ===== */
+  .week-panel { display: none; }
+  .week-panel.active { display: block; }
+
+  /* ===== 結果 ===== */
+  .result-box {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 2px solid #f59e0b; border-radius: 14px;
+    padding: 20px; text-align: center; margin-top: 22px; display: none;
+  }
+  .result-box.show { display: block; }
+  .result-title { font-size: 1.15rem; font-weight: 800; color: #78350f; }
+  .result-score { font-size: 2.2rem; font-weight: 800; color: #b45309; margin: 6px 0; }
+  .result-msg { font-size: 0.95rem; color: #78350f; }
+  .result-detail { margin-top: 8px; font-size: 0.86rem; color: #92400e; }
+  .result-meta {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+    gap: 12px; margin-top: 12px; padding: 10px;
+    background: rgba(255,255,255,0.6); border-radius: 8px;
+    font-size: 0.85rem; color: #78350f; font-weight: 700;
+  }
+  .result-meta input {
+    border: 1.5px solid #f59e0b; border-radius: 6px;
+    padding: 4px 10px; font-size: 0.88rem; font-weight: 700;
+    color: #78350f; background: white; width: 120px;
+  }
+  .result-actions {
+    display: flex; justify-content: center; gap: 10px;
+    margin-top: 12px; flex-wrap: wrap;
+  }
+  .result-actions button {
+    background: #b45309; color: white; border: none;
+    border-radius: 999px; padding: 8px 18px;
+    font-size: 0.9rem; font-weight: 800; cursor: pointer;
+  }
+  .result-actions button.secondary {
+    background: white; color: #b45309; border: 2px solid #b45309;
+  }
+
+  /* ============================================================
+     RWD
+     ============================================================ */
+  @media (max-width: 768px) {
+    .container { padding: 18px 16px; }
+    .top-bar { padding: 5px 12px 6px; }
+    .top-title { font-size: 0.92rem; margin-bottom: 4px; }
+    .week-tab { padding: 3px 9px; font-size: 0.74rem; }
+    .speed-btn { padding: 3px 9px; font-size: 0.7rem; }
+  }
+  @media (max-width: 520px) {
+    body { line-height: 1.55; }
+    .top-bar { padding: 5px 8px 6px; }
+    .top-title { font-size: 0.82rem; margin-bottom: 3px; line-height: 1.25; }
+    .top-controls { gap: 4px 8px; }
+    .week-tab { padding: 3px 9px; font-size: 0.72rem; }
+    .week-tab .week-meta { display: none; }
+    .speed-bar { padding-left: 6px; gap: 3px; }
+    .speed-label { font-size: 0.7rem; }
+    .speed-btn { padding: 3px 8px; font-size: 0.68rem; }
+
+    .container { padding: 14px 10px; }
+    .week-intro { padding: 12px 14px; }
+    .week-intro h2 { font-size: 0.96rem; }
+    .week-intro p { font-size: 0.82rem; }
+    .global-status { padding: 8px 12px; font-size: 0.8rem; }
+    .subsection-label { font-size: 0.86rem; padding: 4px 12px; }
+
+    .q-card { padding: 10px 11px; }
+    .q-num { font-size: 0.72rem; }
+    .q-type-tag { font-size: 0.66rem; padding: 2px 6px; }
+    .q-text { font-size: 0.9rem; }
+
+    .options { grid-template-columns: 1fr; gap: 6px; }
+    .opt-btn { padding: 10px 12px; font-size: 0.9rem; min-height: 42px; }
+    .fill-row { flex-direction: column; gap: 6px; }
+    .fill-input, .fill-submit { width: 100%; min-width: 0; min-height: 42px; }
+    .fill-input { padding: 10px 12px; font-size: 1rem; }
+    .fill-submit { padding: 10px; font-size: 0.95rem; }
+
+    .partial-row { padding: 10px 12px; gap: 1px; }
+    .letter-given { font-size: 1.2rem; }
+    .letter-blank { width: 28px; height: 34px; font-size: 1.05rem; margin: 0 1px; }
+    .partial-submit { width: 100%; padding: 10px; font-size: 0.95rem; min-height: 42px; }
+
+    .feedback { font-size: 0.8rem; padding: 6px 10px; }
+    .week-score { padding: 10px 14px; font-size: 0.86rem; flex-direction: column; align-items: flex-start; gap: 4px; }
+    .week-score .pct { font-size: 1.1rem; }
+
+    .result-box { padding: 14px 12px; }
+    .result-title { font-size: 1rem; }
+    .result-score { font-size: 1.7rem; }
+    .result-meta { flex-direction: column; gap: 6px; padding: 9px; font-size: 0.8rem; }
+    .result-meta input { width: 100%; }
+    .result-actions { gap: 6px; flex-direction: column; }
+    .result-actions button { width: 100%; padding: 10px; min-height: 42px; }
+
+    .ctrl-btn { padding: 9px 20px; font-size: 0.88rem; min-height: 42px; }
+  }
+  @media (max-width: 360px) {
+    .top-title { font-size: 0.74rem; }
+    .container { padding: 11px 8px; }
+    .q-text { font-size: 0.86rem; }
+    .opt-btn { font-size: 0.86rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== 頂部固定列 ====== -->
+<div class="top-bar">
+  <div class="top-title">📝 長頸鹿 Action Book 3 — 測驗</div>
+  <div class="top-controls">
+    <div class="week-tabs">
+      <button class="week-tab active" data-week="1" onclick="switchWeek(1)">
+        第一週<span class="week-meta">L1–L5</span>
+      </button>
+      <button class="week-tab" data-week="2" onclick="switchWeek(2)">
+        第二週<span class="week-meta">L6–L10</span>
+      </button>
+      <button class="week-tab" data-week="3" onclick="switchWeek(3)">
+        第三週<span class="week-meta">L11–L15</span>
+      </button>
+      <button class="week-tab" data-week="4" onclick="switchWeek(4)">
+        第四週<span class="week-meta">L16–L19</span>
+      </button>
+    </div>
+    <div class="speed-bar">
+      <span class="speed-label">🔊</span>
+      <button class="speed-btn" onclick="setSpeed(0.5)" data-rate="0.5">慢</button>
+      <button class="speed-btn active" onclick="setSpeed(0.75)" data-rate="0.75">慢一點</button>
+      <button class="speed-btn" onclick="setSpeed(1.0)" data-rate="1.0">正常</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 容器 ====== -->
+<div class="container">
+
+  <div class="week-panel active" id="week-1"></div>
+  <div class="week-panel" id="week-2"></div>
+  <div class="week-panel" id="week-3"></div>
+  <div class="week-panel" id="week-4"></div>
+
+</div>
+
+<script>
+/* ============================================================
+   1. TTS
+   ============================================================ */
+let _voices = [];
+let currentRate = 0.75;
+function loadVoices() { _voices = window.speechSynthesis.getVoices(); }
+loadVoices();
+window.speechSynthesis.onvoiceschanged = loadVoices;
+function getBestVoice() {
+  const preferred = [
+    v => v.name === 'Google US English',
+    v => v.name.includes('Samantha'),
+    v => v.lang === 'en-US' && v.localService,
+    v => v.lang === 'en-US',
+    v => v.lang.startsWith('en'),
+  ];
+  for (const fn of preferred) {
+    const found = _voices.find(fn);
+    if (found) return found;
+  }
+  return null;
+}
+function speak(text) {
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US'; utter.rate = currentRate;
+  utter.pitch = 1.0; utter.volume = 1.0;
+  const v = getBestVoice();
+  if (v) utter.voice = v;
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
+}
+function setSpeed(rate) {
+  currentRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.classList.toggle('active', Math.abs(parseFloat(btn.dataset.rate) - rate) < 0.001);
+  });
+}
+
+/* ============================================================
+   2. 各週單字
+   ============================================================ */
+const wordsByWeek = {
+  1: [
+    ['eagle','老鷹'], ['fish','魚'], ['goose','鵝'],
+    ['tiger','老虎'], ['wolf','狼'],
+    ['frog','青蛙'], ['snail','蝸牛'], ['duck','鴨子'], ['worm','蟲'],
+    ['goat','山羊'], ['elephant','大象'],
+    ['kangaroo','袋鼠'], ['zebra','斑馬'],
+    ['doll','洋娃娃'], ['robot','機器人'],
+    ['gift','禮物'], ['card','卡片'],
+    ['breakfast','早餐'], ['brunch','早午餐'],
+    ['lunch','午餐'], ['dinner','晚餐'],
+  ],
+  2: [
+    ['nest','鳥巢'], ['basket','籃子'],
+    ['car','汽車'], ['plane','飛機'],
+    ['desk','書桌'], ['toy','玩具'],
+    ['table','桌子'], ['chair','椅子'],
+    ['king','國王'], ['queen','皇后'],
+    ['mat','墊子'], ['floor','地板'],
+  ],
+  3: [
+    ['good','好的'], ['handsome','英俊的'],
+    ['pretty','漂亮的'], ['cute','可愛的'],
+    ['hungry','餓的'], ['tired','累的'],
+    ['happy','快樂的'], ['sad','難過的'],
+    ['bad','壞的'], ['eat','吃'], ['sleep','睡覺'],
+    ['cold','冷的'], ['hot','熱的'],
+    ['warm','溫暖的'], ['cool','涼爽的'],
+    ['swan','天鵝'], ['tree','樹'],
+    ['bench','長椅'], ['boat','船'],
+  ],
+  4: [
+    ['bell','鈴鐺'], ['balloon','氣球'],
+    ['flag','旗子'], ['light','燈'],
+    ['gray','灰色'], ['white','白色'],
+    ['brown','棕色'], ['black','黑色'],
+    ['silver','銀色'], ['gold','黃金'],
+  ],
+};
+
+/* ============================================================
+   3. 句型題庫
+   ============================================================ */
+
+// 各週的句型填空題
+const fillPatternsByWeek = {
+  1: [
+    { q:'There ___ a tiger.（單數）', ans:'is', full:'There is a tiger.', hint:'be 動詞' },
+    { q:'There ___ four fish.（複數）', ans:'are', full:'There are four fish.', hint:'be 動詞' },
+    { q:'There is ___ eagle.（母音開頭）', ans:'an', full:'There is an eagle.', hint:'冠詞' },
+    { q:'There is ___ tiger.（子音開頭）', ans:'a', full:'There is a tiger.', hint:'冠詞' },
+    { q:'___ there a frog?（疑問句）', ans:'Is', full:'Is there a frog?', hint:'be 動詞' },
+    { q:'I am seven years ___.', ans:'old', full:'I am seven years old.', hint:'年齡' },
+    { q:"What ___ is it?", ans:'time', full:'What time is it?', hint:'問時間' },
+    { q:"___ have lunch!", ans:"Let's", full:"Let's have lunch!", hint:'邀請' },
+  ],
+  2: [
+    { q:'___ is the nest?（問位置單數）', ans:'Where', full:'Where is the nest?', hint:'疑問詞' },
+    { q:'Where ___ the nests?（複數）', ans:'are', full:'Where are the nests?', hint:'be 動詞' },
+    { q:"It's ___ the desk.（在書桌上）", ans:'on', full:"It's on the desk.", hint:'介係詞' },
+    { q:"They're ___ the desk.（在書桌下面）", ans:'under', full:"They're under the desk.", hint:'介係詞' },
+    { q:'The king ___ over there.', ans:'is', full:'The king is over there.', hint:'be 動詞' },
+    { q:'My toys ___ on the floor.', ans:'are', full:'My toys are on the floor.', hint:'be 動詞' },
+  ],
+  3: [
+    { q:'___ you a good boy?', ans:'Are', full:'Are you a good boy?', hint:'be 動詞' },
+    { q:"No, I'm ___.（否定）", ans:'not', full:"No, I'm not.", hint:'否定' },
+    { q:"Rocky ___ a bad dog.（否定縮寫）", ans:"isn't", full:"Rocky isn't a bad dog.", hint:'否定' },
+    { q:'I want ___ sleep.', ans:'to', full:'I want to sleep.', hint:'want to' },
+    { q:'She ___ to sleep.（第三人稱）', ans:'wants', full:'She wants to sleep.', hint:'第三人稱' },
+    { q:"It's ___ outside.（外面很冷）", ans:'cold', full:"It's cold outside.", hint:'形容詞' },
+    { q:'How ___ swans are there?', ans:'many', full:'How many swans are there?', hint:'問數量' },
+  ],
+  4: [
+    { q:'The bell ___ pink.', ans:'is', full:'The bell is pink.', hint:'be 動詞' },
+    { q:'I ___ the pink bell.', ans:'like', full:'I like the pink bell.', hint:'動詞' },
+    { q:'My ___ color is gray.', ans:'favorite', full:'My favorite color is gray.', hint:'形容詞' },
+    { q:'He ___ the silver car.', ans:'likes', full:'He likes the silver car.', hint:'第三人稱動詞' },
+    { q:'I ___ the silver car.', ans:'like', full:'I like the silver car.', hint:'第一人稱動詞' },
+    { q:'We ___ the silver car.', ans:'like', full:'We like the silver car.', hint:'複數動詞' },
+  ],
+};
+
+// 各週的重組題
+const reorderByWeek = {
+  1: [
+    { words:['There','is','a','tiger'], ans:'There is a tiger', full:'There is a tiger.', zh:'有一隻老虎。' },
+    { words:['There','are','four','fish'], ans:'There are four fish', full:'There are four fish.', zh:'有四條魚。' },
+    { words:['Is','there','a','frog'], ans:'Is there a frog', full:'Is there a frog?', zh:'有一隻青蛙嗎？' },
+    { words:['How','old','are','you'], ans:'How old are you', full:'How old are you?', zh:'你幾歲？' },
+    { words:['I','am','seven','years','old'], ans:'I am seven years old', full:'I am seven years old.', zh:'我七歲。' },
+    { words:["Let's",'have','lunch'], ans:"Let's have lunch", full:"Let's have lunch!", zh:'我們吃午餐吧！' },
+  ],
+  2: [
+    { words:['Where','is','the','nest'], ans:'Where is the nest', full:'Where is the nest?', zh:'鳥巢在哪裡？' },
+    { words:['Where','are','the','nests'], ans:'Where are the nests', full:'Where are the nests?', zh:'鳥巢們在哪裡？' },
+    { words:['My','toy','is','on','the','desk'], ans:'My toy is on the desk', full:'My toy is on the desk.', zh:'我的玩具在書桌上。' },
+    { words:['The','king','is','over','there'], ans:'The king is over there', full:'The king is over there.', zh:'國王在那裡。' },
+  ],
+  3: [
+    { words:['Are','you','a','good','boy'], ans:'Are you a good boy', full:'Are you a good boy?', zh:'你是一個好男孩嗎？' },
+    { words:['I','want','to','sleep'], ans:'I want to sleep', full:'I want to sleep.', zh:'我想要睡覺。' },
+    { words:['She','wants','to','sleep'], ans:'She wants to sleep', full:'She wants to sleep.', zh:'她想要睡覺。' },
+    { words:["It's",'cold','outside'], ans:"It's cold outside", full:"It's cold outside.", zh:'外面很冷。' },
+    { words:['How','many','swans','are','there'], ans:'How many swans are there', full:'How many swans are there?', zh:'這裡有幾隻天鵝？' },
+  ],
+  4: [
+    { words:['The','bell','is','pink'], ans:'The bell is pink', full:'The bell is pink.', zh:'這個鈴鐺是粉紅色的。' },
+    { words:['I','like','the','silver','car'], ans:'I like the silver car', full:'I like the silver car.', zh:'我喜歡這輛銀色的車。' },
+    { words:['He','likes','the','silver','car'], ans:'He likes the silver car', full:'He likes the silver car.', zh:'他喜歡這輛銀色的車。' },
+    { words:['My','favorite','color','is','gray'], ans:'My favorite color is gray', full:'My favorite color is gray.', zh:'我最喜歡的顏色是灰色。' },
+  ],
+};
+
+/* ============================================================
+   4. 工具
+   ============================================================ */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function escapeAttr(s) { return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function normalizeAns(s) {
+  return String(s).trim().toLowerCase()
+    .replace(/[.,!?]+$/, '')
+    .replace(/\s+/g, ' ');
+}
+
+/* ============================================================
+   5. 部分字母填空：將單字挖空幾個字母讓學生填
+   策略：優先挖母音，不挖第一個字母
+   ============================================================ */
+function makePartialBlank(word) {
+  const len = word.length;
+  // 決定要挖幾個字母
+  let blanksCount;
+  if (len <= 4) blanksCount = 1;
+  else if (len <= 6) blanksCount = 2;
+  else blanksCount = Math.min(3, Math.floor(len / 3));
+
+  // 找出所有母音的位置（不含第一個字母、不含空格與特殊字元）
+  const vowels = ['a','e','i','o','u'];
+  const vowelIndices = [];
+  const consonantIndices = [];
+  for (let i = 1; i < len; i++) {
+    const ch = word[i].toLowerCase();
+    if (!/[a-z]/.test(ch)) continue; // 跳過空格、標點
+    if (vowels.includes(ch)) vowelIndices.push(i);
+    else consonantIndices.push(i);
+  }
+
+  // 洗牌母音與子音位置，優先從母音取
+  const shuffledVowels = shuffle(vowelIndices);
+  const shuffledConsonants = shuffle(consonantIndices);
+  const picks = [...shuffledVowels, ...shuffledConsonants].slice(0, blanksCount);
+  const blankSet = new Set(picks);
+
+  // 產生顯示用的單字 HTML 與正解陣列
+  let display = '';
+  const answers = []; // 各空格的正解字母
+  for (let i = 0; i < len; i++) {
+    if (blankSet.has(i)) {
+      const idx = answers.length;
+      display += `<input type="text" class="letter-blank" maxlength="1" data-idx="${idx}" autocomplete="off">`;
+      answers.push(word[i].toLowerCase());
+    } else {
+      display += `<span class="letter-given">${escapeHtml(word[i])}</span>`;
+    }
+  }
+  return { display, answers };
+}
+function buildVocabQuestions(weekWords) {
+  const aQs = []; // 聽音拼字（部分挖空）
+  const bQs = []; // 中翻英選擇
+
+  weekWords.forEach(([en, zh], idx) => {
+    const blank = makePartialBlank(en);
+    aQs.push({
+      kind: 'A',
+      wordEn: en,
+      type: 'partial',
+      typeLabel: '聽音拼字',
+      question: `🔊 點按鈕聽單字，補上缺少的字母（填入小寫即可）：`,
+      listen: en,
+      display: blank.display,
+      answers: blank.answers,
+      answer: en,           // 用於回饋顯示
+      full: en + '.',
+    });
+
+    // B 題：中翻英選擇，從同週其他單字找干擾
+    const distractorPool = weekWords.filter(p => p[0] !== en);
+    const distractors = shuffle(distractorPool).slice(0, 3).map(p => p[0]);
+    bQs.push({
+      kind: 'B',
+      wordEn: en,
+      type: 'mc',
+      typeLabel: '中翻英',
+      question: `中文：<span class="target">${escapeHtml(zh)}</span> ➜ 請選出對應的英文`,
+      options: shuffle([en, ...distractors]),
+      answer: en,
+      full: en + '.',
+    });
+  });
+
+  return { vocabA: shuffle(aQs), vocabB: shuffle(bQs) };
+}
+
+/* ============================================================
+   6. 渲染：題目卡（共用）
+   ============================================================ */
+
+const weekState = {
+  1: { answered: {}, total: 0 },
+  2: { answered: {}, total: 0 },
+  3: { answered: {}, total: 0 },
+  4: { answered: {}, total: 0 },
+};
+
+function renderQuestion(week, qid, qNum, q) {
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.id = `w${week}-card-${qid}`;
+
+  const head = document.createElement('div');
+  head.className = 'q-head';
+  head.innerHTML = `
+    <span class="q-num">第 ${qNum} 題</span>
+    <span class="q-type-tag ${q.type}">${q.typeLabel}</span>
+  `;
+  card.appendChild(head);
+
+  const qt = document.createElement('p');
+  qt.className = 'q-text';
+  qt.innerHTML = q.question;
+  card.appendChild(qt);
+
+  // 聽單字按鈕（拼字題用）
+  if (q.listen) {
+    const playRow = document.createElement('div');
+    playRow.className = 'listen-row';
+    const lb = document.createElement('button');
+    lb.className = 'listen-btn';
+    lb.innerHTML = '🔊 點我聽單字';
+    lb.onclick = () => {
+      speak(q.listen);
+      lb.classList.add('playing');
+      setTimeout(() => lb.classList.remove('playing'), 1200);
+    };
+    playRow.appendChild(lb);
+    card.appendChild(playRow);
+  }
+
+  if (q.type === 'mc' || q.type === 'sent-mc') renderMC(card, week, qid, q);
+  else if (q.type === 'partial') renderPartial(card, week, qid, q);
+  else if (q.type === 'fill') renderFill(card, week, qid, q);
+  else if (q.type === 'reorder') renderReorder(card, week, qid, q);
+
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  fb.id = `w${week}-fb-${qid}`;
+  card.appendChild(fb);
+
+  return card;
+}
+
+function renderMC(card, week, qid, q) {
+  const opts = document.createElement('div');
+  opts.className = 'options';
+  const letters = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.dataset.value = opt;
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}.</span><span>${escapeHtml(opt)}</span>`;
+    btn.onclick = () => answerMC(week, qid, opt, q, btn, card);
+    opts.appendChild(btn);
+  });
+  card.appendChild(opts);
+}
+
+function renderFill(card, week, qid, q) {
+  const row = document.createElement('div');
+  row.className = 'fill-row';
+  row.innerHTML = `
+    <input type="text" class="fill-input" id="w${week}-input-${qid}" placeholder="輸入答案..." autocomplete="off">
+    <button class="fill-submit" id="w${week}-btn-${qid}">送出</button>
+  `;
+  card.appendChild(row);
+  const input = row.querySelector('.fill-input');
+  const submit = row.querySelector('.fill-submit');
+  const handler = () => answerFill(week, qid, input.value, q, card, input, submit);
+  submit.onclick = handler;
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
+}
+
+function renderPartial(card, week, qid, q) {
+  const row = document.createElement('div');
+  row.className = 'partial-row';
+  row.innerHTML = q.display;
+  card.appendChild(row);
+
+  const blanks = row.querySelectorAll('.letter-blank');
+
+  // 自動跳格：填一個字母自動跳到下一格；按倒退鍵且空白時跳回前一格
+  blanks.forEach((inp, i) => {
+    inp.addEventListener('input', () => {
+      // 只接受 a-z 字母，且最多一個字
+      const v = inp.value.replace(/[^a-zA-Z]/g, '').slice(0, 1);
+      inp.value = v;
+      if (v && i < blanks.length - 1) {
+        blanks[i + 1].focus();
+      }
+    });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && inp.value === '' && i > 0) {
+        blanks[i - 1].focus();
+      } else if (e.key === 'Enter') {
+        submit.click();
+      }
+    });
+  });
+
+  const submit = document.createElement('button');
+  submit.className = 'partial-submit';
+  submit.textContent = '送出答案';
+  submit.onclick = () => answerPartial(week, qid, q, card, blanks, submit);
+  card.appendChild(submit);
+
+  // 自動聚焦第一個空格
+  if (blanks.length > 0) setTimeout(() => blanks[0].focus(), 50);
+}
+
+function renderReorder(card, week, qid, q) {
+  const ansArea = document.createElement('div');
+  ansArea.className = 'reorder-area answer-area';
+  ansArea.innerHTML = '<span class="placeholder-text">點選下方單字組成句子...</span>';
+  card.appendChild(ansArea);
+
+  const poolArea = document.createElement('div');
+  poolArea.className = 'reorder-area';
+  shuffle(q.words).forEach(w => {
+    const chip = document.createElement('span');
+    chip.className = 'word-chip';
+    chip.textContent = w;
+    chip.onclick = () => moveChipToAnswer(week, qid, chip, ansArea);
+    poolArea.appendChild(chip);
+  });
+  card.appendChild(poolArea);
+
+  const controls = document.createElement('div');
+  controls.className = 'reorder-controls';
+  controls.innerHTML = `
+    <button class="submit-btn">送出答案</button>
+    <button class="reset-btn">清空重排</button>
+  `;
+  card.appendChild(controls);
+
+  controls.querySelector('.submit-btn').onclick = () => {
+    const chips = ansArea.querySelectorAll('.word-chip');
+    if (chips.length === 0) { alert('請先點選單字組成句子！'); return; }
+    const userAns = Array.from(chips).map(c => c.textContent).join(' ');
+    answerReorder(week, qid, userAns, q, card, ansArea, poolArea, controls);
+  };
+  controls.querySelector('.reset-btn').onclick = () => {
+    if (weekState[week].answered[qid] !== undefined) return;
+    ansArea.innerHTML = '<span class="placeholder-text">點選下方單字組成句子...</span>';
+    poolArea.querySelectorAll('.word-chip').forEach(c => c.classList.remove('placed'));
+  };
+}
+
+function moveChipToAnswer(week, qid, chipInPool, ansArea) {
+  if (weekState[week].answered[qid] !== undefined) return;
+  if (chipInPool.classList.contains('placed')) return;
+  const ph = ansArea.querySelector('.placeholder-text');
+  if (ph) ph.remove();
+  const newChip = document.createElement('span');
+  newChip.className = 'word-chip';
+  newChip.textContent = chipInPool.textContent;
+  newChip.onclick = () => {
+    if (weekState[week].answered[qid] !== undefined) return;
+    chipInPool.classList.remove('placed');
+    newChip.remove();
+    if (ansArea.children.length === 0) {
+      ansArea.innerHTML = '<span class="placeholder-text">點選下方單字組成句子...</span>';
+    }
+  };
+  ansArea.appendChild(newChip);
+  chipInPool.classList.add('placed');
+}
+
+/* ============================================================
+   7. 作答
+   ============================================================ */
+function speakFullAnswer(fullText) {
+  if (!fullText) return;
+  setTimeout(() => speak(fullText), 250);
+}
+function buildReplayHtml(fullText) {
+  if (!fullText) return '';
+  return ` <button class="replay-btn" onclick="speak('${escapeAttr(fullText)}')">🔊 重播</button>`;
+}
+
+function answerMC(week, qid, selected, q, btnClicked, card) {
+  if (weekState[week].answered[qid] !== undefined) return;
+  const isRight = selected === q.answer;
+  weekState[week].answered[qid] = { correct: isRight };
+
+  card.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.value === q.answer) {
+      if (b === btnClicked) b.classList.add('selected-correct');
+      else b.classList.add('show-correct');
+    } else if (b === btnClicked) {
+      b.classList.add('selected-wrong');
+    }
+  });
+
+  card.classList.add(isRight ? 'correct' : 'wrong');
+  showFeedback(week, qid, isRight, selected, q.answer, q.full);
+  speakFullAnswer(q.full);
+  updateProgress(week);
+  checkComplete(week);
+}
+
+function answerFill(week, qid, userAns, q, card, inputEl, submitEl) {
+  if (weekState[week].answered[qid] !== undefined) return;
+  const ua = normalizeAns(userAns);
+  const ca = normalizeAns(q.answer);
+  if (ua === '') { inputEl.focus(); return; }
+  const isRight = ua === ca;
+  weekState[week].answered[qid] = { correct: isRight };
+
+  inputEl.disabled = true; submitEl.disabled = true;
+  inputEl.style.borderColor = isRight ? '#16a34a' : '#dc2626';
+  inputEl.style.background = isRight ? '#dcfce7' : '#fee2e2';
+
+  card.classList.add(isRight ? 'correct' : 'wrong');
+  showFeedback(week, qid, isRight, userAns, q.answer, q.full);
+  speakFullAnswer(q.full);
+  updateProgress(week);
+  checkComplete(week);
+}
+
+function answerPartial(week, qid, q, card, blanks, submitBtn) {
+  if (weekState[week].answered[qid] !== undefined) return;
+
+  // 檢查是否所有空格都填了
+  let allFilled = true;
+  blanks.forEach(b => { if (b.value.trim() === '') allFilled = false; });
+  if (!allFilled) {
+    // 跳到第一個未填的格子
+    for (const b of blanks) {
+      if (b.value.trim() === '') { b.focus(); break; }
+    }
+    return;
+  }
+
+  // 比對每一格
+  let allRight = true;
+  blanks.forEach((b, i) => {
+    const userLetter = b.value.toLowerCase();
+    const correctLetter = q.answers[i];
+    if (userLetter === correctLetter) {
+      b.classList.add('right');
+    } else {
+      b.classList.add('wrong');
+      allRight = false;
+    }
+    b.disabled = true;
+  });
+  submitBtn.disabled = true;
+
+  weekState[week].answered[qid] = { correct: allRight };
+  card.classList.add(allRight ? 'correct' : 'wrong');
+
+  // 組出使用者完整答案 vs 正解
+  const userWord = Array.from(blanks).map((b, i) => b.value.toLowerCase()).join('');
+  showFeedback(week, qid, allRight,
+    allRight ? q.answer : `（缺字部分：${userWord}）`,
+    q.answer, q.full);
+  speakFullAnswer(q.full);
+  updateProgress(week);
+  checkComplete(week);
+}
+
+function answerReorder(week, qid, userAns, q, card, ansArea, poolArea, controls) {
+  if (weekState[week].answered[qid] !== undefined) return;
+  const ua = normalizeAns(userAns);
+  const ca = normalizeAns(q.answer);
+  const isRight = ua === ca;
+  weekState[week].answered[qid] = { correct: isRight };
+
+  controls.querySelectorAll('button').forEach(b => b.disabled = true);
+  ansArea.querySelectorAll('.word-chip').forEach(c => c.style.pointerEvents = 'none');
+  poolArea.querySelectorAll('.word-chip').forEach(c => c.style.pointerEvents = 'none');
+
+  card.classList.add(isRight ? 'correct' : 'wrong');
+  showFeedback(week, qid, isRight, userAns, q.answer, q.full);
+  speakFullAnswer(q.full);
+  updateProgress(week);
+  checkComplete(week);
+}
+
+function showFeedback(week, qid, isRight, userAns, correct, fullText) {
+  const fb = document.getElementById(`w${week}-fb-${qid}`);
+  const replay = buildReplayHtml(fullText);
+  if (isRight) {
+    fb.className = 'feedback ok show';
+    fb.innerHTML = `✅ 答對了！正解：<strong>${escapeHtml(correct)}</strong>${replay}` +
+      (fullText && fullText.trim() !== correct.trim() ?
+        `<div class="ans-line">完整句：${escapeHtml(fullText)}</div>` : '');
+  } else {
+    fb.className = 'feedback bad show';
+    fb.innerHTML = `❌ 答錯了。${replay}<div class="ans-line">你的答案：${escapeHtml(userAns) || '(空白)'}　|　正解：<strong>${escapeHtml(correct)}</strong></div>` +
+      (fullText && fullText.trim() !== correct.trim() ?
+        `<div class="ans-line">完整句：${escapeHtml(fullText)}</div>` : '');
+  }
+}
+
+/* ============================================================
+   8. 進度與成績
+   ============================================================ */
+function updateProgress(week) {
+  const st = weekState[week];
+  const answered = Object.keys(st.answered).length;
+  const correct = Object.values(st.answered).filter(v => v.correct).length;
+  document.getElementById(`w${week}-progress`).textContent = `${answered} / ${st.total}`;
+  document.getElementById(`w${week}-score`).textContent = correct;
+}
+
+function checkComplete(week) {
+  const st = weekState[week];
+  if (Object.keys(st.answered).length === st.total) {
+    const correct = Object.values(st.answered).filter(v => v.correct).length;
+    const pct = Math.round(correct / st.total * 100);
+
+    const fs = document.getElementById(`w${week}-final-score`);
+    fs.textContent = `${correct} / ${st.total}`;
+    fs.style.color = pct >= 80 ? '#16a34a' : (pct >= 60 ? '#ca8a04' : '#dc2626');
+
+    let label = '';
+    if (pct === 100)      label = '🏆 滿分！太厲害了！';
+    else if (pct >= 90)   label = '🌟 非常優秀！';
+    else if (pct >= 80)   label = '👍 表現很好！';
+    else if (pct >= 60)   label = '💪 還不錯，再加油！';
+    else                  label = '📚 多複習幾次會更好！';
+    document.getElementById(`w${week}-result-msg`).textContent = label;
+    document.getElementById(`w${week}-result-detail`).textContent =
+      `正確率 ${pct}%　|　共 ${st.total} 題，答對 ${correct} 題`;
+
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById(`w${week}-date`).textContent =
+      `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+    document.getElementById(`w${week}-result`).classList.add('show');
+    document.getElementById(`w${week}-result`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+/* ============================================================
+   9. 渲染週次面板
+   架構：A 聽音拼字（全部單字）→ 句型題（重組+填空+選擇）→ B 中翻英（全部單字）
+   這樣 A 與 B 之間隔了句型題，學生不會直接看到答案。
+   ============================================================ */
+function renderWeek(week) {
+  const panel = document.getElementById(`week-${week}`);
+  panel.innerHTML = '';
+
+  // 介紹卡
+  const intro = document.createElement('div');
+  intro.className = 'week-intro';
+  intro.innerHTML = `
+    <h2>📝 第${['一','二','三','四'][week-1]}週測驗（Lesson ${['1–5','6–10','11–15','16–19'][week-1]}）</h2>
+    <p>結構：<strong>A 聽音拼字 → 句型題 → B 中翻英</strong>。A 與 B 中間隔著句型題，避免互相提示答案。</p>
+    <p>每個單字都會出 A、B 兩題；句型題涵蓋重組、填空、選擇三種題型。</p>
+  `;
+  panel.appendChild(intro);
+
+  // 全域進度
+  const status = document.createElement('div');
+  status.className = 'global-status';
+  status.innerHTML = `
+    <span>進度：<span id="w${week}-progress">0 / 0</span></span>
+    <span>已答對：<span class="ok" id="w${week}-score">0</span> 題</span>
+  `;
+  panel.appendChild(status);
+
+  // 準備題目
+  const weekWords = wordsByWeek[week];
+  const { vocabA, vocabB } = buildVocabQuestions(weekWords);
+
+  // 句型題：重組（全部）+ 填空（全部）+ 選擇（從填空題改造）
+  const reorderQs = reorderByWeek[week].map(p => ({
+    type: 'reorder',
+    typeLabel: '句子．重組',
+    question: `請排出：「${escapeHtml(p.zh)}」（點擊單字加入答案區）`,
+    words: p.words,
+    answer: p.ans,
+    full: p.full,
+  }));
+
+  const fillQs = fillPatternsByWeek[week].map(p => ({
+    type: 'fill',
+    typeLabel: '句型．填空',
+    question: `${escapeHtml(p.q)}　<span style="color:#94a3b8; font-size:0.78rem;">（${escapeHtml(p.hint)}）</span>`,
+    answer: p.ans,
+    full: p.full,
+  }));
+
+  // 選擇題：從本週的 fillPatterns 中挑 3 題改造
+  const mcSourceCount = Math.min(3, fillPatternsByWeek[week].length);
+  const mcQs = shuffle(fillPatternsByWeek[week]).slice(0, mcSourceCount).map(p => {
+    const others = shuffle(
+      Object.values(fillPatternsByWeek).flat().filter(x => x.ans !== p.ans)
+    );
+    const seen = new Set([p.ans]);
+    const distractors = [];
+    for (const o of others) {
+      if (!seen.has(o.ans)) {
+        distractors.push(o.ans);
+        seen.add(o.ans);
+        if (distractors.length >= 3) break;
+      }
+    }
+    return {
+      type: 'sent-mc',
+      typeLabel: '句型．選擇',
+      question: `${escapeHtml(p.q)}`,
+      options: shuffle([p.ans, ...distractors]),
+      answer: p.ans,
+      full: p.full,
+    };
+  });
+
+  // 句型題全部洗牌
+  const sentQs = shuffle([...reorderQs, ...fillQs, ...mcQs]);
+
+  // 總題數
+  const total = vocabA.length + sentQs.length + vocabB.length;
+  weekState[week] = { answered: {}, total };
+
+  let qNum = 0;
+
+  // ===== Part A：聽音拼字 =====
+  const labelA = document.createElement('div');
+  labelA.innerHTML = '<span class="subsection-label">A. 聽音拼字（每個單字必考）</span>';
+  panel.appendChild(labelA);
+  vocabA.forEach((q, idx) => {
+    qNum++;
+    panel.appendChild(renderQuestion(week, `a${idx}`, qNum, q));
+  });
+
+  // ===== Part 中段：句型題（緩衝區）=====
+  const labelSent = document.createElement('div');
+  labelSent.innerHTML = '<span class="subsection-label sentences">📐 句型題（重組 + 填空 + 選擇）</span>';
+  panel.appendChild(labelSent);
+  sentQs.forEach((q, idx) => {
+    qNum++;
+    panel.appendChild(renderQuestion(week, `s${idx}`, qNum, q));
+  });
+
+  // ===== Part B：中翻英選擇 =====
+  const labelB = document.createElement('div');
+  labelB.innerHTML = '<span class="subsection-label">B. 中翻英選擇（每個單字必考）</span>';
+  panel.appendChild(labelB);
+  vocabB.forEach((q, idx) => {
+    qNum++;
+    panel.appendChild(renderQuestion(week, `b${idx}`, qNum, q));
+  });
+
+  // 結果卡
+  const result = document.createElement('div');
+  result.className = 'result-box';
+  result.id = `w${week}-result`;
+  result.innerHTML = `
+    <div class="result-title">🎉 第${['一','二','三','四'][week-1]}週測驗完成！</div>
+    <div class="result-score" id="w${week}-final-score">0 / ${total}</div>
+    <div class="result-msg" id="w${week}-result-msg"></div>
+    <div class="result-detail" id="w${week}-result-detail"></div>
+    <div class="result-meta">
+      <label>👤 姓名：<input type="text" id="w${week}-name" placeholder="（可填）" maxlength="20"></label>
+      <label>📅 日期：<span id="w${week}-date">—</span></label>
+    </div>
+    <div class="result-actions">
+      <button onclick="captureResult(${week})">📸 儲存截圖</button>
+      <button class="secondary" onclick="resetWeek(${week})">🔄 重新測驗</button>
+    </div>
+  `;
+  panel.appendChild(result);
+
+  // 控制列
+  const ctrl = document.createElement('div');
+  ctrl.className = 'control-bar';
+  ctrl.innerHTML = `
+    <button class="ctrl-btn" onclick="resetWeek(${week})">🔄 重新測驗</button>
+    <button class="ctrl-btn secondary" onclick="window.scrollTo({top:0, behavior:'smooth'})">⬆️ 回頂端</button>
+  `;
+  panel.appendChild(ctrl);
+
+  updateProgress(week);
+}
+
+/* ============================================================
+   10. 切換 / 重做 / 截圖
+   ============================================================ */
+function switchWeek(weekNum) {
+  document.querySelectorAll('.week-tab').forEach(b =>
+    b.classList.toggle('active', parseInt(b.dataset.week) === weekNum));
+  document.querySelectorAll('.week-panel').forEach(p =>
+    p.classList.toggle('active', p.id === `week-${weekNum}`));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetWeek(week) {
+  renderWeek(week);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function captureResult(week) {
+  const target = document.getElementById(`w${week}-result`);
+  if (!target.classList.contains('show')) {
+    alert('請先完成所有題目！');
+    return;
+  }
+  if (typeof html2canvas === 'undefined') {
+    alert('截圖功能需連網載入 html2canvas');
+    return;
+  }
+  const actions = target.querySelector('.result-actions');
+  const prev = actions.style.display;
+  actions.style.display = 'none';
+  html2canvas(target, { backgroundColor: '#fef3c7', scale: 2, useCORS: true })
+    .then(canvas => {
+      actions.style.display = prev;
+      const name = document.getElementById(`w${week}-name`).value.trim();
+      const namePart = name ? `_${name}` : '';
+      const dateStr = document.getElementById(`w${week}-date`).textContent.replace(/[: ]/g, '-');
+      const filename = `ActionBook3_第${['一','二','三','四'][week-1]}週${namePart}_${dateStr}.png`;
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+    }).catch(err => { actions.style.display = prev; alert('截圖失敗：' + err.message); });
+}
+
+/* ============================================================
+   11. 啟動
+   ============================================================ */
+[1, 2, 3, 4].forEach(renderWeek);
+</script>
+
+</body>
+</html>

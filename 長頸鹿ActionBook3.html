@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>長頸鹿 Action Book 3 — Words &amp; Sentence Patterns</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: #f1f5f9; color: #1e293b;
+    margin: 0; padding: 0; line-height: 1.6;
+  }
+
+  /* ===== 頂部固定列（含週次 + 語速） ===== */
+  .top-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: white;
+    border-bottom: 2px solid #2563eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 6px 16px 7px;
+  }
+  .top-title {
+    text-align: center; color: #1d4ed8;
+    font-size: 0.98rem; font-weight: 800; margin: 0 0 5px;
+    line-height: 1.3;
+  }
+  /* 週次與語速並列為一行 */
+  .top-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 12px;
+    flex-wrap: wrap;
+  }
+  .week-tabs {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .week-tab {
+    background: #f1f5f9; color: #475569;
+    border: 2px solid #e2e8f0; border-radius: 999px;
+    padding: 3px 11px; font-size: 0.78rem; font-weight: 800;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    line-height: 1.4;
+  }
+  .week-tab:hover { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+  .week-tab.active {
+    background: #2563eb; color: white; border-color: #2563eb;
+    box-shadow: 0 1px 4px rgba(37, 99, 235, 0.3);
+  }
+  .week-tab .week-meta {
+    font-size: 0.65rem; opacity: 0.85; margin-left: 3px;
+  }
+  /* 語速列也縮 */
+  .speed-bar {
+    display: flex; align-items: center;
+    gap: 4px; flex-wrap: wrap;
+    padding-left: 8px;
+    border-left: 1.5px solid #e2e8f0;
+  }
+  .speed-label {
+    font-size: 0.72rem; font-weight: 800; color: #475569;
+    white-space: nowrap;
+  }
+  .speed-btn {
+    font-size: 0.72rem; font-weight: 800;
+    border: 1.5px solid #e2e8f0; border-radius: 999px;
+    padding: 3px 10px; background: #f8fafc; color: #64748b;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    line-height: 1.4;
+  }
+  .speed-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+
+  /* ===== 容器 ===== */
+  .container {
+    max-width: 1000px; margin: 0 auto;
+    padding: 22px 28px;
+  }
+
+  /* ===== 週次面板 ===== */
+  .week-panel { display: none; }
+  .week-panel.active { display: block; }
+
+  .week-intro {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-left: 5px solid #2563eb;
+    border-radius: 10px;
+    padding: 14px 18px; margin-bottom: 18px;
+  }
+  .week-intro h2 {
+    color: #1d4ed8; font-size: 1.1rem; margin: 0 0 4px;
+  }
+  .week-intro p {
+    margin: 4px 0; font-size: 0.88rem; color: #475569;
+  }
+
+  /* ===== Lesson 卡片 ===== */
+  .lesson {
+    background: white;
+    border: 2px solid #e0e7ff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .lesson-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .lesson-num {
+    background: #2563eb; color: white;
+    padding: 5px 14px; border-radius: 999px;
+    font-weight: 800; font-size: 0.92rem;
+    flex-shrink: 0;
+  }
+  .lesson-num.review {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+  }
+  .lesson-topic { color: #475569; font-size: 0.9rem; font-weight: 600; }
+
+  /* ===== 子段標籤 ===== */
+  .subsection-label {
+    display: inline-block;
+    font-size: 0.88rem; font-weight: 800;
+    color: #1e40af; padding: 4px 12px;
+    background: #eff6ff; border-radius: 6px;
+    margin: 14px 0 8px;
+    border-left: 4px solid #60a5fa;
+  }
+  .subsection-label.pattern {
+    color: #166534; background: #f0fdf4;
+    border-left-color: #16a34a;
+  }
+
+  /* ===== 單字卡 ===== */
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .word-card {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 8px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    transition: all 0.15s;
+  }
+  .word-card:hover {
+    border-color: #60a5fa;
+    background: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+  }
+  .word-emoji {
+    font-size: 2.1rem; line-height: 1;
+    margin-bottom: 4px;
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  }
+  .word-en {
+    font-size: 1.05rem; font-weight: 700;
+    color: #0f172a; margin-bottom: 2px;
+    letter-spacing: 0.3px;
+  }
+  /* 英文與音標母音標紅 */
+  .word-en .vowel,
+  .word-ipa .vowel {
+    color: #dc2626; font-weight: 900;
+  }
+  .word-ipa {
+    font-size: 0.8rem; color: #64748b;
+    margin-bottom: 4px;
+    font-family: "Doulos SIL", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+  }
+  .word-zh {
+    font-size: 0.78rem; color: #64748b;
+    margin-bottom: 7px; font-weight: 600;
+  }
+  .play-btn {
+    background: #2563eb; color: white;
+    border: none; border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.76rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+    min-height: 30px;
+  }
+  .play-btn:hover { background: #1d4ed8; transform: scale(1.05); }
+  .play-btn.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+  }
+
+  /* ===== 核心句型 ===== */
+  .pattern-list {
+    background: #f0fdf4;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 4px;
+  }
+  .pattern-item {
+    background: white;
+    border: 1.5px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 6px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pattern-text { flex: 1; min-width: 0; }
+  .pattern-en {
+    font-weight: 700; font-size: 0.96rem;
+    line-height: 1.6; color: #166534;
+  }
+  .pattern-en .speaker-tag {
+    display: inline-block;
+    background: #16a34a; color: white;
+    font-size: 0.72rem; font-weight: 800;
+    padding: 1px 6px; border-radius: 4px;
+    margin-right: 4px;
+  }
+  .pattern-zh {
+    color: #475569; font-size: 0.85rem;
+    margin-top: 4px; line-height: 1.5;
+  }
+  .pattern-zh .speaker-tag {
+    background: #64748b; color: white;
+    font-size: 0.7rem; font-weight: 800;
+    padding: 1px 6px; border-radius: 4px;
+    margin-right: 4px;
+  }
+
+  /* ===== 直述句對照（疑問句下方縮排） ===== */
+  .declarative-ref {
+    margin: 4px 0 8px 24px;
+    padding: 7px 12px;
+    background: #f8fafc;
+    border-left: 3px solid #94a3b8;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .declarative-ref .ref-label {
+    background: #64748b; color: white;
+    font-size: 0.7rem; font-weight: 800;
+    padding: 1px 8px; border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .declarative-ref .ref-text {
+    flex: 1; min-width: 0;
+  }
+  .declarative-ref .ref-en {
+    font-size: 0.88rem; font-weight: 700;
+    color: #334155; line-height: 1.5;
+  }
+  .declarative-ref .ref-zh {
+    font-size: 0.78rem; color: #64748b;
+    margin-top: 2px;
+  }
+  .ref-btn {
+    background: #64748b; color: white;
+    border: none; border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 0.72rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+    flex-shrink: 0; min-height: 26px;
+  }
+  .ref-btn:hover { background: #475569; }
+  .ref-btn.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+  .sent-btn {
+    background: #16a34a; color: white;
+    border: none; border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 0.78rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+    flex-shrink: 0; min-height: 30px;
+  }
+  .sent-btn:hover { background: #15803d; transform: scale(1.05); }
+  .sent-btn.playing { background: #dc2626; animation: pulse 0.8s infinite; }
+
+  /* ===== 詞性顏色（pattern-en 內部標示） ===== */
+  /* 在 pattern-en 中，詞性 span 取消父層綠色，套用各詞性色 */
+  .pattern-en .pos { font-weight: 700; }
+  .pattern-en .pos-noun     { color: #0369a1; }   /* 名詞 — 藍 */
+  .pattern-en .pos-verb     { color: #b45309; }   /* 一般動詞 — 棕橘 */
+  .pattern-en .pos-be       { color: #dc2626; }   /* be 動詞 — 紅 */
+  .pattern-en .pos-aux      { color: #dc2626; }   /* 助動詞（do/does） — 紅 */
+  .pattern-en .pos-adj      { color: #7c3aed; }   /* 形容詞 — 紫 */
+  .pattern-en .pos-pron     { color: #0f766e; }   /* 代名詞 — 青 */
+  .pattern-en .pos-art      { color: #94a3b8; }   /* 冠詞 — 灰 */
+  .pattern-en .pos-prep     { color: #ca8a04; }   /* 介係詞 — 金黃 */
+  .pattern-en .pos-wh       { color: #be185d; }   /* 疑問詞 — 桃紅 */
+  .pattern-en .pos-num      { color: #ea580c; }   /* 數詞 — 橘 */
+  .pattern-en .pos-conj     { color: #475569; }   /* 連接詞 — 深灰 */
+  .pattern-en .pos-adv      { color: #2563eb; }   /* 副詞 — 藍 */
+
+  /* ===== 文法說明框 ===== */
+  .grammar-note {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 6px 0 10px;
+    font-size: 0.85rem;
+    color: #78350f;
+  }
+  .grammar-note .note-title {
+    font-weight: 800; color: #b45309;
+    margin-bottom: 4px;
+    font-size: 0.88rem;
+  }
+  .grammar-note p { margin: 4px 0; }
+  .grammar-note strong { color: #92400e; }
+
+  .pos-legend {
+    background: white;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-top: 6px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+  .pos-legend .legend-item {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: 700;
+  }
+
+  /* ===== Review 課特殊樣式 ===== */
+  .review-box {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #78350f;
+    font-weight: 600;
+    text-align: center;
+  }
+  .review-box .review-icon {
+    font-size: 2rem; display: block; margin-bottom: 6px;
+  }
+
+  /* ===== 列印 ===== */
+  @media print {
+    body { background: white; }
+    .top-bar { position: static; box-shadow: none; }
+    .speed-bar, .play-btn, .sent-btn { display: none !important; }
+    .week-panel { display: block !important; page-break-before: always; }
+    .week-panel:first-of-type { page-break-before: auto; }
+    .lesson { break-inside: avoid; }
+  }
+
+  /* ============================================================
+     RWD
+     ============================================================ */
+  @media (max-width: 768px) {
+    .container { padding: 18px 16px; }
+    .top-bar { padding: 5px 12px 6px; }
+    .top-title { font-size: 0.92rem; margin-bottom: 4px; }
+    .week-tab { padding: 3px 9px; font-size: 0.74rem; }
+    .speed-btn { padding: 3px 9px; font-size: 0.7rem; }
+    .word-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .word-emoji { font-size: 1.95rem; }
+  }
+  @media (max-width: 520px) {
+    body { line-height: 1.55; }
+    .top-bar { padding: 5px 8px 6px; }
+    .top-title { font-size: 0.82rem; margin-bottom: 3px; line-height: 1.25; }
+    .top-controls { gap: 4px 8px; }
+    .week-tabs { gap: 4px; }
+    .week-tab { padding: 3px 9px; font-size: 0.72rem; }
+    .week-tab .week-meta { display: none; }
+    .speed-bar { padding-left: 6px; gap: 3px; }
+    .speed-label { font-size: 0.7rem; }
+    .speed-btn { padding: 3px 8px; font-size: 0.68rem; }
+
+    .container { padding: 14px 10px; }
+
+    .week-intro { padding: 12px 14px; }
+    .week-intro h2 { font-size: 0.98rem; }
+    .week-intro p { font-size: 0.8rem; }
+
+    .lesson { padding: 13px 14px; }
+    .lesson-num { padding: 4px 12px; font-size: 0.86rem; }
+    .lesson-topic { font-size: 0.82rem; }
+
+    .subsection-label { font-size: 0.82rem; padding: 3px 10px; }
+
+    .word-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .word-card { padding: 9px 5px 7px; }
+    .word-emoji { font-size: 1.8rem; margin-bottom: 3px; }
+    .word-en { font-size: 0.98rem; }
+    .word-ipa { font-size: 0.72rem; }
+    .word-zh { font-size: 0.72rem; margin-bottom: 6px; }
+    .play-btn { padding: 4px 12px; font-size: 0.72rem; min-height: 30px; }
+
+    .pattern-list { padding: 10px 12px; }
+    .pattern-item {
+      padding: 9px 12px; gap: 8px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .pattern-en { font-size: 0.92rem; }
+    .pattern-zh { font-size: 0.82rem; }
+    .sent-btn { align-self: flex-end; padding: 5px 12px; font-size: 0.74rem; }
+
+    .declarative-ref {
+      margin-left: 12px;
+      padding: 6px 10px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+    }
+    .declarative-ref .ref-en { font-size: 0.84rem; }
+    .declarative-ref .ref-zh { font-size: 0.74rem; }
+    .ref-btn { align-self: flex-end; font-size: 0.68rem; }
+
+    .grammar-note { padding: 9px 12px; font-size: 0.8rem; }
+    .grammar-note .note-title { font-size: 0.84rem; }
+    .pos-legend { font-size: 0.72rem; padding: 5px 8px; }
+    .pos-legend .legend-item { margin-right: 6px; }
+  }
+  @media (max-width: 360px) {
+    .container { padding: 11px 8px; }
+    .top-title { font-size: 0.74rem; }
+    .week-tab { padding: 2px 7px; font-size: 0.66rem; }
+    .speed-btn { padding: 2px 7px; font-size: 0.64rem; }
+    .word-emoji { font-size: 1.6rem; }
+    .word-en { font-size: 0.92rem; }
+    .word-ipa { font-size: 0.68rem; }
+    .pattern-en { font-size: 0.88rem; }
+    .pattern-zh { font-size: 0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== 頂部固定列：標題 + 週次切換 + 語速列 ====== -->
+<div class="top-bar">
+  <div class="top-title">📘 長頸鹿 Action Book 3 — Words &amp; Sentence Patterns</div>
+  <div class="top-controls">
+    <div class="week-tabs">
+      <button class="week-tab active" data-week="1" onclick="switchWeek(1)">
+        第一週<span class="week-meta">L1–L5</span>
+      </button>
+      <button class="week-tab" data-week="2" onclick="switchWeek(2)">
+        第二週<span class="week-meta">L6–L10</span>
+      </button>
+      <button class="week-tab" data-week="3" onclick="switchWeek(3)">
+        第三週<span class="week-meta">L11–L15</span>
+      </button>
+      <button class="week-tab" data-week="4" onclick="switchWeek(4)">
+        第四週<span class="week-meta">L16–L19</span>
+      </button>
+    </div>
+    <div class="speed-bar">
+      <span class="speed-label">🔊</span>
+      <button class="speed-btn" onclick="setSpeed(0.5)" data-rate="0.5">慢</button>
+      <button class="speed-btn active" onclick="setSpeed(0.75)" data-rate="0.75">慢一點</button>
+      <button class="speed-btn" onclick="setSpeed(1.0)" data-rate="1.0">正常</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 容器 ====== -->
+<div class="container">
+  <div class="week-panel active" id="week-1"></div>
+  <div class="week-panel" id="week-2"></div>
+  <div class="week-panel" id="week-3"></div>
+  <div class="week-panel" id="week-4"></div>
+</div>
+
+<script>
+/* ============================================================
+   1. TTS 引擎（預設 0.75 = 慢一點）
+   ============================================================ */
+let _voices = [];
+let currentRate = 0.75;
+function loadVoices() { _voices = window.speechSynthesis.getVoices(); }
+loadVoices();
+window.speechSynthesis.onvoiceschanged = loadVoices;
+function getBestVoice() {
+  const preferred = [
+    v => v.name === 'Google US English',
+    v => v.name.includes('Samantha'),
+    v => v.lang === 'en-US' && v.localService,
+    v => v.lang === 'en-US',
+    v => v.lang.startsWith('en'),
+  ];
+  for (const fn of preferred) {
+    const found = _voices.find(fn);
+    if (found) return found;
+  }
+  return null;
+}
+function speak(text) {
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US'; utter.rate = currentRate;
+  utter.pitch = 1.0; utter.volume = 1.0;
+  const v = getBestVoice();
+  if (v) utter.voice = v;
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
+}
+function setSpeed(rate) {
+  currentRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.classList.toggle('active', Math.abs(parseFloat(btn.dataset.rate) - rate) < 0.001);
+  });
+}
+function playWord(btn, word) {
+  speak(word);
+  btn.classList.add('playing');
+  setTimeout(() => btn.classList.remove('playing'), 1200);
+}
+function playSent(btn, sentence) {
+  speak(sentence);
+  btn.classList.add('playing');
+  const dur = Math.max(1500, sentence.split(' ').length * 450);
+  setTimeout(() => btn.classList.remove('playing'), dur);
+}
+
+/* ============================================================
+   2. 母音自動標紅
+   ============================================================ */
+// 英文母音字母標紅
+function highlightEnVowels(word) {
+  return word.replace(/([aeiouAEIOU])/g, '<span class="vowel">$1</span>');
+}
+// IPA 音標母音標紅（含雙母音）
+const IPA_VOWELS = ['eɪ','aɪ','oʊ','aʊ','ɔɪ','iː','uː','ɑː','ɔː','ɜː','eə','ɪə','ʊə',
+                    'i','ɪ','e','ɛ','æ','ʌ','ə','ɒ','ɔ','ʊ','u','a','o'];
+function highlightIpaVowels(ipa) {
+  if (!ipa) return '';
+  const open = ipa.startsWith('/') ? '/' : '';
+  const close = ipa.endsWith('/') ? '/' : '';
+  // 先移除長音符號 ː（看起來像上下箭頭，學生易混淆）
+  let body = ipa.replace(/^\/|\/$/g, '').replace(/ː/g, '');
+  let result = '';
+  let i = 0;
+  while (i < body.length) {
+    let matched = false;
+    for (const v of IPA_VOWELS) {
+      if (body.substr(i, v.length) === v) {
+        result += `<span class="vowel">${body.substr(i, v.length)}</span>`;
+        i += v.length;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) { result += body[i]; i++; }
+  }
+  return open + result + close;
+}
+
+/* ============================================================
+   3. 教材資料
+   patterns 可選擇用標記語法標示詞性：
+     {NP:tiger} = 名詞、{V:is} = be 動詞、{ADJ:cold} = 形容詞
+     {ART:a} = 冠詞、{PRO:I} = 代名詞、{WH:What} = 疑問詞
+     {NUM:four} = 數詞、{PREP:on} = 介係詞、{V_:like} = 一般動詞
+     {AUX:do} = 助動詞、{ADV:there} = 副詞、{CONJ:and} = 連接詞
+   ============================================================ */
+
+const lessons = {
+  // ========= 第一週 =========
+  L1: {
+    num: 1, topic: '動物 — 老鷹、魚、鵝、老虎、狼',
+    words: [
+      ['eagle', '🦅', '老鷹', '/ˈiːɡəl/'],
+      ['fish', '🐟', '魚', '/fɪʃ/'],
+      ['goose', '🪿', '鵝', '/ɡuːs/'],
+      ['tiger', '🐯', '老虎', '/ˈtaɪɡər/'],
+      ['wolf', '🐺', '狼', '/wʊlf/']
+    ],
+    patterns: [
+      { type:'single',
+        en:'{ADV:There} {BE:is} {ART:a} {N:tiger}.',
+        zh:'有一隻老虎。',
+        grammar: '「There is + 單數名詞」表示「有一個…」。<strong>There</strong> 是引導詞（副詞），<strong>is</strong> 是 be 動詞用於單數，<strong>a</strong> 是冠詞（用於子音開頭的單字前）。' },
+      { type:'single',
+        en:'{ADV:There} {BE:is} {ART:an} {N:eagle}.',
+        zh:'有一隻老鷹。',
+        grammar: '當名詞以<strong>母音字母（a/e/i/o/u）開頭</strong>，冠詞要用 <strong>an</strong> 而非 a。eagle 的開頭是 e，所以用 an。' },
+      { type:'single',
+        en:'{ADV:There} {BE:are} {NUM:four} {N:fish}.',
+        zh:'有四條魚。',
+        grammar: '兩條以上的名詞要用 <strong>There are</strong> + 複數。注意 <strong>fish</strong> 的複數和單數同形，不加 -s。' },
+    ]
+  },
+  L2: {
+    num: 2, topic: '小生物 — 青蛙、蝸牛、鴨子、蟲',
+    words: [
+      ['frog', '🐸', '青蛙', '/frɑːɡ/'],
+      ['snail', '🐌', '蝸牛', '/sneɪl/'],
+      ['duck', '🦆', '鴨子', '/dʌk/'],
+      ['worm', '🪱', '蟲', '/wɜːrm/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{BE:Is} {ADV:there} {ART:a} {N:frog}?',
+        a_zh:'有一隻青蛙嗎？',
+        b_en:'{ADV:Yes}, {ADV:there} {BE:is}.',
+        b_zh:'是的，有。',
+        decl: { en: '{ADV:There} {BE:is} {ART:a} {N:frog}.', zh: '有一隻青蛙。' },
+        grammar: '把 be 動詞 <strong>is</strong> 移到句首，就變成 Yes/No 問句。回答時用「Yes, there is.」或「No, there isn\'t.」<strong>注意倒裝</strong>：陳述句 There is → 問句 Is there。' },
+      { type:'dialog',
+        a_en:'{BE:Are} {ADV:there} {N:snails}?',
+        a_zh:'有一些蝸牛嗎？',
+        b_en:'{ADV:No}, {ADV:there} {BE:aren\'t}.',
+        b_zh:'不，沒有。',
+        decl: { en: '{ADV:There} {BE:are} {N:snails}.', zh: '有一些蝸牛。' },
+        grammar: '複數名詞用 <strong>Are there</strong> + 名詞s？否定回答 <strong>aren\'t</strong> = are not 的縮寫。' },
+    ]
+  },
+  L3: {
+    num: 3, topic: '動物 — 山羊、大象、袋鼠、斑馬',
+    words: [
+      ['goat', '🐐', '山羊', '/ɡoʊt/'],
+      ['elephant', '🐘', '大象', '/ˈɛləfənt/'],
+      ['kangaroo', '🦘', '袋鼠', '/ˌkæŋɡəˈruː/'],
+      ['zebra', '🦓', '斑馬', '/ˈziːbrə/']
+    ],
+    patterns: [
+      { type:'single',
+        en:'{ADV:There} {BE:is} {ART:a} {N:goat} {ADV:here}.',
+        zh:'這裡有一隻山羊。',
+        grammar: '在句尾加上 <strong>here</strong>（這裡）可以指出位置。句型 = There is/are + 名詞 + here/there。' },
+      { type:'single',
+        en:'{ADV:There} {BE:is} {ART:an} {N:elephant} {ADV:here}.',
+        zh:'這裡有一隻大象。' },
+      { type:'single',
+        en:'{ADV:There} {BE:are} {NUM:four} {N:kangaroos} {ADV:here}.',
+        zh:'這裡有四隻袋鼠。' },
+    ]
+  },
+  L4: {
+    num: 4, topic: '玩具與禮物 — 洋娃娃、機器人、禮物、卡片',
+    words: [
+      ['doll', '🪆', '洋娃娃', '/dɑːl/'],
+      ['robot', '🤖', '機器人', '/ˈroʊbɑːt/'],
+      ['gift', '🎁', '禮物', '/ɡɪft/'],
+      ['card', '💌', '卡片', '/kɑːrd/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{WH:How} {ADJ:old} {BE:are} {PRO:you}?',
+        a_zh:'你幾歲？',
+        b_en:'{PRO:I} {BE:am} {NUM:seven} {N:years} {ADJ:old}.',
+        b_zh:'我七歲。',
+        decl: { en: '{PRO:You} {BE:are} {NUM:seven} {N:years} {ADJ:old}.', zh: '你七歲。' },
+        grammar: '<strong>How old</strong> 是疑問詞片語問年齡，<strong>How</strong> = 多麼／如何，<strong>old</strong> 是形容詞（多老）。回答用 I am + 數字 + years old。' },
+      { type:'single',
+        en:"{ADV:Here}'s {ART:a} {N:doll} {PREP:for} {PRO:you}.",
+        zh:'這是一個給你的洋娃娃。',
+        grammar: '<strong>Here\'s = Here is</strong> 的縮寫。<strong>for you</strong> 表示「給你」，for 是介係詞。' },
+    ]
+  },
+  L5: {
+    num: 5, topic: '三餐 — 早餐、早午餐、午餐、晚餐',
+    words: [
+      ['breakfast', '🍳', '早餐', '/ˈbrɛkfəst/'],
+      ['brunch', '🥐', '早午餐', '/brʌntʃ/'],
+      ['lunch', '🍱', '午餐', '/lʌntʃ/'],
+      ['dinner', '🍽️', '晚餐', '/ˈdɪnər/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{WH:What} {N:time} {BE:is} {PRO:it}?',
+        a_zh:'現在幾點？',
+        b_en:"{PRO:It}'s {NUM:twelve} {N:o'clock}.",
+        b_zh:'現在十二點鐘。',
+        decl: { en: "{PRO:It} {BE:is} {NUM:twelve} {N:o'clock}.", zh: '現在十二點鐘。' },
+        grammar: '問時間用 <strong>What time is it?</strong>，回答用 <strong>It\'s + 數字 + o\'clock</strong>。It\'s = It is 的縮寫。' },
+      { type:'single',
+        en:"{V:Let's} {V_:have} {N:lunch}!",
+        zh:'我們吃午餐吧！',
+        grammar: '<strong>Let\'s = Let us</strong> 的縮寫，表示「我們一起…吧」。後面接 <strong>動詞原形</strong>（have）。' },
+    ]
+  },
+
+  // ========= 第二週 =========
+  L6: {
+    num: 6, topic: '日常作息 — 起床、上學、看書、回家',
+    words: [
+      ['get up', '🛏️', '起床', '/ɡɛt ʌp/'],
+      ['go to school', '🎒', '上學', '/ɡoʊ tu skuːl/'],
+      ['read books', '📖', '看書', '/riːd bʊks/'],
+      ['go home', '🏠', '回家', '/ɡoʊ hoʊm/']
+    ],
+    patterns: [
+      { type:'single',
+        en:"{V:Let's} {V_:get up}!",
+        zh:'我們起床吧！',
+        grammar: '同樣用 <strong>Let\'s + 動詞原形</strong> 表達建議或邀請。本課的動詞是「片語動詞」（get up、go to school、read books、go home）。' },
+    ]
+  },
+  L7: {
+    num: 7, topic: '物品 — 鳥巢、籃子、汽車、飛機',
+    words: [
+      ['nest', '🪺', '鳥巢', '/nɛst/'],
+      ['basket', '🧺', '籃子', '/ˈbæskɪt/'],
+      ['car', '🚗', '汽車', '/kɑːr/'],
+      ['plane', '✈️', '飛機', '/pleɪn/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{WH:Where} {BE:is} {ART:the} {N:nest}?',
+        a_zh:'鳥巢在哪裡？',
+        b_en:"{PRO:It}'s {ADV:over there}.",
+        b_zh:'它在那裡。',
+        decl: { en: '{ART:The} {N:nest} {BE:is} {ADV:over there}.', zh: '鳥巢在那裡。' },
+        grammar: '<strong>Where</strong> 是疑問詞「哪裡」。問單數用 Where is，回答用 It\'s。<strong>over there</strong> 表示「在那邊」，是副詞片語表位置。' },
+      { type:'dialog',
+        a_en:'{WH:Where} {BE:are} {ART:the} {N:nests}?',
+        a_zh:'鳥巢們在哪裡？',
+        b_en:"{PRO:They}'re {ADV:over there}.",
+        b_zh:'它們在那裡。',
+        decl: { en: '{ART:The} {N:nests} {BE:are} {ADV:over there}.', zh: '鳥巢們在那裡。' },
+        grammar: '複數要用 <strong>Where are</strong>，回答用 <strong>They\'re = They are</strong> 的縮寫。' },
+    ]
+  },
+  L8: {
+    num: 8, topic: '家具 — 書桌、玩具、桌子、椅子',
+    words: [
+      ['desk', '🪑', '書桌', '/dɛsk/'],
+      ['toy', '🧸', '玩具', '/tɔɪ/'],
+      ['table', '🪟', '桌子', '/ˈteɪbəl/'],
+      ['chair', '💺', '椅子', '/tʃɛr/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{WH:Where} {BE:is} {PRO:my} {N:toy}?',
+        a_zh:'我的玩具在哪裡？',
+        b_en:"{PRO:It}'s {PREP:on} {ART:the} {N:desk}.",
+        b_zh:'它在書桌上。',
+        decl: { en: '{PRO:My} {N:toy} {BE:is} {PREP:on} {ART:the} {N:desk}.', zh: '我的玩具在書桌上。' },
+        grammar: '<strong>my</strong> 是所有格代名詞（我的）。<strong>on</strong> 是介係詞表「在…上面」。介係詞後面接名詞構成「介係詞片語」（on the desk）。' },
+      { type:'dialog',
+        a_en:'{WH:Where} {BE:are} {PRO:my} {N:toys}?',
+        a_zh:'我的玩具們在哪裡？',
+        b_en:"{PRO:They}'re {PREP:under} {ART:the} {N:desk}.",
+        b_zh:'它們在書桌下面。',
+        decl: { en: '{PRO:My} {N:toys} {BE:are} {PREP:under} {ART:the} {N:desk}.', zh: '我的玩具們在書桌下面。' },
+        grammar: '<strong>under</strong>（在…下面）也是介係詞。其他常見表位置介係詞：in（在…裡面）、next to（在…旁邊）、behind（在…後面）。' },
+    ]
+  },
+  L9: {
+    num: 9, topic: '人物與地方 — 國王、皇后、墊子、地板',
+    words: [
+      ['king', '👑', '國王', '/kɪŋ/'],
+      ['queen', '👸', '皇后', '/kwiːn/'],
+      ['mat', '🟫', '墊子', '/mæt/'],
+      ['floor', '🟦', '地板', '/flɔːr/']
+    ],
+    patterns: [
+      { type:'single',
+        en:'{ART:The} {N:king} {BE:is} {ADV:over there}.',
+        zh:'國王在那裡。',
+        grammar: '<strong>The</strong> 是定冠詞（特指那個）。<strong>over there</strong> 是副詞片語表位置。基本句型 = 主詞 + be 動詞 + 位置。' },
+      { type:'single',
+        en:'{PRO:My} {N:toys} {BE:are} {PREP:on} {ART:the} {N:floor}.',
+        zh:'我的玩具在地板上。' },
+    ]
+  },
+  L10: {
+    num: 10, topic: '總複習',
+    isReview: true,
+    reviewText: '前九課單字總複習（Review L1–L9）— 第一到第九課內容總回顧'
+  },
+
+  // ========= 第三週 =========
+  L11: {
+    num: 11, topic: '形容詞（外觀）— 好的、英俊的、漂亮的、可愛的',
+    words: [
+      ['good', '👍', '好的', '/ɡʊd/'],
+      ['handsome', '🤵', '英俊的', '/ˈhænsəm/'],
+      ['pretty', '🌸', '漂亮的', '/ˈprɪti/'],
+      ['cute', '🥰', '可愛的', '/kjuːt/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{BE:Are} {PRO:you} {ART:a} {ADJ:good} {N:boy}?',
+        a_zh:'你是一個好男孩嗎？',
+        b_en:'{ADV:Yes}, {PRO:I} {BE:am}.',
+        b_zh:'是的，我是。',
+        decl: { en: '{PRO:You} {BE:are} {ART:a} {ADJ:good} {N:boy}.', zh: '你是一個好男孩。' },
+        grammar: '「<strong>be 動詞 + 主詞 + ...?</strong>」是 Yes/No 問句。<strong>good</strong>（形容詞）放在名詞 <strong>boy</strong> 前面修飾。回答短句 Yes, I am. / No, I\'m not.' },
+      { type:'dialog',
+        a_en:'{BE:Are} {PRO:you} {ART:a} {ADJ:good} {N:girl}?',
+        a_zh:'你是一個好女孩嗎？',
+        b_en:"{ADV:No}, {PRO:I}'m {ADV:not}.",
+        b_zh:'不，我不是。',
+        decl: { en: '{PRO:You} {BE:are} {ART:a} {ADJ:good} {N:girl}.', zh: '你是一個好女孩。' },
+        grammar: '否定回答 <strong>I\'m not = I am not</strong> 的縮寫。<strong>not</strong> 是否定副詞，放在 be 動詞後面。' },
+    ]
+  },
+  L12: {
+    num: 12, topic: '形容詞（感覺）— 餓的、累的、快樂的、難過的',
+    words: [
+      ['hungry', '🍽️', '餓的', '/ˈhʌŋɡri/'],
+      ['tired', '😪', '累的', '/ˈtaɪərd/'],
+      ['happy', '😄', '快樂的', '/ˈhæpi/'],
+      ['sad', '😢', '難過的', '/sæd/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{BE:Are} {PRO:you} {ADJ:hungry}?',
+        a_zh:'你們餓了嗎？',
+        b_en:'{ADV:Yes}, {PRO:we} {BE:are}.',
+        b_zh:'是的，我們很餓。',
+        decl: { en: '{PRO:You} {BE:are} {ADJ:hungry}.', zh: '你們餓了。' },
+        grammar: '<strong>形容詞</strong>除了能放在名詞前面（a good boy），也能單獨放在 be 動詞後（are hungry），稱為「<strong>主詞補語</strong>」。<strong>you</strong> 可指你或你們，回答時用 we are。' },
+      { type:'dialog',
+        a_en:'{BE:Are} {PRO:you} {ADJ:hungry}?',
+        a_zh:'你們餓了嗎？',
+        b_en:"{ADV:No}, {PRO:we} {BE:aren't}.",
+        b_zh:'不，我們不餓。',
+        decl: { en: '{PRO:We} {BE:are} {ADJ:hungry}.', zh: '我們很餓。' },
+        grammar: '複數否定用 <strong>aren\'t = are not</strong> 的縮寫。' },
+    ]
+  },
+  L13: {
+    num: 13, topic: '動作與否定 — 壞的、吃、睡覺',
+    words: [
+      ['bad', '👎', '壞的', '/bæd/'],
+      ['eat', '🍴', '吃', '/iːt/'],
+      ['sleep', '😴', '睡覺', '/sliːp/']
+    ],
+    patterns: [
+      { type:'single',
+        en:"{N:Rocky} {BE:isn't} {ART:a} {ADJ:bad} {N:dog}.",
+        zh:'Rocky 不是一隻壞狗。',
+        grammar: '<strong>isn\'t = is not</strong> 的縮寫，用於第三人稱單數的否定。Rocky 是人名（特定名詞）做主詞。' },
+      { type:'single',
+        en:'{PRO:I} {V:want to} {V_:sleep}.',
+        zh:'我想要睡覺。',
+        grammar: '<strong>want to + 動詞原形</strong> 表示「想要做某事」。to 後面一定接動詞原形，不可以是 wants to sleeps（×）。' },
+      { type:'single',
+        en:'{PRO:She} {V:wants to} {V_:sleep}.',
+        zh:'她想要睡覺。',
+        grammar: '主詞是第三人稱單數（he/she/it/單數人名）時，<strong>want 要加 s 變成 wants</strong>。這是現在簡單式的第三人稱單數變化。' },
+    ]
+  },
+  L14: {
+    num: 14, topic: '天氣 — 冷、熱、溫暖、涼爽',
+    words: [
+      ['cold', '🥶', '冷的', '/koʊld/'],
+      ['hot', '🥵', '熱的', '/hɑːt/'],
+      ['warm', '☀️', '溫暖的', '/wɔːrm/'],
+      ['cool', '🌤️', '涼爽的', '/kuːl/']
+    ],
+    patterns: [
+      { type:'single',
+        en:"{PRO:It}'s {ADJ:cold} {ADV:outside}.",
+        zh:'外面很冷。',
+        grammar: '描述天氣用 <strong>It\'s + 形容詞</strong>（It 是虛主詞，沒有實際意義）。<strong>outside</strong> 是副詞「在外面」。' },
+    ]
+  },
+  L15: {
+    num: 15, topic: '自然 — 天鵝、樹、長椅、船',
+    words: [
+      ['swan', '🦢', '天鵝', '/swɑːn/'],
+      ['tree', '🌳', '樹', '/triː/'],
+      ['bench', '🪑', '長椅', '/bɛntʃ/'],
+      ['boat', '⛵', '船', '/boʊt/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{WH:How many} {N:swans} {BE:are} {ADV:there}?',
+        a_zh:'這裡有幾隻天鵝？',
+        b_en:'{ADV:There} {BE:are} {NUM:ten} {N:swans}.',
+        b_zh:'這裡有十隻天鵝。',
+        decl: { en: '{ADV:There} {BE:are} {NUM:ten} {N:swans}.', zh: '這裡有十隻天鵝。' },
+        grammar: '<strong>How many</strong> 問可數名詞的數量。<strong>注意倒裝</strong>：問句 are there → 答句 there are。後面接複數名詞 swans（加 s）。' },
+    ]
+  },
+
+  // ========= 第四週 =========
+  L16: {
+    num: 16, topic: '活動 — 看電視、做作業',
+    words: [
+      ['watch TV', '📺', '看電視', '/wɑːtʃ tiː viː/'],
+      ['do homework', '📝', '做作業', '/duː ˈhoʊmwɜːrk/']
+    ],
+    patterns: [
+      { type:'single',
+        en:'{PRO:I} {V:want to} {V_:watch} {N:TV}.',
+        zh:'我想要看電視。',
+        grammar: '<strong>want to + 動詞原形</strong>。watch（看）是及物動詞，後面接受詞 TV。整體結構：主詞 + want to + 動詞 + 受詞。' },
+      { type:'single',
+        en:'{PRO:We} {V:want to} {V_:watch} {N:TV}.',
+        zh:'我們想要看電視。' },
+      { type:'single',
+        en:'{WH:How many} {N:books} {BE:are} {ADV:there}?',
+        zh:'那裡有幾本書？',
+        decl: { en: '{ADV:There} {BE:are} {NUM:five} {N:books}.', zh: '那裡有五本書。（例：5 本）' } },
+    ]
+  },
+  L17: {
+    num: 17, topic: '物品 — 鈴鐺、氣球、旗子、燈',
+    words: [
+      ['bell', '🔔', '鈴鐺', '/bɛl/'],
+      ['balloon', '🎈', '氣球', '/bəˈluːn/'],
+      ['flag', '🚩', '旗子', '/flæɡ/'],
+      ['light', '💡', '燈', '/laɪt/']
+    ],
+    patterns: [
+      { type:'single',
+        en:'{ART:The} {N:bell} {BE:is} {ADJ:pink}.',
+        zh:'這個鈴鐺是粉紅色的。',
+        grammar: '基本句型 = <strong>主詞 + be 動詞 + 形容詞</strong>，形容詞做主詞補語。形容詞 pink（粉紅色）放在 be 動詞之後，描述 the bell。' },
+      { type:'single',
+        en:'{PRO:I} {V_:like} {ART:the} {ADJ:pink} {N:bell}.',
+        zh:'我喜歡這個粉紅色的鈴鐺。',
+        grammar: '<strong>like</strong>（喜歡）是一般動詞。形容詞 pink 放在名詞 bell 之前修飾。整體結構：主詞 + 動詞 + 冠詞 + 形容詞 + 名詞。' },
+    ]
+  },
+  L18: {
+    num: 18, topic: '顏色 — 灰、白、棕、黑',
+    words: [
+      ['gray', '⬜', '灰色', '/ɡreɪ/'],
+      ['white', '🤍', '白色', '/waɪt/'],
+      ['brown', '🟫', '棕色', '/braʊn/'],
+      ['black', '⬛', '黑色', '/blæk/']
+    ],
+    patterns: [
+      { type:'dialog',
+        a_en:'{WH:What} {BE:is} {PRO:your} {ADJ:favorite} {N:color}?',
+        a_zh:'你最喜歡什麼顏色？',
+        b_en:'{PRO:My} {ADJ:favorite} {N:color} {BE:is} {ADJ:gray}.',
+        b_zh:'我最喜歡的顏色是灰色。',
+        decl: { en: '{PRO:Your} {ADJ:favorite} {N:color} {BE:is} {ADJ:gray}.', zh: '你最喜歡的顏色是灰色。' },
+        grammar: '<strong>your</strong>（你的）、<strong>my</strong>（我的）是所有格代名詞，放在名詞前。<strong>favorite</strong>（最喜歡的）是形容詞，所以可以說 my favorite color（我最喜歡的顏色）。' },
+    ]
+  },
+  L19: {
+    num: 19, topic: '金屬色 — 銀色、金色（形容詞）、黃金（名詞）',
+    words: [
+      ['silver', '🥈', '銀色', '/ˈsɪlvər/'],
+      ['golden', '✨', '金色的', '/ˈɡoʊldən/'],
+      ['gold', '🥇', '黃金', '/ɡoʊld/']
+    ],
+    patterns: [
+      { type:'single',
+        en:'{PRO:I} {V_:like} {ART:the} {ADJ:silver} {N:car}.',
+        zh:'我喜歡這輛銀色的車。',
+        grammar: '主詞 I 是第一人稱，動詞用原形 <strong>like</strong>。形容詞 silver 修飾名詞 car。' },
+      { type:'single',
+        en:'{PRO:We} {V_:like} {ART:the} {ADJ:silver} {N:car}.',
+        zh:'我們喜歡這輛銀色的車。' },
+      { type:'single',
+        en:'{PRO:He} {V_:likes} {ART:the} {ADJ:silver} {N:car}.',
+        zh:'他喜歡這輛銀色的車。',
+        grammar: '<strong>重點：</strong>主詞是第三人稱單數（he/she/it）時，一般動詞要加 <strong>s</strong>：like → <strong>likes</strong>。這是現在簡單式最重要的動詞變化規則。' },
+      { type:'single',
+        en:'{PRO:She} {V_:likes} {ART:the} {ADJ:silver} {N:car}.',
+        zh:'她喜歡這輛銀色的車。' },
+    ]
+  },
+};
+
+/* ============================================================
+   4. 週次組織
+   ============================================================ */
+const weekStructure = {
+  1: {
+    title: '第一週（Lesson 1–5）',
+    desc: '介紹基本動物詞彙、玩具、三餐，並學習 There is/are 與基礎疑問句。',
+    lessons: ['L1','L2','L3','L4','L5']
+  },
+  2: {
+    title: '第二週（Lesson 6–10）',
+    desc: '日常作息動作、物品位置（on/under），以及 Where is/are 句型，第 10 課為總複習。',
+    lessons: ['L6','L7','L8','L9','L10']
+  },
+  3: {
+    title: '第三週（Lesson 11–15）',
+    desc: '形容詞（外觀、感覺、天氣）+ Are you...? 疑問句與 want to + 動詞句型。',
+    lessons: ['L11','L12','L13','L14','L15']
+  },
+  4: {
+    title: '第四週（Lesson 16–19）',
+    desc: '活動、顏色，以及「I like / favorite color」表達喜好的句型。',
+    lessons: ['L16','L17','L18','L19']
+  }
+};
+
+/* ============================================================
+   5. 工具函式
+   ============================================================ */
+function escapeAttr(s) { return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// 移除句型中的詞性標記，得到純英文（用於 TTS）
+function stripPosMarks(text) {
+  return text.replace(/\{[A-Z_]+:([^}]+)\}/g, '$1');
+}
+
+// 把詞性標記轉成彩色 span
+const POS_MAP = {
+  N:    'pos-noun',     // 名詞
+  V:    'pos-verb',     // 一般動詞片語（含 Let's、want to）
+  V_:   'pos-verb',     // 一般動詞原形
+  BE:   'pos-be',       // be 動詞 (is, are, am, isn't, aren't)
+  AUX:  'pos-aux',      // 助動詞
+  ADJ:  'pos-adj',      // 形容詞
+  PRO:  'pos-pron',     // 代名詞 / 所有格
+  ART:  'pos-art',      // 冠詞
+  PREP: 'pos-prep',     // 介係詞
+  WH:   'pos-wh',       // 疑問詞
+  NUM:  'pos-num',      // 數詞
+  CONJ: 'pos-conj',     // 連接詞
+  ADV:  'pos-adv',      // 副詞
+};
+
+function colorizePos(text) {
+  return text.replace(/\{([A-Z_]+):([^}]+)\}/g, (_, pos, word) => {
+    const cls = POS_MAP[pos] || '';
+    return `<span class="pos ${cls}">${escapeHtml(word)}</span>`;
+  });
+}
+
+// 產生疑問句下方的「直述句對照」元素
+function makeDeclarativeRef(decl) {
+  const div = document.createElement('div');
+  div.className = 'declarative-ref';
+  const plain = stripPosMarks(decl.en);
+  div.innerHTML = `
+    <span class="ref-label">直述句</span>
+    <div class="ref-text">
+      <div class="ref-en">${colorizePos(decl.en)}</div>
+      <div class="ref-zh">${escapeHtml(decl.zh)}</div>
+    </div>
+    <button class="ref-btn" onclick="playSent(this, '${escapeAttr(plain)}')">🔊</button>
+  `;
+  return div;
+}
+
+/* ============================================================
+   6. 渲染：單一 Lesson 卡
+   ============================================================ */
+function renderLesson(key) {
+  const L = lessons[key];
+  const card = document.createElement('div');
+  card.className = 'lesson';
+
+  const head = document.createElement('div');
+  head.className = 'lesson-head';
+  head.innerHTML = `
+    <span class="lesson-num ${L.isReview ? 'review' : ''}">Lesson ${L.num}</span>
+    <span class="lesson-topic">${escapeHtml(L.topic)}</span>
+  `;
+  card.appendChild(head);
+
+  if (L.isReview) {
+    const box = document.createElement('div');
+    box.className = 'review-box';
+    box.innerHTML = `
+      <span class="review-icon">🔄</span>
+      ${escapeHtml(L.reviewText)}
+    `;
+    card.appendChild(box);
+    return card;
+  }
+
+  // ----- 單字區 -----
+  if (L.words && L.words.length) {
+    const wordLabel = document.createElement('div');
+    wordLabel.className = 'subsection-label';
+    wordLabel.textContent = '📚 重點單字';
+    card.appendChild(wordLabel);
+
+    const grid = document.createElement('div');
+    grid.className = 'word-grid';
+    L.words.forEach(([en, emoji, zh, ipa]) => {
+      const wc = document.createElement('div');
+      wc.className = 'word-card';
+      wc.innerHTML = `
+        <div class="word-emoji">${emoji}</div>
+        <div class="word-en">${highlightEnVowels(en)}</div>
+        <div class="word-ipa">${highlightIpaVowels(ipa || '')}</div>
+        <div class="word-zh">${escapeHtml(zh)}</div>
+        <button class="play-btn" onclick="playWord(this, '${escapeAttr(en)}')">🔊 發音</button>
+      `;
+      grid.appendChild(wc);
+    });
+    card.appendChild(grid);
+  }
+
+  // ----- 核心句型 -----
+  if (L.patterns && L.patterns.length) {
+    const pLabel = document.createElement('div');
+    pLabel.className = 'subsection-label pattern';
+    pLabel.textContent = '💬 核心句型';
+    card.appendChild(pLabel);
+
+    const list = document.createElement('div');
+    list.className = 'pattern-list';
+
+    L.patterns.forEach((p, idx) => {
+      if (p.type === 'single') {
+        // 文法說明先顯示
+        if (p.grammar) {
+          const note = document.createElement('div');
+          note.className = 'grammar-note';
+          note.innerHTML = `
+            <div class="note-title">📖 文法說明</div>
+            <p>${p.grammar}</p>
+          `;
+          list.appendChild(note);
+        }
+
+        const row = document.createElement('div');
+        row.className = 'pattern-item';
+        const enPlain = stripPosMarks(p.en);
+        row.innerHTML = `
+          <div class="pattern-text">
+            <div class="pattern-en">${colorizePos(p.en)}</div>
+            <div class="pattern-zh">${escapeHtml(p.zh)}</div>
+          </div>
+          <button class="sent-btn" onclick="playSent(this, '${escapeAttr(enPlain)}')">🔊 唸句子</button>
+        `;
+        list.appendChild(row);
+
+        // 若是疑問句且有對應直述句，縮排顯示
+        if (p.decl) {
+          list.appendChild(makeDeclarativeRef(p.decl));
+        }
+      } else if (p.type === 'dialog') {
+        // 文法說明先顯示
+        if (p.grammar) {
+          const note = document.createElement('div');
+          note.className = 'grammar-note';
+          note.innerHTML = `
+            <div class="note-title">📖 文法說明</div>
+            <p>${p.grammar}</p>
+          `;
+          list.appendChild(note);
+        }
+
+        const aPlain = stripPosMarks(p.a_en);
+        const bPlain = stripPosMarks(p.b_en);
+
+        const rowA = document.createElement('div');
+        rowA.className = 'pattern-item';
+        rowA.innerHTML = `
+          <div class="pattern-text">
+            <div class="pattern-en"><span class="speaker-tag">A</span>${colorizePos(p.a_en)}</div>
+            <div class="pattern-zh"><span class="speaker-tag">A</span>${escapeHtml(p.a_zh)}</div>
+          </div>
+          <button class="sent-btn" onclick="playSent(this, '${escapeAttr(aPlain)}')">🔊 唸句子</button>
+        `;
+        list.appendChild(rowA);
+
+        // 若 A 是疑問句且有 decl，在 A 與 B 之間插入直述句對照
+        if (p.decl) {
+          list.appendChild(makeDeclarativeRef(p.decl));
+        }
+
+        const rowB = document.createElement('div');
+        rowB.className = 'pattern-item';
+        rowB.innerHTML = `
+          <div class="pattern-text">
+            <div class="pattern-en"><span class="speaker-tag">B</span>${colorizePos(p.b_en)}</div>
+            <div class="pattern-zh"><span class="speaker-tag">B</span>${escapeHtml(p.b_zh)}</div>
+          </div>
+          <button class="sent-btn" onclick="playSent(this, '${escapeAttr(bPlain)}')">🔊 唸句子</button>
+        `;
+        list.appendChild(rowB);
+      }
+    });
+    card.appendChild(list);
+  }
+
+  return card;
+}
+
+/* ============================================================
+   7. 渲染：週次面板
+   ============================================================ */
+function renderWeek(weekNum) {
+  const panel = document.getElementById(`week-${weekNum}`);
+  panel.innerHTML = '';
+  const w = weekStructure[weekNum];
+
+  const intro = document.createElement('div');
+  intro.className = 'week-intro';
+  intro.innerHTML = `
+    <h2>${escapeHtml(w.title)}</h2>
+    <p>${escapeHtml(w.desc)}</p>
+  `;
+  panel.appendChild(intro);
+
+  w.lessons.forEach(key => {
+    panel.appendChild(renderLesson(key));
+  });
+}
+
+/* ============================================================
+   8. 切換週次
+   ============================================================ */
+function switchWeek(weekNum) {
+  document.querySelectorAll('.week-tab').forEach(b =>
+    b.classList.toggle('active', parseInt(b.dataset.week) === weekNum));
+  document.querySelectorAll('.week-panel').forEach(p =>
+    p.classList.toggle('active', p.id === `week-${weekNum}`));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   9. 啟動
+   ============================================================ */
+[1, 2, 3, 4].forEach(renderWeek);
+</script>
+
+</body>
+</html>

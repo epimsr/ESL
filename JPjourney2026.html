@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 日本中部地區旅行 ｜ 福井・名古屋</title>
+<style>
+  :root{
+    --indigo:#1f3a5f;        /* 藍染 */
+    --indigo-deep:#16293f;
+    --vermilion:#c8472e;     /* 鳥居朱 */
+    --gold:#b8893b;
+    --paper:#f7f3ea;         /* 和紙 */
+    --paper-2:#efe8d8;
+    --ink:#2a2a28;
+    --ink-soft:#5c5852;
+    --line:#e2d9c6;
+    --card:#fffdf8;
+    --shadow:0 6px 22px rgba(31,58,95,.10);
+    --shadow-sm:0 2px 8px rgba(31,58,95,.08);
+
+    --c-flight:#2563a8;  --c-flight-bg:#e8f0fb;
+    --c-car:#7b6cae;     --c-car-bg:#efebf8;
+    --c-transit:#8a8170; --c-transit-bg:#efece2;
+    --c-metro:#3b8f7a;   --c-metro-bg:#e6f3ee;
+    --c-sight:#c8472e;   --c-sight-bg:#fbeae5;
+    --c-food:#c98a1e;    --c-food-bg:#fcf2dd;
+    --c-stay:#5a6b8c;    --c-stay-bg:#eaeef6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(31,58,95,.06), transparent 60%),
+      var(--paper);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:"Songti TC","Noto Serif TC","Times New Roman",serif;}
+
+  /* ===== Header ===== */
+  header{
+    background:linear-gradient(150deg,var(--indigo) 0%,var(--indigo-deep) 100%);
+    color:#fdf8ee;
+    padding:34px 22px 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;
+    background:radial-gradient(circle, rgba(200,71,46,.35), transparent 65%);
+    pointer-events:none;
+  }
+  .head-inner{max-width:920px;margin:0 auto;position:relative;z-index:1;}
+  .head-tag{
+    display:inline-block;font-size:13px;letter-spacing:3px;
+    color:#f3d9b6;border:1px solid rgba(243,217,182,.45);
+    padding:3px 12px;border-radius:20px;margin-bottom:14px;
+  }
+  header h1{
+    font-size:34px;font-weight:800;letter-spacing:1px;line-height:1.25;
+  }
+  header h1 .jp{color:#f0c98a;font-weight:600;}
+  .head-sub{margin-top:10px;color:#cdd8e6;font-size:15px;}
+  .head-stats{
+    display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;
+  }
+  .stat{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+    border-radius:12px;padding:10px 16px;backdrop-filter:blur(2px);
+  }
+  .stat b{display:block;font-size:20px;color:#fff;}
+  .stat span{font-size:12px;color:#bcc8d8;letter-spacing:1px;}
+
+  /* ===== Day nav ===== */
+  .daynav-wrap{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,243,234,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+  }
+  .daynav{
+    max-width:920px;margin:0 auto;
+    display:flex;gap:8px;overflow-x:auto;
+    padding:12px 16px;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .daynav::-webkit-scrollbar{display:none;}
+  .daybtn{
+    flex:0 0 auto;border:1px solid var(--line);background:var(--card);
+    border-radius:12px;padding:8px 14px;cursor:pointer;
+    font-size:14px;color:var(--ink-soft);text-align:center;line-height:1.3;
+    transition:.18s;min-width:62px;font-family:inherit;
+  }
+  .daybtn b{display:block;font-size:16px;color:var(--indigo);font-weight:800;}
+  .daybtn small{font-size:11px;}
+  .daybtn:hover{border-color:var(--indigo);}
+  .daybtn.active{
+    background:var(--indigo);border-color:var(--indigo);
+  }
+  .daybtn.active b,.daybtn.active{color:#fff;}
+  .daybtn.active small{color:#dbe4f0;}
+
+  /* ===== Main ===== */
+  main{max-width:920px;margin:0 auto;padding:24px 16px 60px;}
+
+  .day{
+    display:none;animation:fade .35s ease;
+  }
+  .day.show{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .day-head{
+    display:flex;align-items:center;gap:16px;margin:6px 0 22px;
+    padding-bottom:16px;border-bottom:2px solid var(--line);
+  }
+  .day-num{
+    flex:0 0 auto;width:66px;height:66px;border-radius:16px;
+    background:linear-gradient(150deg,var(--indigo),var(--indigo-deep));
+    color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:var(--shadow);
+  }
+  .day-num b{font-size:24px;font-weight:800;line-height:1;}
+  .day-num span{font-size:11px;letter-spacing:2px;color:#f0c98a;margin-top:3px;}
+  .day-title b{font-size:20px;color:var(--indigo-deep);}
+  .day-title .date{font-size:14px;color:var(--ink-soft);margin-top:2px;}
+  .day-title .loc{
+    display:inline-block;margin-top:6px;font-size:13px;color:var(--vermilion);
+    background:var(--c-sight-bg);padding:2px 10px;border-radius:12px;
+  }
+
+  /* timeline */
+  .timeline{position:relative;padding-left:8px;}
+  .item{
+    position:relative;display:flex;gap:14px;padding:0 0 16px;
+  }
+  .item:last-child{padding-bottom:0;}
+  .rail{position:relative;flex:0 0 auto;width:46px;display:flex;flex-direction:column;align-items:center;}
+  .rail::before{
+    content:"";position:absolute;top:46px;bottom:-16px;width:2px;left:50%;transform:translateX(-50%);
+    background:var(--line);
+  }
+  .item:last-child .rail::before{display:none;}
+  .ico{
+    width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:20px;background:var(--paper-2);border:2px solid #fff;box-shadow:var(--shadow-sm);
+    position:relative;z-index:1;
+  }
+  .card{
+    flex:1 1 auto;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:13px 16px;box-shadow:var(--shadow-sm);min-width:0;
+  }
+  .card .top{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+  .badge{
+    font-size:12px;font-weight:700;padding:2px 9px;border-radius:8px;letter-spacing:1px;
+  }
+  .time{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums;font-weight:600;}
+  .place{font-size:16px;font-weight:700;color:var(--ink);margin-top:5px;white-space:pre-line;}
+  .note{
+    font-size:13px;color:var(--ink-soft);margin-top:6px;
+    background:var(--paper);border-left:3px solid var(--line);
+    padding:6px 10px;border-radius:0 8px 8px 0;white-space:pre-line;
+  }
+  .note.alert{border-left-color:var(--vermilion);color:#9a3b27;background:#fbeae5;}
+  .drive{
+    color:var(--c-transit);font-size:13px;font-weight:600;letter-spacing:1px;
+  }
+
+  /* category colors */
+  .t-flight .ico{background:var(--c-flight-bg);} .t-flight .badge{background:var(--c-flight-bg);color:var(--c-flight);}
+  .t-car .ico{background:var(--c-car-bg);}       .t-car .badge{background:var(--c-car-bg);color:var(--c-car);}
+  .t-transit .ico{background:var(--c-transit-bg);}.t-transit .badge{background:var(--c-transit-bg);color:var(--c-transit);}
+  .t-metro .ico{background:var(--c-metro-bg);}    .t-metro .badge{background:var(--c-metro-bg);color:var(--c-metro);}
+  .t-sight .ico{background:var(--c-sight-bg);}    .t-sight .badge{background:var(--c-sight-bg);color:var(--c-sight);}
+  .t-food .ico{background:var(--c-food-bg);}      .t-food .badge{background:var(--c-food-bg);color:var(--c-food);}
+  .t-stay .ico{background:var(--c-stay-bg);}      .t-stay .badge{background:var(--c-stay-bg);color:var(--c-stay);}
+
+  .t-stay .card{background:linear-gradient(120deg,var(--c-stay-bg),#fffdf8);}
+
+  /* ===== Notes / booking ===== */
+  .notes-sec{margin-top:30px;}
+  .notes-sec h2{
+    font-size:19px;color:var(--indigo-deep);margin-bottom:14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .notes-sec h2::before{content:"";width:5px;height:20px;background:var(--vermilion);border-radius:3px;}
+  .acc{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow-sm);
+  }
+  .acc-head{
+    padding:13px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+    font-weight:700;color:var(--indigo-deep);font-size:15px;user-select:none;
+  }
+  .acc-head .arrow{transition:.25s;color:var(--ink-soft);}
+  .acc.open .acc-head .arrow{transform:rotate(180deg);}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .acc.open .acc-body{max-height:1400px;}
+  .acc-body table{width:100%;border-collapse:collapse;}
+  .acc-body td{padding:9px 16px;font-size:14px;border-top:1px solid var(--line);vertical-align:top;}
+  .acc-body td:first-child{color:var(--indigo);font-weight:700;width:34%;background:var(--paper);}
+  .acc-body td a{color:var(--c-flight);word-break:break-all;}
+
+  footer{text-align:center;color:var(--ink-soft);font-size:12px;padding:24px;}
+  .legend{
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 18px;
+  }
+  .legend span{font-size:12px;display:inline-flex;align-items:center;gap:5px;color:var(--ink-soft);}
+  .legend i{width:14px;height:14px;border-radius:4px;display:inline-block;}
+
+  .print-btn{
+    position:fixed;right:18px;bottom:18px;z-index:60;
+    background:var(--vermilion);color:#fff;border:none;border-radius:50px;
+    padding:12px 20px;font-size:14px;font-weight:700;cursor:pointer;
+    box-shadow:0 6px 18px rgba(200,71,46,.4);font-family:inherit;
+  }
+  .print-btn:hover{filter:brightness(1.05);}
+
+  /* ===== RWD ===== */
+  @media (max-width:768px){
+    header{padding:28px 18px 24px;}
+    header h1{font-size:27px;}
+    main{padding:20px 12px 70px;}
+  }
+  @media (max-width:520px){
+    header h1{font-size:23px;}
+    .stat{padding:8px 12px;}
+    .stat b{font-size:17px;}
+    .day-num{width:56px;height:56px;}
+    .day-num b{font-size:20px;}
+    .day-title b{font-size:18px;}
+    .rail{width:40px;}
+    .ico{width:38px;height:38px;font-size:18px;}
+    .rail::before{top:40px;}
+    .card{padding:11px 13px;}
+    .place{font-size:15px;}
+    .acc-body td:first-child{width:40%;}
+  }
+  @media (max-width:360px){
+    header h1{font-size:20px;}
+    .item{gap:9px;}
+    .rail{width:34px;}
+    .ico{width:34px;height:34px;font-size:16px;}
+    .rail::before{top:36px;left:50%;}
+  }
+
+  /* ===== Print ===== */
+  @media print{
+    body{background:#fff;}
+    .daynav-wrap,.print-btn{display:none !important;}
+    header{background:var(--indigo) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .day{display:block !important;page-break-after:always;}
+    .acc-body{max-height:none !important;}
+    .acc{break-inside:avoid;}
+    .item,.card{break-inside:avoid;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <span class="head-tag">2026 SUMMER · JAPAN</span>
+    <h1>日本中部地區 旅行<br><span class="jp serif">福井 ・ 岐阜 ・ 名古屋</span></h1>
+    <p class="head-sub">2026 / 7 / 1（三）— 7 / 8（三）</p>
+  </div>
+</header>
+
+<div class="daynav-wrap">
+  <nav class="daynav" id="daynav"></nav>
+</div>
+
+<main>
+  <div id="days"></div>
+
+  <section class="notes-sec">
+    <h2>票券・餐廳・備註</h2>
+    <div id="notes"></div>
+  </section>
+</main>
+
+<footer>
+  林家花園 製作
+</footer>
+
+<script>
+const ICON={flight:"✈️",car:"🚐",transit:"🛣️",metro:"🚉",sight:"⛩️",food:"🍜",stay:"🏨"};
+const LABEL={flight:"航班",car:"包車",transit:"交通",metro:"地鐵",sight:"行程",food:"用餐",stay:"住宿"};
+
+const TRIP=[
+ {day:"Day 1",date:"7/01",dow:"三",loc:"桃園 → 名古屋 → 福井",items:[
+   {t:"sight",time:"08:30",place:"桃園機場第一航廈集合"},
+   {t:"flight",time:"11:30",place:"桃園國際機場 TPE",note:"國泰航空 CX530 ｜ 約 3HR（11:30–15:30）"},
+   {t:"flight",time:"15:30",place:"名古屋（中部國際機場 NGO）抵達"},
+   {t:"car",time:"17:00",place:"名古屋 → 福井",note:"包車車程約 2.5HR"},
+   {t:"car",time:"19:30",place:"福井萬怡酒店"},
+   {t:"food",place:"晚餐：福福茶屋／ふくぶくちゃや",note:"福井車站西口步行約 1 分鐘 ｜ 最後點餐 21:00"},
+   {t:"sight",place:"散策：福井車站區"},
+   {t:"stay",time:"住 2 晚",place:"福井萬怡酒店\nCourtyard by Marriott Fukui"},
+ ]},
+ {day:"Day 2",date:"7/02",dow:"四",loc:"福井・恐龍",items:[
+   {t:"food",time:"07:00",place:"飯店早餐"},
+   {t:"car",time:"08:00",place:"飯店出發",note:"遲到的人是小烏龜 🐢"},
+   {t:"sight",time:"09:20 / 10:30",place:"福井縣立恐龍博物館\n化石研究體驗＋常設展",note:"已購票，兩場 9:20、10:30"},
+   {t:"sight",time:"13:30–15:30",place:"野外恐龍博物館",note:"已購票"},
+   {t:"sight",place:"平泉寺白山神社",note:"苔庭、御手洗池、若宮神社的大杉樹"},
+   {t:"food",time:"晚餐",place:"Bonta Kurufu 福井站前店"},
+   {t:"stay",time:"住 2 晚",place:"福井萬怡酒店\nCourtyard by Marriott Fukui"},
+ ]},
+ {day:"Day 3",date:"7/03",dow:"五",loc:"福井 → 岐阜",items:[
+   {t:"food",time:"07:00",place:"飯店早餐"},
+   {t:"car",time:"08:00",place:"飯店出發",note:"遲到的人是小烏龜 🐢"},
+   {t:"sight",time:"08:30–11:00",place:"永平寺",note:"當天購票"},
+   {t:"food",place:"午餐：健藏蕎麥麵（Kenzo Soba）"},
+   {t:"sight",time:"~15:30",place:"一乘谷朝倉氏遺跡／博物館",note:"當天購票，停留約 1.5 小時，15:30 離館"},
+   {t:"transit",place:"車程約 2.5HR",drive:true},
+   {t:"food",place:"晚餐：商店街、超商"},
+   {t:"sight",time:"19:15–21:45",place:"長良川鵜飼（鵜鶿捕魚）遊覽船",note:"已預約，活動約 2.5 小時"},
+   {t:"stay",place:"岐阜百年溫泉旅店 十八樓",note:"松尾芭蕉《十八樓記》"},
+ ]},
+ {day:"Day 4",date:"7/04",dow:"六",loc:"岐阜 → 名古屋",items:[
+   {t:"food",time:"07:00",place:"飯店早餐"},
+   {t:"car",time:"08:30",place:"出門"},
+   {t:"transit",place:"車程約 1.5HR",drive:true},
+   {t:"sight",time:"10:00",place:"馬籠宿（舊中山道）"},
+   {t:"sight",place:"妻籠宿",note:"12:30 前離開"},
+   {t:"food",time:"午餐",place:"五平餅、蕎麥麵等",note:"餐廳：けんぞう蕎麦（妻籠宿）待確認"},
+   {t:"transit",place:"車程約 0.5HR",drive:true},
+   {t:"sight",time:"40–50 分",place:"惠那峽展望台"},
+   {t:"transit",place:"車程約 1HR",drive:true},
+   {t:"sight",time:"2–2.5 小時",place:"犬山城 ＋ 三光稻荷神社"},
+   {t:"transit",place:"車程約 0.5HR",drive:true},
+   {t:"food",time:"17:00–20:00",place:"晚餐：山本屋總本店（味噌煮込烏龍麵）",note:"星期二、三店休；品項待確認"},
+   {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
+ ]},
+ {day:"Day 5",date:"7/05",dow:"日",loc:"名古屋市區",items:[
+   {t:"metro",time:"08:00",place:"出門（一日地鐵券）",note:"本日不用車"},
+   {t:"sight",time:"09:30 開門",place:"名古屋港水族館",note:"四館套票當天購票（15 人）"},
+   {t:"sight",place:"熱田神宮"},
+   {t:"sight",place:"寶可夢中心"},
+   {t:"food",time:"19:30",place:"晚餐：あみやき亭 榮店（燒肉）",note:"15 人已預約"},
+   {t:"sight",place:"購物／藥妝：唐吉訶德 榮本店"},
+   {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
+ ]},
+ {day:"Day 6",date:"7/06",dow:"一",loc:"吉卜力公園",items:[
+   {t:"car",time:"08:00",place:"出門",note:"早餐？"},
+   {t:"sight",time:"10:00–17:00",place:"吉卜力公園",note:"門票已購買（詳見備註）"},
+   {t:"food",place:"午餐：園區內隨意"},
+   {t:"food",time:"18:00",place:"晚餐：熱田蓬萊軒 本店（鰻魚飯）",note:"15 人已訂位 ｜ 052-671-8686"},
+   {t:"sight",time:"~22:00",place:"夜間活動（千里馬）",note:"22:00 打烊；名稱待確認"},
+   {t:"food",time:"消夜",place:"一蘭拉麵 名古屋錦店",note:"飯店附近步行約 10 分鐘"},
+   {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
+ ]},
+ {day:"Day 7",date:"7/07",dow:"二",loc:"樂高 ・ 大須",items:[
+   {t:"car",time:"08:20",place:"出門",note:"早餐？"},
+   {t:"sight",place:"樂高樂園",note:"已購票"},
+   {t:"food",place:"午餐：園區內隨意"},
+   {t:"sight",place:"大須觀音"},
+   {t:"sight",place:"大須商店街"},
+   {t:"food",time:"晚餐",place:"矢場とん 矢場町本店（味噌豬排）"},
+   {t:"food",time:"消夜",place:"居酒屋"},
+   {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
+ ]},
+ {day:"Day 8",date:"7/08",dow:"三",loc:"名古屋 → 桃園",items:[
+   {t:"car",time:"08:30",place:"出門",note:"早餐？"},
+   {t:"sight",time:"09:30",place:"名古屋市科學館",note:"當天購票；天文館當日無場次，僅購普通票"},
+   {t:"transit",place:"車程約 1HR",drive:true},
+   {t:"flight",place:"名古屋中部機場 → 桃園國際機場",note:"國泰航空 CX ｜ 約 3HR（16:40–18:50）"},
+ ]},
+];
+
+const NOTES=[
+ {title:"🎫 票券・預約",rows:[
+   ["恐龍博物館","化石研究體驗＋常設展，已購票（9:20、10:30 兩場）"],
+   ["野外恐龍博物館","預約券已購票（13:30–15:30）"],
+   ["永平寺","當天購票"],
+   ["一乘谷朝倉氏遺跡","當天購票（博物館 08:00 起）"],
+   ["長良川鵜飼","鵜鶿捕魚遊覽船，19:15，已預約，約 2.5 小時"],
+   ["吉卜力公園門票","已購買 — 高級版 3 大 3 小（7,300／3,650 日圓）；普通版 3 大 1 小（3,300／1,650 日圓）"],
+   ["名古屋港水族館","四館套票當天購票（15 人）"],
+   ["樂高樂園","已購票"],
+   ["名古屋市科學館","當天購票；天文館當日無場次，僅購普通票"],
+ ]},
+ {title:"🍽 餐廳",rows:[
+   ["Bonta Kurufu 福井站前店","電話 050-5593-3424｜tabelog.com/tw/fukui/A1801/A180101/18009666/"],
+   ["あみやき亭 榮店","燒肉，15 人已預約（7:30 到）"],
+   ["熱田蓬萊軒 本店","鰻魚飯，18:00、15 人已訂位，052-671-8686"],
+   ["山本屋總本店","味噌煮込烏龍麵；名古屋市中区栄 3-12-19；營業 17:00–21:00；星期二、三店休；地下鐵「榮」站步行約 11 分鐘"],
+   ["一蘭拉麵 名古屋錦店","飯店附近步行約 10 分鐘（消夜）"],
+ ]},
+];
+
+/* ---- render days ---- */
+const daysEl=document.getElementById("days");
+const navEl=document.getElementById("daynav");
+TRIP.forEach((d,i)=>{
+  const btn=document.createElement("button");
+  btn.className="daybtn"+(i===0?" active":"");
+  btn.innerHTML=`<b>${i+1}</b><small>${d.date}（${d.dow}）</small>`;
+  btn.onclick=()=>show(i);
+  navEl.appendChild(btn);
+
+  const sec=document.createElement("section");
+  sec.className="day"+(i===0?" show":"");
+  sec.id="day"+i;
+  let html=`<div class="day-head">
+      <div class="day-num"><b>${i+1}</b><span>DAY</span></div>
+      <div class="day-title">
+        <b>${d.day}</b>
+        <div class="date">2026 / ${d.date}（${d.dow}）</div>
+        <span class="loc">${d.loc}</span>
+      </div>
+    </div><div class="timeline">`;
+  d.items.forEach(it=>{
+    if(it.drive){
+      html+=`<div class="item t-transit">
+        <div class="rail"><div class="ico">${ICON.transit}</div></div>
+        <div class="card"><div class="drive">${it.place}</div></div></div>`;
+      return;
+    }
+    const noteCls = it.note && /待確認|店休|打烊|核對/.test(it.note) ? "note alert":"note";
+    html+=`<div class="item t-${it.t}">
+      <div class="rail"><div class="ico">${ICON[it.t]}</div></div>
+      <div class="card">
+        <div class="top">
+          <span class="badge">${LABEL[it.t]}</span>
+          ${it.time?`<span class="time">${it.time}</span>`:""}
+        </div>
+        <div class="place">${it.place}</div>
+        ${it.note?`<div class="${noteCls}">${it.note}</div>`:""}
+      </div></div>`;
+  });
+  html+=`</div>`;
+  sec.innerHTML=html;
+  daysEl.appendChild(sec);
+});
+
+function show(i){
+  document.querySelectorAll(".day").forEach((s,k)=>s.classList.toggle("show",k===i));
+  document.querySelectorAll(".daybtn").forEach((b,k)=>b.classList.toggle("active",k===i));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---- render notes ---- */
+const notesEl=document.getElementById("notes");
+NOTES.forEach((n,i)=>{
+  const acc=document.createElement("div");
+  acc.className="acc"+(i===0?" open":"");
+  let rows=n.rows.map(r=>{
+    let v=r[1].replace(/(tabelog\.com[^\s；]+)/,'<a href="https://$1" target="_blank" rel="noopener">$1</a>');
+    return `<tr><td>${r[0]}</td><td>${v}</td></tr>`;
+  }).join("");
+  acc.innerHTML=`<div class="acc-head"><span>${n.title}</span><span class="arrow">▾</span></div>
+    <div class="acc-body"><table>${rows}</table></div>`;
+  acc.querySelector(".acc-head").onclick=()=>acc.classList.toggle("open");
+  notesEl.appendChild(acc);
+});
+</script>
+</body>
+</html>

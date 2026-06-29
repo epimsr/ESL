@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 林家花園：日本中部旅行</title>
+    <style>
+        /* 現代極簡與日式輕奢風格 (Japandi Style) */
+        :root {
+            --bg-color: #F8F9FA;
+            --text-main: #2B303A;
+            --text-sub: #71777D;
+            --accent-gold: #C5A880;
+            --card-bg: #FFFFFF;
+            --border-color: #EAEAEA;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 60px 50px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        /* 頁首設計 */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        header p {
+            font-size: 1rem;
+            color: var(--accent-gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        header::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background-color: var(--accent-gold);
+            margin: 30px auto 0;
+        }
+
+        /* 主導覽聯結區 */
+        .main-nav {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .main-nav {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .nav-card {
+            display: block;
+            text-decoration: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 35px 25px;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0px;
+            background-color: var(--accent-gold);
+            transition: height 0.3s ease;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 12px 24px rgba(197, 168, 128, 0.08);
+        }
+
+        .nav-card:hover::before {
+            height: 3px;
+        }
+
+        .nav-card h2 {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--text-main);
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .nav-card p {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            letter-spacing: 0.5px;
+        }
+
+        /* 頁尾 */
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>2026 林家花園旅行</h1>
+        <p>日本中部地文探索之旅</p>
+    </header>
+
+    <!-- 主導覽聯結 -->
+    <main class="main-nav">
+        <!-- 行程規劃 -->
+        <a href="#itinerary" class="nav-card">
+            <h2>行程規劃</h2>
+            <p>每日路線、景點秘境與住宿案內</p>
+        </a>
+
+        <!-- 日本中部地理人文大冒險 -->
+        <a href="japan.html" class="nav-card">
+            <h2>日本中部地理人文大冒險</h2>
+            <p>歷史、工藝與昇龍道的深度對話</p>
+        </a>
+
+        <!-- 全日本地理拼圖 -->
+        <a href="japan-map-puzzle.html" class="nav-card">
+            <h2>全日本地理拼圖</h2>
+            <p>宏觀日本：跨區域的地理與文化整合</p>
+        </a>
+
+        <!-- 日本中部地區地理拼圖 -->
+        <a href="japan-chubu-map-puzzle.html" class="nav-card">
+            <h2>日本中部地區地理拼圖</h2>
+            <p>微觀中部：五國九縣的板塊地貌互動</p>
+        </a>
+    </main>
+
+    <footer>
+        <p>&copy; 林家花園 制作</p>
+    </footer>
+</div>
+
+</body>
+</html>

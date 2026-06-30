@@ -9,13 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#ffffff;
-    --ink:#3a3f44;
-    --title:#33373b;
+    --bg:#fffdfb;
+    --ink:#5a5550;
+    --title:#4a4540;
     --muted:#9aa0a6;
-    --gold:#c8a86b;
-    --line:#e8e8e6;
-    --line-hover:#cfcfca;
+    --gold:#d8ae6a;
+    --line:#ecebe8;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
@@ -32,7 +31,7 @@
   }
 
   /* 標題區 */
-  .masthead{text-align:center;margin-bottom:70px}
+  .masthead{text-align:center;margin-bottom:60px}
   .masthead h1{
     font-weight:300;
     font-size:clamp(1.85rem,5.2vw,3.1rem);
@@ -53,15 +52,15 @@
   .masthead .rule{
     width:56px;height:1px;
     background:var(--gold);
-    opacity:.6;
-    margin:34px auto 0;
+    opacity:.55;
+    margin:30px auto 0;
   }
 
   /* 卡片 */
   .grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:26px;
+    gap:24px;
   }
   .card{
     display:flex;
@@ -70,21 +69,26 @@
     align-items:center;
     text-align:center;
     text-decoration:none;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:54px 36px;
-    transition:border-color .35s ease,transform .35s ease,box-shadow .35s ease;
+    background:var(--cbg);
+    border:1px solid var(--cbd);
+    border-radius:16px;
+    padding:26px 30px;
+    min-height:162px;            /* 統一區塊大小 */
+    transition:border-color .35s ease,transform .35s ease,box-shadow .35s ease,background .35s ease;
+  }
+  /* 奇數張時，最後一張置中 */
+  .grid > .card:last-child:nth-child(odd){
+    grid-column:1 / -1;
+    justify-self:center;
+    width:calc(50% - 12px);
   }
   .card:hover,.card:focus-visible{
-    border-color:var(--line-hover);
     transform:translateY(-4px);
-    box-shadow:0 16px 36px -22px rgba(40,44,48,.4);
+    box-shadow:0 16px 34px -20px var(--csh);
     outline:none;
   }
   .card:active{
-    border-color:var(--gold);
-    background:#fcfaf5;
+    filter:brightness(.97);
     transform:translateY(0);
   }
   .card h2{
@@ -92,22 +96,29 @@
     font-size:clamp(1.2rem,2.8vw,1.55rem);
     letter-spacing:.16em;
     text-indent:.16em;
-    color:var(--title);
+    color:var(--ctt);
     text-wrap:balance;
   }
   .card p{
-    margin-top:18px;
-    font-weight:300;
+    margin-top:14px;
+    font-weight:400;
     font-size:.97rem;
     letter-spacing:.08em;
-    color:var(--muted);
+    color:var(--csb);
     text-wrap:balance;
   }
+  .card p.en{letter-spacing:.18em;text-indent:.18em;font-style:italic}
+
+  /* 淡淡童趣配色 */
+  .c1{--cbg:#fdf2ea;--cbd:#f3dcca;--ctt:#c47c47;--csb:#cb9b78;--csh:rgba(196,124,71,.4)}
+  .c2{--cbg:#ebf6ef;--cbd:#cfe7d8;--ctt:#56a079;--csb:#86b89e;--csh:rgba(86,160,121,.4)}
+  /* 南法鄉間小屋・暖赭土色（三張同色）*/
+  .warm{--cbg:#f6e7cd;--cbd:#e7d1a3;--ctt:#b07c3c;--csb:#bf9f63;--csh:rgba(176,124,60,.42)}
 
   /* 頁尾 */
   footer{
     text-align:center;
-    margin-top:80px;
+    margin-top:60px;
     font-weight:300;
     font-size:.9rem;
     letter-spacing:.18em;
@@ -117,38 +128,78 @@
 
   /* ── 平板 ── */
   @media(max-width:768px){
-    .wrap{padding:72px 26px 52px}
-    .masthead{margin-bottom:54px}
-    .card{padding:46px 30px}
+    .wrap{padding:64px 26px 48px}
+    .masthead{margin-bottom:46px}
+    .card{min-height:150px;padding:24px 26px}
+    footer{margin-top:48px}
   }
 
-  /* ── 手機 ── */
+  /* ── 手機：整頁滿版，五張卡平均分高 ── */
   @media(max-width:520px){
-    .wrap{padding:56px 20px 44px}
-    .masthead{margin-bottom:40px}
-    .masthead h1{letter-spacing:.06em;text-indent:.06em}
-    .masthead .sub{margin-top:18px;letter-spacing:.22em;text-indent:.22em}
-    .masthead .rule{margin-top:26px}
-    .grid{grid-template-columns:1fr;gap:16px}
-    .card{padding:34px 24px;border-radius:10px}
+    html,body{height:100vh;height:100dvh;overflow:hidden}
+    body{display:flex;flex-direction:column}
+    .wrap{
+      flex:1;min-height:0;
+      display:flex;flex-direction:column;
+      max-width:none;
+      padding:26px 16px 16px;
+    }
+    .masthead{flex:0 0 auto;margin-bottom:16px}
+    .masthead h1{font-size:1.7rem;letter-spacing:.06em;text-indent:.06em}
+    .masthead .sub{margin-top:14px;letter-spacing:.22em;text-indent:.22em}
+    .masthead .rule{margin-top:18px}
+    .grid{
+      flex:1;min-height:0;
+      grid-template-columns:1fr;
+      grid-template-rows:repeat(5,1fr);
+      gap:10px;
+    }
+    .grid > .card:last-child:nth-child(odd){grid-column:auto;width:auto;justify-self:stretch}
+    .card{min-height:0;padding:8px 18px;border-radius:14px}
     .card h2{letter-spacing:.08em;text-indent:.08em}
-    .card p{margin-top:12px;font-size:.94rem}
-    footer{margin-top:52px;letter-spacing:.12em;text-indent:.12em}
+    .card p{margin-top:6px;font-size:.9rem}
+    footer{flex:0 0 auto;margin-top:14px;font-size:.82rem}
   }
 
   /* ── 小型手機 ── */
   @media(max-width:360px){
-    .wrap{padding:48px 16px 40px}
-    .card{padding:30px 20px}
-    .card h2{letter-spacing:.04em;text-indent:.04em}
+    .wrap{padding:20px 13px 13px}
+    .masthead h1{font-size:1.5rem}
+    .card{padding:6px 14px}
+    .card h2{letter-spacing:.04em;text-indent:.04em;font-size:1.12rem}
+  }
+
+  /* 櫻花花瓣（慢速飄落）*/
+  .sakura{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:50}
+  .petal{
+    position:absolute;top:-12vh;
+    background:radial-gradient(120% 120% at 30% 25%,#ffe3ec 0%,#f9c2d6 55%,#f3a9c4 100%);
+    border-radius:100% 0 100% 0;
+    opacity:0;
+    will-change:transform,margin-left,opacity;
+    animation-name:petalFall,petalSway;
+    animation-timing-function:linear,ease-in-out;
+    animation-iteration-count:infinite,infinite;
+  }
+  @keyframes petalFall{
+    0%{transform:translateY(0) rotate(0);opacity:0}
+    10%{opacity:var(--op,.8)}
+    90%{opacity:var(--op,.8)}
+    100%{transform:translateY(124vh) rotate(var(--spin,540deg));opacity:0}
+  }
+  @keyframes petalSway{
+    0%,100%{margin-left:0}
+    50%{margin-left:var(--sway,40px)}
   }
 
   @media(prefers-reduced-motion:reduce){
     *{transition:none!important}
+    .sakura{display:none}
   }
 </style>
 </head>
 <body>
+<div class="sakura" aria-hidden="true"></div>
 <div class="wrap">
 
   <header class="masthead">
@@ -159,21 +210,27 @@
 
   <div class="grid">
 
-    <a class="card" href="JPjourney2026.html">
+    <a class="card c1" href="JPjourney2026.html">
       <h2>行程規劃</h2>
       <p>8 天　10 大 5 小</p>
     </a>
 
-    <a class="card" href="japan.html">
-      <h2>日本中部地理人文大冒險</h2>
+    <a class="card c2" href="jpgodutch.html">
+      <h2>旅行分帳</h2>
+      <p class="en">Go Dutch</p>
     </a>
 
-    <a class="card" href="japan-map-puzzle.html">
-      <h2>全日本地理拼圖</h2>
+    <a class="card warm" href="japan-map-puzzle.html">
+      <h2>日本地理拼圖</h2>
     </a>
 
-    <a class="card" href="japan-chubu-map-puzzle.html">
-      <h2>日本中部地區地理拼圖</h2>
+    <a class="card warm" href="japan.html">
+      <h2>地理人文大冒險</h2>
+    </a>
+
+    <a class="card warm" href="japan-map-chubu.html">
+      <h2>中部城市拼圖</h2>
+      <p>北陸、東海、甲信越</p>
     </a>
 
   </div>
@@ -181,5 +238,38 @@
   <footer>© 林家花園 制作</footer>
 
 </div>
+
+<script>
+(function(){
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var layer=document.querySelector('.sakura');
+  if(!layer)return;
+  var tints=[
+    'radial-gradient(120% 120% at 30% 25%,#ffe3ec 0%,#f9c2d6 55%,#f3a9c4 100%)',
+    'radial-gradient(120% 120% at 30% 25%,#fff0f4 0%,#fcd0de 55%,#f7b9cd 100%)',
+    'radial-gradient(120% 120% at 30% 25%,#ffe7d8 0%,#fbccc0 55%,#f6b3ac 100%)'
+  ];
+  var N=22;
+  for(var i=0;i<N;i++){
+    var p=document.createElement('span');
+    p.className='petal';
+    var size=8+Math.random()*10;
+    var fall=(16+Math.random()*12)/0.7;  // 再慢 30%（約 23–40s）
+    var sway=4+Math.random()*4;        // 左右微擺
+    var dir=Math.random()<0.5?1:-1;
+    p.style.left=(Math.random()*100)+'vw';
+    p.style.width=size+'px';
+    p.style.height=(size*0.86)+'px';
+    p.style.background=tints[i%tints.length];
+    p.style.setProperty('--op',(0.5+Math.random()*0.4).toFixed(2));
+    p.style.setProperty('--spin',(dir*(360+Math.random()*360)).toFixed(0)+'deg');
+    p.style.setProperty('--sway',(dir*(30+Math.random()*55)).toFixed(0)+'px');
+    p.style.animationDuration=fall.toFixed(1)+'s,'+sway.toFixed(1)+'s';
+    p.style.animationDelay=(-Math.random()*fall).toFixed(1)+'s,'+(-Math.random()*sway).toFixed(1)+'s';
+    layer.appendChild(p);
+  }
+})();
+</script>
+
 </body>
 </html>

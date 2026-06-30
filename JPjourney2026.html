@@ -275,11 +275,6 @@
 
 <main>
   <div id="days"></div>
-
-  <section class="notes-sec">
-    <h2>票券・餐廳・備註</h2>
-    <div id="notes"></div>
-  </section>
 </main>
 
 <footer>
@@ -307,7 +302,7 @@ const TRIP=[
    {t:"sight",time:"09:20 / 10:30",place:"福井縣立恐龍博物館\n化石研究體驗＋常設展",note:"已購票，兩場 9:20、10:30"},
    {t:"sight",time:"13:30–15:30",place:"野外恐龍博物館",note:"已購票"},
    {t:"sight",place:"平泉寺白山神社",note:"苔庭、御手洗池、若宮神社的大杉樹"},
-   {t:"food",time:"晚餐",place:"Bonta Kurufu 福井站前店"},
+   {t:"food",time:"晚餐",place:"Bonta Kurufu 福井站前店",note:'電話 050-5593-3424 ｜ <a href="https://tabelog.com/tw/fukui/A1801/A180101/18009666/" target="_blank" rel="noopener">食べログ頁面</a>'},
    {t:"stay",time:"住 2 晚",place:"福井萬怡酒店\nCourtyard by Marriott Fukui"},
  ]},
  {day:"Day 3",date:"7/03",dow:"五",loc:"福井 → 岐阜",items:[
@@ -333,7 +328,7 @@ const TRIP=[
    {t:"transit",place:"車程約 1HR",drive:true},
    {t:"sight",time:"2–2.5 小時",place:"犬山城 ＋ 三光稻荷神社"},
    {t:"transit",place:"車程約 0.5HR",drive:true},
-   {t:"food",time:"17:00–20:00",place:"晚餐：山本屋總本店（味噌煮込烏龍麵）",note:"星期二、三店休；品項待確認"},
+   {t:"food",time:"17:00–20:00",place:"晚餐：山本屋總本店（味噌煮込烏龍麵）",note:"名古屋市中区栄 3-12-19 ｜ 營業 17:00–21:00 ｜ 地下鐵「榮」站步行約 11 分鐘 ｜ 星期二、三店休；品項待確認"},
    {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
  ]},
  {day:"Day 5",date:"7/05",dow:"日",loc:"名古屋市區",items:[
@@ -347,15 +342,15 @@ const TRIP=[
  ]},
  {day:"Day 6",date:"7/06",dow:"一",loc:"吉卜力公園",items:[
    {t:"car",time:"08:00",place:"出門",note:"早餐？"},
-   {t:"sight",time:"10:00–17:00",place:"吉卜力公園",note:"門票已購買（詳見備註）"},
+   {t:"sight",time:"10:00–17:00",place:"吉卜力公園",note:"門票已購買 ｜ 高級版 3 大 3 小（7,300／3,650 日圓）、普通版 3 大 1 小（3,300／1,650 日圓）"},
    {t:"food",place:"午餐：園區內隨意"},
    {t:"food",time:"18:00",place:"晚餐：熱田蓬萊軒 本店（鰻魚飯）",note:"15 人已訂位 ｜ 052-671-8686"},
    {t:"sight",time:"~22:00",place:"夜間活動（千里馬）",note:"22:00 打烊；名稱待確認"},
    {t:"food",time:"消夜",place:"一蘭拉麵 名古屋錦店",note:"飯店附近步行約 10 分鐘"},
    {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
  ]},
- {day:"Day 7",date:"7/07",dow:"二",loc:"樂高 ・ 大須",items:[
-   {t:"car",time:"08:20",place:"出門",note:"早餐？"},
+ {day:"Day 7",date:"7/07",dow:"二",loc:"樂高樂園",items:[
+   {t:"metro",time:"08:20",place:"出門（搭地鐵前往）",note:"本日不用車；主要行程樂高樂園"},
    {t:"sight",place:"樂高樂園",note:"已購票"},
    {t:"food",place:"午餐：園區內隨意"},
    {t:"sight",place:"大須觀音"},
@@ -368,28 +363,7 @@ const TRIP=[
    {t:"car",time:"08:30",place:"出門",note:"早餐？"},
    {t:"sight",time:"09:30",place:"名古屋市科學館",note:"當天購票；天文館當日無場次，僅購普通票"},
    {t:"transit",place:"車程約 1HR",drive:true},
-   {t:"flight",place:"名古屋中部機場 → 桃園國際機場",note:"國泰航空 CX ｜ 約 3HR（16:40–18:50）"},
- ]},
-];
-
-const NOTES=[
- {title:"🎫 票券・預約",rows:[
-   ["恐龍博物館","化石研究體驗＋常設展，已購票（9:20、10:30 兩場）"],
-   ["野外恐龍博物館","預約券已購票（13:30–15:30）"],
-   ["永平寺","當天購票"],
-   ["一乘谷朝倉氏遺跡","當天購票（博物館 08:00 起）"],
-   ["長良川鵜飼","鵜鶿捕魚遊覽船，19:15，已預約，約 2.5 小時"],
-   ["吉卜力公園門票","已購買 — 高級版 3 大 3 小（7,300／3,650 日圓）；普通版 3 大 1 小（3,300／1,650 日圓）"],
-   ["名古屋港水族館","四館套票當天購票（15 人）"],
-   ["樂高樂園","已購票"],
-   ["名古屋市科學館","當天購票；天文館當日無場次，僅購普通票"],
- ]},
- {title:"🍽 餐廳",rows:[
-   ["Bonta Kurufu 福井站前店","電話 050-5593-3424｜tabelog.com/tw/fukui/A1801/A180101/18009666/"],
-   ["あみやき亭 榮店","燒肉，15 人已預約（7:30 到）"],
-   ["熱田蓬萊軒 本店","鰻魚飯，18:00、15 人已訂位，052-671-8686"],
-   ["山本屋總本店","味噌煮込烏龍麵；名古屋市中区栄 3-12-19；營業 17:00–21:00；星期二、三店休；地下鐵「榮」站步行約 11 分鐘"],
-   ["一蘭拉麵 名古屋錦店","飯店附近步行約 10 分鐘（消夜）"],
+   {t:"flight",place:"名古屋中部機場 → 桃園國際機場",note:"國泰航空 CX531 ｜ 約 3HR（16:40–18:50）"},
  ]},
 ];
 
@@ -443,21 +417,6 @@ function show(i){
   document.querySelectorAll(".daybtn").forEach((b,k)=>b.classList.toggle("active",k===i));
   window.scrollTo({top:0,behavior:"smooth"});
 }
-
-/* ---- render notes ---- */
-const notesEl=document.getElementById("notes");
-NOTES.forEach((n,i)=>{
-  const acc=document.createElement("div");
-  acc.className="acc"+(i===0?" open":"");
-  let rows=n.rows.map(r=>{
-    let v=r[1].replace(/(tabelog\.com[^\s；]+)/,'<a href="https://$1" target="_blank" rel="noopener">$1</a>');
-    return `<tr><td>${r[0]}</td><td>${v}</td></tr>`;
-  }).join("");
-  acc.innerHTML=`<div class="acc-head"><span>${n.title}</span><span class="arrow">▾</span></div>
-    <div class="acc-body"><table>${rows}</table></div>`;
-  acc.querySelector(".acc-head").onclick=()=>acc.classList.toggle("open");
-  notesEl.appendChild(acc);
-});
 </script>
 </body>
 </html>

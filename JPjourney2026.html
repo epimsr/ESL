@@ -167,6 +167,18 @@
   .drive{
     color:var(--c-transit);font-size:13px;font-weight:600;letter-spacing:1px;
   }
+  .maplink{
+    display:inline-flex;align-items:center;gap:4px;margin-top:8px;
+    font-size:12.5px;font-weight:700;color:var(--c-flight);
+    background:var(--c-flight-bg);padding:4px 11px;border-radius:9px;
+    text-decoration:none;border:1px solid transparent;
+  }
+  .maplink:hover{border-color:var(--c-flight);}
+  .daynote{
+    margin-top:18px;background:var(--c-food-bg);
+    border:1px dashed var(--gold);border-radius:12px;
+    padding:11px 15px;font-size:14px;color:#8a6418;font-weight:600;
+  }
 
   /* category colors */
   .t-flight .ico{background:var(--c-flight-bg);} .t-flight .badge{background:var(--c-flight-bg);color:var(--c-flight);}
@@ -302,7 +314,7 @@ const TRIP=[
    {t:"sight",time:"09:20 / 10:30",place:"福井縣立恐龍博物館\n化石研究體驗＋常設展",note:"已購票，兩場 9:20、10:30"},
    {t:"sight",time:"13:30–15:30",place:"野外恐龍博物館",note:"已購票"},
    {t:"sight",place:"平泉寺白山神社",note:"苔庭、御手洗池、若宮神社的大杉樹"},
-   {t:"food",time:"晚餐",place:"Bonta Kurufu 福井站前店",note:'電話 050-5593-3424 ｜ <a href="https://tabelog.com/tw/fukui/A1801/A180101/18009666/" target="_blank" rel="noopener">食べログ頁面</a>'},
+   {t:"food",time:"晚餐",place:"晚餐：蟹與海鮮 ぼんた（KURUFU 福井站店）",note:'電話 050-5593-3424 ｜ <a href="https://tabelog.com/tw/fukui/A1801/A180101/18009666/" target="_blank" rel="noopener">食べログ頁面</a>'},
    {t:"stay",time:"住 2 晚",place:"福井萬怡酒店\nCourtyard by Marriott Fukui"},
  ]},
  {day:"Day 3",date:"7/03",dow:"五",loc:"福井 → 岐阜",items:[
@@ -316,19 +328,19 @@ const TRIP=[
    {t:"sight",time:"19:15–21:45",place:"長良川鵜飼（鵜鶿捕魚）遊覽船",note:"已預約，活動約 2.5 小時"},
    {t:"stay",place:"岐阜百年溫泉旅店 十八樓",note:"松尾芭蕉《十八樓記》"},
  ]},
- {day:"Day 4",date:"7/04",dow:"六",loc:"岐阜 → 名古屋",items:[
+ {day:"Day 4",date:"7/04",dow:"六",loc:"岐阜 → 名古屋",dayNote:"小姑女兒加入（7/4、7/5 住；7/5、7/6 玩）",items:[
    {t:"food",time:"07:00",place:"飯店早餐"},
    {t:"car",time:"08:30",place:"出門"},
    {t:"transit",place:"車程約 1.5HR",drive:true},
-   {t:"sight",time:"10:00",place:"馬籠宿（舊中山道）"},
+   {t:"sight",time:"10:00",place:"馬籠宿（舊中山道）",map:"https://maps.app.goo.gl/ea1FKBUpAA8NarCc8"},
    {t:"sight",place:"妻籠宿",note:"12:30 前離開"},
    {t:"food",time:"午餐",place:"五平餅、蕎麥麵等",note:"餐廳：けんぞう蕎麦（妻籠宿）待確認"},
    {t:"transit",place:"車程約 0.5HR",drive:true},
    {t:"sight",time:"40–50 分",place:"惠那峽展望台"},
    {t:"transit",place:"車程約 1HR",drive:true},
-   {t:"sight",time:"2–2.5 小時",place:"犬山城 ＋ 三光稻荷神社"},
+   {t:"sight",time:"2–2.5 小時",place:"犬山城 ＋ 三光稻荷神社",map:"https://maps.app.goo.gl/ssSZXr2WMah8Zqfz6"},
    {t:"transit",place:"車程約 0.5HR",drive:true},
-   {t:"food",time:"17:00–20:00",place:"晚餐：山本屋總本店（味噌煮込烏龍麵）",note:"名古屋市中区栄 3-12-19 ｜ 營業 17:00–21:00 ｜ 地下鐵「榮」站步行約 11 分鐘 ｜ 星期二、三店休；品項待確認"},
+   {t:"food",time:"17:00–20:00",place:"晚餐：山本屋總本店（味噌煮込烏龍麵）",note:'名古屋市中区栄 3-12-19 ｜ 營業 17:00–21:00 ｜ 地下鐵「榮」站步行約 11 分鐘 ｜ 星期二、三店休；品項待確認\n<span style="color:#1a1a1a;font-weight:700">晚餐備案：若鯱家、鯱市（しゃちいち）咖哩烏龍麵</span>'},
    {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
  ]},
  {day:"Day 5",date:"7/05",dow:"日",loc:"名古屋市區",items:[
@@ -336,7 +348,7 @@ const TRIP=[
    {t:"sight",time:"09:30 開門",place:"名古屋港水族館",note:"四館套票當天購票（15 人）"},
    {t:"sight",place:"熱田神宮"},
    {t:"sight",place:"寶可夢中心"},
-   {t:"food",time:"19:30",place:"晚餐：あみやき亭 榮店（燒肉）",note:"15 人已預約"},
+   {t:"food",time:"19:30",place:"晚餐：あみやき亭 榮店（燒肉）",note:"16 人已預約"},
    {t:"sight",place:"購物／藥妝：唐吉訶德 榮本店"},
    {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
  ]},
@@ -344,18 +356,18 @@ const TRIP=[
    {t:"car",time:"08:00",place:"出門",note:"早餐？"},
    {t:"sight",time:"10:00–17:00",place:"吉卜力公園",note:"門票已購買 ｜ 高級版 3 大 3 小（7,300／3,650 日圓）、普通版 3 大 1 小（3,300／1,650 日圓）"},
    {t:"food",place:"午餐：園區內隨意"},
-   {t:"food",time:"18:00",place:"晚餐：熱田蓬萊軒 本店（鰻魚飯）",note:"15 人已訂位 ｜ 052-671-8686"},
+   {t:"food",time:"18:00",place:"晚餐：熱田蓬萊軒 本店（鰻魚飯）",note:"16 人已訂位 ｜ 052-671-8686"},
    {t:"sight",time:"~22:00",place:"夜間活動（千里馬）",note:"22:00 打烊；名稱待確認"},
    {t:"food",time:"消夜",place:"一蘭拉麵 名古屋錦店",note:"飯店附近步行約 10 分鐘"},
    {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
  ]},
  {day:"Day 7",date:"7/07",dow:"二",loc:"樂高樂園",items:[
    {t:"metro",time:"08:20",place:"出門（搭地鐵前往）",note:"本日不用車；主要行程樂高樂園"},
-   {t:"sight",place:"樂高樂園",note:"已購票"},
+   {t:"sight",time:"10:00 開門",place:"樂高樂園",note:"已購票"},
    {t:"food",place:"午餐：園區內隨意"},
-   {t:"sight",place:"大須觀音"},
+   {t:"sight",time:"傍晚",place:"大須觀音",note:"傍晚前往"},
    {t:"sight",place:"大須商店街"},
-   {t:"food",time:"晚餐",place:"矢場とん 矢場町本店（味噌豬排）"},
+   {t:"food",time:"晚餐",place:"矢場とん 矢場町本店（味噌豬排）",note:"已預約 ｜ 幫小泱慶生 🎂"},
    {t:"food",time:"消夜",place:"居酒屋"},
    {t:"stay",time:"住 4 晚",place:"Hotel Keihan Nagoya\n名古屋京阪飯店"},
  ]},
@@ -404,10 +416,12 @@ TRIP.forEach((d,i)=>{
           ${it.time?`<span class="time">${it.time}</span>`:""}
         </div>
         <div class="place">${it.place}</div>
+        ${it.map?`<a class="maplink" href="${it.map}" target="_blank" rel="noopener">📍 Google 地圖</a>`:""}
         ${it.note?`<div class="${noteCls}">${it.note}</div>`:""}
       </div></div>`;
   });
   html+=`</div>`;
+  if(d.dayNote) html+=`<div class="daynote">📌 ${d.dayNote}</div>`;
   sec.innerHTML=html;
   daysEl.appendChild(sec);
 });
